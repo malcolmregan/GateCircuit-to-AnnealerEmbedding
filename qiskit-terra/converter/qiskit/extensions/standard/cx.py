@@ -22,6 +22,8 @@ class CnotGate(Gate):
 
 
 def cx(self, ctl, tgt):
+    f = open("aweo.txt", "a")
+    f.write("erwewrwe\n")
     pass
 
 

@@ -58,6 +58,7 @@ class DAGCircuit:
 
 
     def add_basis_element(self, name, number_qubits,
+                          number_classical=0, number_parameters=0):
         pass
 
 
@@ -87,6 +88,7 @@ class DAGCircuit:
 
 
     def apply_operation_back(self, name, qargs, cargs=None, params=None,
+                            condition=None, op=None):
         pass
 
 
@@ -94,6 +96,7 @@ class DAGCircuit:
 
 
     def apply_operation_front(self, name, qargs, cargs=None, params=None,
+                             condition=None, op=None):
         pass
 
 
@@ -110,6 +113,7 @@ class DAGCircuit:
 
 
     def _check_wiremap_registers(self, wire_map, keyregs, valregs,
+                                 valreg=True):
         pass
 
 
@@ -165,6 +169,7 @@ class DAGCircuit:
         pass
 
     def qasm(self, decls_only=False, add_swap=False,
+            no_decls=False, qeflag=False, aliases=None, eval_symbols=False):
         pass
 
 
@@ -187,6 +192,7 @@ class DAGCircuit:
 
 
     def _full_pred_succ_maps(self, pred_map, succ_map, input_circuit,
+                             wire_map):
         pass
 
 

@@ -20,8 +20,7 @@ def _circuit_from_qasm(qasm, basis=None):
 
 class QuantumCircuit(object):
     pass
-
-
+    
 
     def from_qasm_file(path):
         pass
@@ -108,6 +107,8 @@ class QuantumCircuit(object):
         pass
 
     def draw(self, scale=0.7, filename=None, style=None, output='text',
+            interactive=False, line_length=None, plot_barriers=True,
+            reverse_bits=False):
         pass
 
 

@@ -13,6 +13,8 @@ from converter.qiskit.unrollers import _dagunroller
 from converter.qiskit.unrollers import _dagbackend
 from converter.qiskit.unrollers import _jsonbackend
 from converter.qiskit.mapper import (Coupling, optimize_1q_gates, coupling_list2dict, swap_mapper,
+                                     cx_cancellation, direction_mapper,
+                                     remove_last_measurements, return_last_measurements)
 from converter.qiskit._pubsub import Publisher, Subscriber
 from ._parallel import parallel_map
 
@@ -20,6 +22,7 @@ from ._parallel import parallel_map
 
 
 def transpile(circuits, backend, basis_gates=None, coupling_map=None, initial_layout=None,
+              seed_mapper=None, hpc=None, pass_manager=None):
     pass
 
 
@@ -40,6 +43,7 @@ def _circuits_2_dags(circuits):
 
 
 def _dags_2_dags(dags, basis_gates='u1,u2,u3,cx,id', coupling_map=None,
+                 initial_layouts=None, seed_mapper=None, pass_manager=None):
     pass
 
 
@@ -58,11 +62,14 @@ def _dags_2_dags(dags, basis_gates='u1,u2,u3,cx,id', coupling_map=None,
 
 
 def _transpile_dags_parallel(dag_layout_tuple, basis_gates='u1,u2,u3,cx,id',
+                            coupling_map=None, seed_mapper=None, pass_manager=None):
     pass
 
 
 
 def transpile_dag(dag, basis_gates='u1,u2,u3,cx,id', coupling_map=None,
+                 initial_layout=None, get_layout=False,
+                 format='dag', seed_mapper=None, pass_manager=None):
     pass
 
 

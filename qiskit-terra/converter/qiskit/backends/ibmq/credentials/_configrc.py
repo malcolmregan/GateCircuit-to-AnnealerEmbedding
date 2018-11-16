@@ -46,7 +46,7 @@ def store_credentials(credentials, overwrite=False, filename=None):
 
 def remove_credentials(credentials, filename=None):
     pass
-from converter.qiskitve credentials from qiskitrc.
-
+#from converter.qiskitve credentials from qiskitrc.
+#^whered this come from?
 
 

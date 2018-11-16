@@ -21,6 +21,7 @@ def _load_schema(file_path, name=None):
 
 
 def _get_validator(name, schema=None, check_schema=True,
+                   validator_class=None, **validator_kwargs):
     pass
 
 
@@ -41,6 +42,7 @@ def _load_schemas_and_validators():
 
 
 def validate_json_against_schema(json_dict, schema,
+                                err_msg=None):
     pass
 
 

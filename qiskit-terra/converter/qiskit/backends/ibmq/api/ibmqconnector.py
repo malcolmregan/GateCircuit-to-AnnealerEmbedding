@@ -27,9 +27,10 @@ class _Credentials(object):
     pass
 
     def __init__(self, token, config=None, verify=True, proxy_urls=None,
+                 ntlm_credentials=None):
         pass
 
-
+        if not verify:
             import requests.packages.urllib3 as urllib3
 
 
@@ -60,6 +61,7 @@ class _Credentials(object):
 class _Request(object):
     pass
     def __init__(self, token, config=None, verify=True, retries=5,
+                timeout_interval=1.0):
         pass
 
 
@@ -112,6 +114,7 @@ class IBMQConnector(object):
         pass
 
     def run_job(self, job, backend='simulator', shots=1,
+               access_token=None, user_id=None):
         pass
 
 
@@ -127,6 +130,7 @@ class IBMQConnector(object):
 
 
     def get_job(self, id_job, hub=None, group=None, project=None,
+                access_token=None, user_id=None):
         pass
 
 
@@ -135,12 +139,15 @@ class IBMQConnector(object):
 
 
     def get_jobs(self, limit=10, skip=0, backend=None, only_completed=False,
+                filter=None, hub=None, group=None, project=None,
+                access_token=None, user_id=None):
         pass
 
 
 
 
     def get_status_job(self, id_job, hub=None, group=None, project=None,
+                      access_token=None, user_id=None):
         pass
 
 
@@ -148,6 +155,8 @@ class IBMQConnector(object):
 
 
     def get_status_jobs(self, limit=10, skip=0, backend=None, filter=None,
+                        hub=None, group=None, project=None, access_token=None,
+                        user_id=None):
         pass
 
 
@@ -157,6 +166,7 @@ class IBMQConnector(object):
 
 
     def cancel_job(self, id_job, hub=None, group=None, project=None,
+                   access_token=None, user_id=None):
         pass
 
 
@@ -187,6 +197,7 @@ class IBMQConnector(object):
 
 
     def available_backends(self, hub=None, group=None, project=None,
+                           access_token=None, user_id=None):
         pass
 
 

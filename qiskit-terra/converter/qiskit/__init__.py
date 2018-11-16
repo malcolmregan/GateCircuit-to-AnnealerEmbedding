@@ -17,7 +17,7 @@ from ._instruction import Instruction
 from ._instructionset import InstructionSet
 from ._reset import Reset
 from ._measure import Measure
-from ._schema_validation import (validate_json_against_schema,
+from ._schema_validation import (validate_json_against_schema,SchemaValidationError)
 from .result import Result
 from ._pubsub import Publisher, Subscriber
 
@@ -32,7 +32,7 @@ from converter.qiskit.backends.aer import Aer  # pylint: disable=invalid-name
 from .wrapper._wrapper import (load_qasm_string, load_qasm_file, qobj_to_circuits)
 from .tools._compiler import (compile, execute)
 
-import converter.qiskit wrapper, to make it available when doing "import qiskit".
+#import converter.qiskit wrapper, to make it available when doing "import qiskit".
 from . import wrapper
 from . import tools
 

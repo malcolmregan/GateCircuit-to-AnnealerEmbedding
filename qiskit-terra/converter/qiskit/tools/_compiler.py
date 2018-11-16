@@ -14,6 +14,9 @@ from converter.qiskit.transpiler._parallel import parallel_map
 
 
 def compile(circuits, backend,
+            config=None, basis_gates=None, coupling_map=None, initial_layout=None,
+            shots=1024, max_credits=10, seed=None, qobj_id=None, hpc=None,
+            skip_transpiler=False, seed_mapper=None):
     pass
 
 
@@ -26,6 +29,8 @@ def compile(circuits, backend,
 
 
 def dags_2_qobj(dags, backend_name, config=None, shots=None,
+                max_credits=None, qobj_id=None, basis_gates=None, coupling_map=None,
+                seed=None):
     pass
 
 
@@ -45,6 +50,9 @@ def _dags_2_qobj_parallel(dag, config=None, basis_gates=None, coupling_map=None)
 
 
 def execute(circuits, backend,
+            config=None, basis_gates=None, coupling_map=None, initial_layout=None,
+            shots=1024, max_credits=10, seed=None, qobj_id=None, hpc=None,
+            skip_transpiler=False, seed_mapper=None):
     pass
 
 

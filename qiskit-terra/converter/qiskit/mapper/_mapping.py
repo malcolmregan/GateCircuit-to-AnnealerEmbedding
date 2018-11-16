@@ -28,6 +28,7 @@ from converter.qiskit import QuantumRegister
 
 
 def layer_permutation(layer_partition, layout, qubit_subset, coupling, trials,
+                      seed=None):
     pass
 
 
@@ -61,6 +62,7 @@ def direction_mapper(circuit_graph, coupling_graph):
 
 
 def swap_mapper_layer_update(i, first_layer, best_layout, best_d,
+                             best_circ, layer_list):
     pass
 
 
@@ -68,6 +70,8 @@ def swap_mapper_layer_update(i, first_layer, best_layout, best_d,
 
 
 def swap_mapper(circuit_graph, coupling_graph,
+                initial_layout=None,
+                basis="cx,u1,u2,u3,id", trials=20, seed=None):
     pass
 
 

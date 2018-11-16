@@ -5,6 +5,8 @@ import networkx as nx
 
 from converter.qiskit.unrollers._unroller import Unroller
 from converter.qiskit.qasm._node import Real, Id, IdList, ExpressionList, Gate, \
+                                        PrimaryList, Int, IndexedId, Qreg, If, Creg, \
+                                        Program, CustomUnitary
 from ._unrollererror import UnrollerError
 from ._dagbackend import DAGBackend
 
@@ -30,6 +32,7 @@ class DagUnroller(object):
 
 
     def _build_subcircuit(self, gatedefs, basis, gate_name, gate_params, gate_args,
+                         gate_condition):
         pass
 
 

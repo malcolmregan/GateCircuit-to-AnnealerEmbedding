@@ -26,6 +26,7 @@ class Bloch():
 
 
     def __init__(self, fig=None, axes=None, view=None, figsize=None,
+                 background=False):
         pass
 
 

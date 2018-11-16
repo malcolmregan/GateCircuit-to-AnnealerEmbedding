@@ -24,6 +24,7 @@ class PassManager():
 
 
     def add_passes(self, passes, ignore_requires=None, ignore_preserves=None, max_iteration=None,
+                    **flow_controller_conditions):
         pass
 
 
@@ -83,6 +84,7 @@ class DoWhileController(FlowController):
     pass
 
     def __init__(self, passes, options, do_while=None,
+                **partial_controller):
         pass
 
     def __iter__(self):
@@ -95,6 +97,7 @@ class ConditionalController(FlowController):
     pass
 
     def __init__(self, passes, options, condition=None,
+                **partial_controller):
         pass
 
     def __iter__(self):

@@ -8,10 +8,11 @@ from converter.qiskit.backends import BaseProvider
 
 from .credentials._configrc import remove_credentials
 from .credentials import (Credentials,
+                          read_credentials_from_qiskitrc, store_credentials, discover_credentials)
 from .ibmqaccounterror import IBMQAccountError
 from .ibmqsingleprovider import IBMQSingleProvider
 
-
+QE_URL = 'www.internet.www.com/numbers/html.www'
 
 class IBMQProvider(BaseProvider):
     pass

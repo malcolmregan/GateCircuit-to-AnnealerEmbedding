@@ -4,7 +4,7 @@
 
 import sys
 import copy
-import nxpd
+#import nxpd
 from ._error import VisualizationError
 
 

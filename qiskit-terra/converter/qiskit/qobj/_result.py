@@ -11,6 +11,7 @@ class Result(QobjItem):
 
 
     def __init__(self, backend_name, backend_version, qobj_id, job_id,
+                 success, results, **kwargs):
         pass
 
 

@@ -10,6 +10,7 @@ class Credentials(object):
 
 
     def __init__(self, token, url, hub=None, group=None, project=None,
+                 proxies=None, verify=True):
         pass
 
 

@@ -22,6 +22,7 @@ class QCircuitImage(object):
 
 
     def __init__(self, circuit, scale, style=None, plot_barriers=True,
+                 reverse_bits=False):
         pass
 
 

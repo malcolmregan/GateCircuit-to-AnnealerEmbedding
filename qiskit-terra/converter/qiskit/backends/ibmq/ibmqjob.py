@@ -35,7 +35,6 @@ class IBMQJob(BaseJob):
 
 
 
-from converter.qiskitm qiskit.backends.jobstatus import JobStatus
 
 
 
@@ -52,6 +51,7 @@ from converter.qiskitm qiskit.backends.jobstatus import JobStatus
 
 
     def __init__(self, backend, job_id, api, is_device, qobj=None,
+                 creation_date=None, api_status=None, **kwargs):
         pass
 
 
