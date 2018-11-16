@@ -58,13 +58,32 @@ def cx(self, ctl, tgt):
         else:
             f = open("./{}".format(filename), "a")
 
-        f.write("## CNOT - control: {0} target: {1}\n"\
+        f.write("###################################\n"\
+                "## CNOT - control: {0} target: {1} ##\n"\
+                "###################################\n\n"\
+                "if \'{0}\' not in globals():\n"\
+                "    {0}=0\n"\
+                "if \'{1}\' not in globals():\n"\
+                "    {1}=0\n\n"\
                 "bqm = dimod.BinaryQuadraticModel({{'{0}\' : 1, \'{1}\' : 1, \'out{1}\' : 1, \'anc\' : 4}}, {{(\'{0}\', \'{1}\') : 2, (\'{0}\', \'out{1}\') : -2, (\'{1}\', \'out{1}\') : "\
                 "-2, (\'{0}\', \'anc\') : -4, (\'{1}\', \'anc\') : -4, (\'out{1}\', \'anc\') : 4}}, 0, dimod.BINARY)\n"\
                 "sampler = dimod.ExactSolver()\n"\
-                "response = sampler.sample(bqm)\n"\
+                "response = sampler.sample(bqm)\n\n"\
                 "for sample, energy in response.data(['sample', 'energy']):\n"\
-                "    print(sample, energy)\n\n".format(ctlname,tgtname))
+                "    if sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and int(energy)==0:\n"\
+                "        {0}=sample[\'{0}\']\n"\
+                "        {1}=sample[\'out{1}\']\n"\
+                "        #ctl_before = sample[\'{0}\']\n"
+                "        tgt_before = sample[\'{1}\']\n"
+                "        #print(sample, energy)\n"\
+                "        break\n\n"\
+                "print(\"######################################################\")\n"\
+                "print(\"CNOT operation on {0} (control) and {1} (target):\")\n"\
+                "print(\"    in:  {0}={{0}}, {1}={{1}}\".format({0},tgt_before))\n"\
+                "print(\"    out: {0}={{0}}, {1}={{1}}\".format({0},{1}))\n"\
+                "print(\"######################################################\")\n"\
+                "print(\"\\n\\n\\n\")\n\n\n".format(ctlname,tgtname))
+                        
         f.close()
         return
 
