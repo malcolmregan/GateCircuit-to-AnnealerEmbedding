@@ -34,6 +34,42 @@ class CnotGate(Gate):
 
 
 def cx(self, ctl, tgt):
+    
+    ############################## Write Dwave CNOT ##################################
+    
+    import os
+    import sys
+    import __main__
+
+    if sys.argv[-1] == 'dwave':
+
+        ctlname = ctl[0].name
+        tgtname = tgt[0].name
+
+        filename = __main__.__file__.split(".")[0]
+        filename = filename + "_dwave.py"
+        if not os.path.exists("./{}".format(filename)):
+            f = open("./{}".format(filename), "a")
+            f.write("#from dwave.system.samplers import DWaveSampler\n"\
+                "#from exact_solver import ExactSolver\n"\
+                "#from dwave.cloud.exceptions import SolverOfflineError\n"\
+                "#import minorminer\n"\
+                "import dimod\n\n")
+        else:
+            f = open("./{}".format(filename), "a")
+
+        f.write("## CNOT - control: {0} target: {1}\n"\
+                "bqm = dimod.BinaryQuadraticModel({{'{0}\' : 1, \'{1}\' : 1, \'out{1}\' : 1, \'anc\' : 4}}, {{(\'{0}\', \'{1}\') : 2, (\'{0}\', \'out{1}\') : -2, (\'{1}\', \'out{1}\') : "\
+                "-2, (\'{0}\', \'anc\') : -4, (\'{1}\', \'anc\') : -4, (\'out{1}\', \'anc\') : 4}}, 0, dimod.BINARY)\n"\
+                "sampler = dimod.ExactSolver()\n"\
+                "response = sampler.sample(bqm)\n"\
+                "for sample, energy in response.data(['sample', 'energy']):\n"\
+                "    print(sample, energy)\n\n".format(ctlname,tgtname))
+        f.close()
+        return
+
+    ##################################################################################
+
     """Apply CX from ctl to tgt."""
     if isinstance(ctl, QuantumRegister) and \
        isinstance(tgt, QuantumRegister) and len(ctl) == len(tgt):

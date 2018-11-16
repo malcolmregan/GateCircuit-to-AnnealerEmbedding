@@ -6,11 +6,11 @@
 
 
 from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
-from qiskit import available_backends, execute
+from qiskit import  execute #, available_backends
 from qiskit import Aer
 
 #2 inputs with  n-bits each : to be compared
-n = 4
+n = 2
 qin1 = QuantumRegister(n)
 cin1 = ClassicalRegister(n)
 qin2 = QuantumRegister(n)
