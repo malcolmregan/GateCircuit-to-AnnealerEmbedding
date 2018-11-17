@@ -78,9 +78,9 @@ def ccx(self, ctl1, ctl2, tgt):
                 "    {1}=0\n"\
                 "if \'{2}\' not in globals():\n"\
                 "    {2}=0\n\n"\
-                "bqm = dimod.BinaryQuadraticModel({{\'anc1\' : 4, \'anc2\' : 4, \'out{2}\' : 1, \'{2}\' : 1}}, {{(\'anc1\', \'anc2\') : -4, (\'anc1\', \'out{2}\') : 4, \
-                (\'anc1\',\'{2}\') : -4, (\'anc2\', \'{0}\') : -2, (\'anc2\', \'{1}\') : -2, (\'anc2\', \'out{2}\') : -2, (\'anc2\', \'{2}\') : 2, (\'{0}\', \'{1}\') : 1, \
-                (\'out{2}\', \'{2}\') : -2}}, 0, dimod.BINARY)\n"\
+                "bqm = dimod.BinaryQuadraticModel({{\'anc1\' : 4, \'anc2\' : 4, \'out{2}\' : 1, \'{2}\' : 1}}, {{(\'anc1\', \'anc2\') : -4, (\'anc1\', \'out{2}\') : 4, "\
+                "(\'anc1\',\'{2}\') : -4, (\'anc2\', \'{0}\') : -2, (\'anc2\', \'{1}\') : -2, (\'anc2\', \'out{2}\') : -2, (\'anc2\', \'{2}\') : 2, (\'{0}\', \'{1}\') : 1, "\
+                "(\'out{2}\', \'{2}\') : -2}}, 0, dimod.BINARY)\n"\
                 "sampler = dimod.ExactSolver()\n"\
                 "response = sampler.sample(bqm)\n\n"\
                 "for sample, energy in response.data(['sample', 'energy']):\n"\

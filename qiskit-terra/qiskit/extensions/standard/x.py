@@ -42,8 +42,11 @@ def x(self, q):
     import __main__
 
     if sys.argv[-1] == 'dwave':
- 
-        tgtname = q.name
+         
+        if isinstance(q,tuple):
+            tgtname = q[0].name
+        else:
+            tgtname = q.name
 
         filename = __main__.__file__.split(".")[0]
         filename = filename + "_dwave.py"
@@ -61,7 +64,7 @@ def x(self, q):
                 "## NOT - target: {0} ##\n"\
                 "#######################\n\n"\
                 "if \'{0}\' not in globals():\n"\
-                "    {0}=0\n"\
+                "    {0}=0\n\n"\
                 "bqm = dimod.BinaryQuadraticModel({{\'{0}\' : -4, \'out{0}\' : -4}}, {{(\'{0}\', \'out{0}\') : 8}}, 4, dimod.BINARY)\n"\
                 "sampler = dimod.ExactSolver()\n"\
                 "response = sampler.sample(bqm)\n\n"\

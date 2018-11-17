@@ -43,8 +43,14 @@ def cx(self, ctl, tgt):
 
     if sys.argv[-1] == 'dwave':
 
-        ctlname = ctl[0].name
-        tgtname = tgt[0].name
+        if isinstance(ctl,tuple):
+            ctlname = ctl[0].name
+        else:
+            ctlname = ctl.name
+        if isinstance(tgt,tuple):
+            tgtname = tgt[0].name
+        else:
+            tgtname = tgt.name
 
         filename = __main__.__file__.split(".")[0]
         filename = filename + "_dwave.py"
