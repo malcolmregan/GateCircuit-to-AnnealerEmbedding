@@ -58,7 +58,7 @@ def x(self, q):
             f = open("./{}".format(filename), "a")
 
         f.write("#######################\n"\
-                "## NOT - control: {0} ##\n"\
+                "## NOT - target: {0} ##\n"\
                 "#######################\n\n"\
                 "if \'{0}\' not in globals():\n"\
                 "    {0}=0\n"\

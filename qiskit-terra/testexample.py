@@ -28,8 +28,8 @@ tmpc = ClassicalRegister(1)
 circuit = QuantumCircuit(qin1,qin2,qz,tmp,cin1,cin2,cz,tmpc)
 
 #for all possible combinations of the inputs, just hadamard them:
-circuit.h(qin1)
-circuit.h(qin2)
+circuit.x(qin1)
+circuit.x(qin2)
 
 #initialize temp
 circuit.x(tmp)

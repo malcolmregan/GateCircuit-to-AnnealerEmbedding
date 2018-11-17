@@ -33,6 +33,77 @@ class ToffoliGate(Gate):
 
 def ccx(self, ctl1, ctl2, tgt):
     """Apply Toffoli to from ctl1 and ctl2 to tgt."""
+
+    ############################## Write Dwave CNOT ##################################
+
+    import os
+    import sys
+    import __main__
+
+    if sys.argv[-1] == 'dwave':
+        
+        if isinstance(ctl1,tuple):
+            ctl1name = ctl1[0].name
+        else:
+            ctl1name = ctl1.name
+
+        if isinstance(ctl2,tuple):
+            ctl2name = ctl2[0].name
+        else:
+            ctl2name = ctl2.name
+
+        if isinstance(tgt,tuple):
+            tgtname = tgt[0].name
+        else:
+            tgtname = tgt.name
+
+        filename = __main__.__file__.split(".")[0]
+        filename = filename + "_dwave.py"
+        if not os.path.exists("./{}".format(filename)):
+            f = open("./{}".format(filename), "a")
+            f.write("#from dwave.system.samplers import DWaveSampler\n"\
+                "#from exact_solver import ExactSolver\n"\
+                "#from dwave.cloud.exceptions import SolverOfflineError\n"\
+                "#import minorminer\n"\
+                "import dimod\n\n")
+        else:
+            f = open("./{}".format(filename), "a")
+
+        f.write("####################################################\n"\
+                "## CCNOT - control1: {0} control2: {1} target: {2} ##\n"\
+                "####################################################\n\n"\
+                "if \'{0}\' not in globals():\n"\
+                "    {0}=0\n"\
+                "if \'{1}\' not in globals():\n"\
+                "    {1}=0\n"\
+                "if \'{2}\' not in globals():\n"\
+                "    {2}=0\n\n"\
+                "bqm = dimod.BinaryQuadraticModel({{\'anc1\' : 4, \'anc2\' : 4, \'out{2}\' : 1, \'{2}\' : 1}}, {{(\'anc1\', \'anc2\') : -4, (\'anc1\', \'out{2}\') : 4, \
+                (\'anc1\',\'{2}\') : -4, (\'anc2\', \'{0}\') : -2, (\'anc2\', \'{1}\') : -2, (\'anc2\', \'out{2}\') : -2, (\'anc2\', \'{2}\') : 2, (\'{0}\', \'{1}\') : 1, \
+                (\'out{2}\', \'{2}\') : -2}}, 0, dimod.BINARY)\n"\
+                "sampler = dimod.ExactSolver()\n"\
+                "response = sampler.sample(bqm)\n\n"\
+                "for sample, energy in response.data(['sample', 'energy']):\n"\
+                "    if sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and sample[\'{2}\']=={2} and int(energy)==0:\n"\
+                "        {0}=sample[\'{0}\']\n"\
+                "        {1}=sample[\'{1}\']\n"\
+                "        {2}=sample[\'out{2}\']\n"\
+                "        tgt_before = sample[\'{2}\']\n"
+                "        #print(sample, energy)\n"\
+                "        break\n\n"\
+                "print(\"######################################################\")\n"\
+                "print(\"CCNOT operation on {0} (control1), {1} (control2) and {2} (target):\")\n"\
+                "print(\"    in:  {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},{1},tgt_before))\n"\
+                "print(\"    out: {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},{1},{2}))\n"\
+                "print(\"######################################################\")\n"\
+                "print(\"\\n\\n\\n\")\n\n\n".format(ctl1name,ctl2name,tgtname))
+
+        f.close()
+        return
+
+    ##################################################################################
+                                                                                      
+
     if isinstance(ctl1, QuantumRegister) and \
        isinstance(ctl2, QuantumRegister) and \
        isinstance(tgt, QuantumRegister) and \
