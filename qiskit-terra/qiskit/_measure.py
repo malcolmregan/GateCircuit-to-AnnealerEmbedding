@@ -37,6 +37,40 @@ class Measure(Instruction):
 
 
 def measure(self, qubit, cbit):
+
+    ############################## Dwave 'Measure' ##################################
+
+    import os
+    import sys
+    import __main__
+
+    if sys.argv[-1] == 'dwave':
+        tgtname = list()
+        if isinstance(qubit,tuple):
+            for i in range(qubit[0].size):
+                tgtname.extend([qubit[0].name+'_{}'.format(i)])
+        else:
+            for i in range(qubit.size):
+                tgtname.extend([qubit.name+'_{}'.format(i)])
+
+        filename = __main__.__file__.split(".")[0]
+        filename = filename + "_dwave.py"
+        
+        f = open("./{}".format(filename), "r")
+        linelist = f.readlines()
+        f.close()
+    
+        f = open("./{}".format(filename), "a")
+        for i in range(len(tgtname)):
+            if "print(\"Measurement of {0} => {{0}}\".format({0}))\n".format(tgtname[i]) not in linelist:
+                f.write("print(\"Measurement of {0} => {{0}}\".format({0}))\n"\
+                        "\n\n\n".format(tgtname[i]))
+
+        f.close()
+        #return
+
+    ###############################################################################
+
     """Measure quantum bit into classical bit (tuples).
 
     Returns:

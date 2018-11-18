@@ -42,11 +42,13 @@ def x(self, q):
     import __main__
 
     if sys.argv[-1] == 'dwave':
-         
+        tgtname = list()
         if isinstance(q,tuple):
-            tgtname = q[0].name
+            for i in range(q[0].size):
+                tgtname.extend([q[0].name+'_{}'.format(i)])
         else:
-            tgtname = q.name
+            for i in range(q.size):
+                tgtname.extend([q.name+'_{}'.format(i)])
 
         filename = __main__.__file__.split(".")[0]
         filename = filename + "_dwave.py"
@@ -59,30 +61,30 @@ def x(self, q):
                 "import dimod\n\n")
         else:
             f = open("./{}".format(filename), "a")
-
-        f.write("#######################\n"\
-                "## NOT - target: {0} ##\n"\
-                "#######################\n\n"\
-                "if \'{0}\' not in globals():\n"\
-                "    {0}=0\n\n"\
-                "bqm = dimod.BinaryQuadraticModel({{\'{0}\' : -4, \'out{0}\' : -4}}, {{(\'{0}\', \'out{0}\') : 8}}, 4, dimod.BINARY)\n"\
-                "sampler = dimod.ExactSolver()\n"\
-                "response = sampler.sample(bqm)\n\n"\
-                "for sample, energy in response.data(['sample', 'energy']):\n"\
-                "    if sample[\'{0}\']=={0} and int(energy)==0:\n"\
-                "        {0}=sample[\'out{0}\']\n"\
-                "        tgt_before = sample[\'{0}\']\n"
-                "        #print(sample, energy)\n"\
-                "        break\n\n"\
-                "print(\"######################################################\")\n"\
-                "print(\"NOT operation on {0}:\")\n"\
-                "print(\"    in:  {0}={{0}}\".format(tgt_before))\n"\
-                "print(\"    out: {0}={{0}}\".format({0}))\n"\
-                "print(\"######################################################\")\n"\
-                "print(\"\\n\\n\\n\")\n\n\n".format(tgtname))
+        for i in range(len(tgtname)): 
+            f.write("#######################\n"\
+                    "## NOT - target: {0} ##\n"\
+                    "#######################\n\n"\
+                    "if \'{0}\' not in globals():\n"\
+                    "    {0}=0\n\n"\
+                    "bqm = dimod.BinaryQuadraticModel({{\'{0}\' : -4, \'out{0}\' : -4}}, {{(\'{0}\', \'out{0}\') : 8}}, 4, dimod.BINARY)\n"\
+                    "sampler = dimod.ExactSolver()\n"\
+                    "response = sampler.sample(bqm)\n\n"\
+                    "for sample, energy in response.data(['sample', 'energy']):\n"\
+                    "    if sample[\'{0}\']=={0} and int(energy)==0:\n"\
+                    "        {0}=sample[\'out{0}\']\n"\
+                    "        tgt_before = sample[\'{0}\']\n"
+                    "        #print(sample, energy)\n"\
+                    "        break\n\n"\
+                    "print(\"######################################################\")\n"\
+                    "print(\"NOT operation on {0}:\")\n"\
+                    "print(\"    in:  {0}={{0}}\".format(tgt_before))\n"\
+                    "print(\"    out: {0}={{0}}\".format({0}))\n"\
+                    "print(\"######################################################\")\n"\
+                    "print(\"\\n\\n\\n\")\n\n\n".format(tgtname[i]))
 
         f.close()
-        return
+        #return
 
     ##################################################################################
 

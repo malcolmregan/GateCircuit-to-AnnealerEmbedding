@@ -42,20 +42,29 @@ def ccx(self, ctl1, ctl2, tgt):
 
     if sys.argv[-1] == 'dwave':
         
+        ctl1name = list()
         if isinstance(ctl1,tuple):
-            ctl1name = ctl1[0].name
+            for i in range(ctl1[0].size):
+                ctl1name.extend([ctl1[0].name+'_{}'.format(i)])
         else:
-            ctl1name = ctl1.name
+            for i in range(ctl1.size):
+                ctl1name.extend([ctl1.name+'_{}'.format(i)])
 
+        ctl2name = list()
         if isinstance(ctl2,tuple):
-            ctl2name = ctl2[0].name
+            for i in range(ctl2[0].size):
+                ctl2name.extend([ctl2[0].name+'_{}'.format(i)])
         else:
-            ctl2name = ctl2.name
+            for i in range(ctl2.size):
+                ctl2name.extend([ctl2.name+'_{}'.format(i)])
 
+        tgtname = list()
         if isinstance(tgt,tuple):
-            tgtname = tgt[0].name
+            for i in range(tgt[0].size):
+                tgtname.extend([tgt[0].name+'_{}'.format(i)])
         else:
-            tgtname = tgt.name
+            for i in range(tgt.size):
+                tgtname.extend([tgt.name+'_{}'.format(i)])
 
         filename = __main__.__file__.split(".")[0]
         filename = filename + "_dwave.py"
@@ -69,37 +78,38 @@ def ccx(self, ctl1, ctl2, tgt):
         else:
             f = open("./{}".format(filename), "a")
 
-        f.write("####################################################\n"\
-                "## CCNOT - control1: {0} control2: {1} target: {2} ##\n"\
-                "####################################################\n\n"\
-                "if \'{0}\' not in globals():\n"\
-                "    {0}=0\n"\
-                "if \'{1}\' not in globals():\n"\
-                "    {1}=0\n"\
-                "if \'{2}\' not in globals():\n"\
-                "    {2}=0\n\n"\
-                "bqm = dimod.BinaryQuadraticModel({{\'anc1\' : 4, \'anc2\' : 4, \'out{2}\' : 1, \'{2}\' : 1}}, {{(\'anc1\', \'anc2\') : -4, (\'anc1\', \'out{2}\') : 4, "\
-                "(\'anc1\',\'{2}\') : -4, (\'anc2\', \'{0}\') : -2, (\'anc2\', \'{1}\') : -2, (\'anc2\', \'out{2}\') : -2, (\'anc2\', \'{2}\') : 2, (\'{0}\', \'{1}\') : 1, "\
-                "(\'out{2}\', \'{2}\') : -2}}, 0, dimod.BINARY)\n"\
-                "sampler = dimod.ExactSolver()\n"\
-                "response = sampler.sample(bqm)\n\n"\
-                "for sample, energy in response.data(['sample', 'energy']):\n"\
-                "    if sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and sample[\'{2}\']=={2} and int(energy)==0:\n"\
-                "        {0}=sample[\'{0}\']\n"\
-                "        {1}=sample[\'{1}\']\n"\
-                "        {2}=sample[\'out{2}\']\n"\
-                "        tgt_before = sample[\'{2}\']\n"
-                "        #print(sample, energy)\n"\
-                "        break\n\n"\
-                "print(\"######################################################\")\n"\
-                "print(\"CCNOT operation on {0} (control1), {1} (control2) and {2} (target):\")\n"\
-                "print(\"    in:  {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},{1},tgt_before))\n"\
-                "print(\"    out: {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},{1},{2}))\n"\
-                "print(\"######################################################\")\n"\
-                "print(\"\\n\\n\\n\")\n\n\n".format(ctl1name,ctl2name,tgtname))
+        for i in range(len(tgtname)):
+            f.write("####################################################\n"\
+                    "## CCNOT - control1: {0} control2: {1} target: {2} ##\n"\
+                    "####################################################\n\n"\
+                    "if \'{0}\' not in globals():\n"\
+                    "    {0}=0\n"\
+                    "if \'{1}\' not in globals():\n"\
+                    "    {1}=0\n"\
+                    "if \'{2}\' not in globals():\n"\
+                    "    {2}=0\n\n"\
+                    "bqm = dimod.BinaryQuadraticModel({{\'anc1\' : 4, \'anc2\' : 4, \'out{2}\' : 1, \'{2}\' : 1}}, {{(\'anc1\', \'anc2\') : -4, (\'anc1\', \'out{2}\') : 4, "\
+                    "(\'anc1\',\'{2}\') : -4, (\'anc2\', \'{0}\') : -2, (\'anc2\', \'{1}\') : -2, (\'anc2\', \'out{2}\') : -2, (\'anc2\', \'{2}\') : 2, (\'{0}\', \'{1}\') : 1, "\
+                    "(\'out{2}\', \'{2}\') : -2}}, 0, dimod.BINARY)\n"\
+                    "sampler = dimod.ExactSolver()\n"\
+                    "response = sampler.sample(bqm)\n\n"\
+                    "for sample, energy in response.data(['sample', 'energy']):\n"\
+                    "    if sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and sample[\'{2}\']=={2} and int(energy)==0:\n"\
+                    "        {0}=sample[\'{0}\']\n"\
+                    "        {1}=sample[\'{1}\']\n"\
+                    "        {2}=sample[\'out{2}\']\n"\
+                    "        tgt_before = sample[\'{2}\']\n"
+                    "        #print(sample, energy)\n"\
+                    "        break\n\n"\
+                    "print(\"######################################################\")\n"\
+                    "print(\"CCNOT operation on {0} (control1), {1} (control2) and {2} (target):\")\n"\
+                    "print(\"    in:  {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},{1},tgt_before))\n"\
+                    "print(\"    out: {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},{1},{2}))\n"\
+                    "print(\"######################################################\")\n"\
+                    "print(\"\\n\\n\\n\")\n\n\n".format(ctl1name[i],ctl2name[i],tgtname[i]))
 
         f.close()
-        return
+        #return
 
     ##################################################################################
                                                                                       
