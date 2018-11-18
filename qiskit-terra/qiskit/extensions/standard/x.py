@@ -36,55 +36,60 @@ class XGate(Gate):
 def x(self, q):
 
     ############################## Write Dwave NOT ##################################
+    if 'writeflag' not in globals():
+        global writeflag
+        writeflag = 1
+    if writeflag==0:
 
-    import os
-    import sys
-    import __main__
+        import os
+        import sys
+        import __main__
 
-    if sys.argv[-1] == 'dwave':
-        tgtname = list()
-        if isinstance(q,tuple):
-            for i in range(q[0].size):
-                tgtname.extend([q[0].name+'_{}'.format(i)])
-        else:
-            for i in range(q.size):
-                tgtname.extend([q.name+'_{}'.format(i)])
+        if sys.argv[-1] == 'dwave':
+            tgtname = list()
+            if isinstance(q,tuple):
+                for i in range(q[0].size):
+                    tgtname.extend([q[0].name+'_{}'.format(i)])
+            else:
+                for i in range(q.size):
+                    tgtname.extend([q.name+'_{}'.format(i)])
 
-        filename = __main__.__file__.split(".")[0]
-        filename = filename + "_dwave.py"
-        if not os.path.exists("./{}".format(filename)):
-            f = open("./{}".format(filename), "a")
-            f.write("#from dwave.system.samplers import DWaveSampler\n"\
-                "#from exact_solver import ExactSolver\n"\
-                "#from dwave.cloud.exceptions import SolverOfflineError\n"\
-                "#import minorminer\n"\
-                "import dimod\n\n")
-        else:
-            f = open("./{}".format(filename), "a")
-        for i in range(len(tgtname)): 
-            f.write("#######################\n"\
-                    "## NOT - target: {0} ##\n"\
-                    "#######################\n\n"\
-                    "if \'{0}\' not in globals():\n"\
-                    "    {0}=0\n\n"\
-                    "bqm = dimod.BinaryQuadraticModel({{\'{0}\' : -4, \'out{0}\' : -4}}, {{(\'{0}\', \'out{0}\') : 8}}, 4, dimod.BINARY)\n"\
-                    "sampler = dimod.ExactSolver()\n"\
-                    "response = sampler.sample(bqm)\n\n"\
-                    "for sample, energy in response.data(['sample', 'energy']):\n"\
-                    "    if sample[\'{0}\']=={0} and int(energy)==0:\n"\
-                    "        {0}=sample[\'out{0}\']\n"\
-                    "        tgt_before = sample[\'{0}\']\n"
-                    "        #print(sample, energy)\n"\
-                    "        break\n\n"\
-                    "print(\"######################################################\")\n"\
-                    "print(\"NOT operation on {0}:\")\n"\
-                    "print(\"    in:  {0}={{0}}\".format(tgt_before))\n"\
-                    "print(\"    out: {0}={{0}}\".format({0}))\n"\
-                    "print(\"######################################################\")\n"\
-                    "print(\"\\n\\n\\n\")\n\n\n".format(tgtname[i]))
+            filename = __main__.__file__.split(".")[0]
+            filename = filename + "_dwave.py"
+            if not os.path.exists("./{}".format(filename)):
+                f = open("./{}".format(filename), "a")
+                f.write("#from dwave.system.samplers import DWaveSampler\n"\
+                        "#from exact_solver import ExactSolver\n"\
+                        "#from dwave.cloud.exceptions import SolverOfflineError\n"\
+                        "#import minorminer\n"\
+                        "import dimod\n\n")
+            else:
+                f = open("./{}".format(filename), "a")
+            for i in range(len(tgtname)): 
+                f.write("#######################\n"\
+                        "## NOT - target: {0} ##\n"\
+                        "#######################\n\n"\
+                        "if \'{0}\' not in globals():\n"\
+                        "    {0}=0\n\n"\
+                        "bqm = dimod.BinaryQuadraticModel({{\'{0}\' : -4, \'out{0}\' : -4}}, {{(\'{0}\', \'out{0}\') : 8}}, 4, dimod.BINARY)\n"\
+                        "sampler = dimod.ExactSolver()\n"\
+                        "response = sampler.sample(bqm)\n\n"\
+                        "for sample, energy in response.data(['sample', 'energy']):\n"\
+                        "    if sample[\'{0}\']=={0} and int(energy)==0:\n"\
+                        "        {0}=sample[\'out{0}\']\n"\
+                        "        tgt_before = sample[\'{0}\']\n"
+                        "        #print(sample, energy)\n"\
+                        "        break\n\n"\
+                        "print(\"######################################################\")\n"\
+                        "print(\"NOT operation on {0}:\")\n"\
+                        "print(\"    in:  {0}={{0}}\".format(tgt_before))\n"\
+                        "print(\"    out: {0}={{0}}\".format({0}))\n"\
+                        "print(\"######################################################\")\n"\
+                        "print(\"\\n\\n\\n\")\n\n\n".format(tgtname[i]))
 
-        f.close()
-        #return
+            writeflag=1
+            f.close()
+            #return
 
     ##################################################################################
 
@@ -92,6 +97,7 @@ def x(self, q):
     """Apply X to q."""
     if isinstance(q, QuantumRegister):
         instructions = InstructionSet()
+        writeflag=0
         for j in range(q.size):
             instructions.add(self.x((q, j)))
         return instructions

@@ -39,35 +39,39 @@ class Measure(Instruction):
 def measure(self, qubit, cbit):
 
     ############################## Dwave 'Measure' ##################################
+    if 'writeflag' not in globals():
+        global writeflag
+        writeflag = 1
+    if writeflag==0:
 
-    import os
-    import sys
-    import __main__
+        import os
+        import sys
+        import __main__
 
-    if sys.argv[-1] == 'dwave':
-        tgtname = list()
-        if isinstance(qubit,tuple):
-            for i in range(qubit[0].size):
-                tgtname.extend([qubit[0].name+'_{}'.format(i)])
-        else:
-            for i in range(qubit.size):
-                tgtname.extend([qubit.name+'_{}'.format(i)])
+        if sys.argv[-1] == 'dwave':
+            tgtname = list()
+            if isinstance(qubit,tuple):
+                for i in range(qubit[0].size):
+                    tgtname.extend([qubit[0].name+'_{}'.format(i)])
+            else:
+                for i in range(qubit.size):
+                    tgtname.extend([qubit.name+'_{}'.format(i)])
 
-        filename = __main__.__file__.split(".")[0]
-        filename = filename + "_dwave.py"
+            filename = __main__.__file__.split(".")[0]
+            filename = filename + "_dwave.py"
         
-        f = open("./{}".format(filename), "r")
-        linelist = f.readlines()
-        f.close()
+            #f = open("./{}".format(filename), "r")
+            #linelist = f.readlines()
+            #f.close()
     
-        f = open("./{}".format(filename), "a")
-        for i in range(len(tgtname)):
-            if "print(\"Measurement of {0} => {{0}}\".format({0}))\n".format(tgtname[i]) not in linelist:
+            f = open("./{}".format(filename), "a")
+            for i in range(len(tgtname)):
                 f.write("print(\"Measurement of {0} => {{0}}\".format({0}))\n"\
                         "\n\n\n".format(tgtname[i]))
 
-        f.close()
-        #return
+            f.close()
+            writeflag=1
+            #return
 
     ###############################################################################
 
@@ -83,6 +87,7 @@ def measure(self, qubit, cbit):
     if isinstance(qubit, QuantumRegister) and \
        isinstance(cbit, ClassicalRegister) and len(qubit) == len(cbit):
         instructions = InstructionSet()
+        writeflag=0
         for i in range(qubit.size):
             instructions.add(self.measure((qubit, i), (cbit, i)))
         return instructions

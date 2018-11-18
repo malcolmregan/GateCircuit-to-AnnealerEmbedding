@@ -28,6 +28,7 @@ tmpc = ClassicalRegister(1)
 circuit = QuantumCircuit(qin1,qin2,qz,tmp,cin1,cin2,cz,tmpc)
 
 #for all possible combinations of the inputs, just hadamard them:
+# circuit.x(qin1[1]) # problem caused here -> qin1[1] gets named q0_0 instead of q0_1
 circuit.x(qin1)
 circuit.x(qin2)
 
