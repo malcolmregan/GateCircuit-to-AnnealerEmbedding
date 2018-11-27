@@ -1,23 +1,45 @@
+# -*- coding: utf-8 -*-
 
+# Copyright 2017, IBM.
+#
+# This source code is licensed under the Apache License, Version 2.0 found in
+# the LICENSE.txt file in the root directory of this source tree.
 
+"""
+Instruction collection.
+"""
 from ._instruction import Instruction
 from ._qiskiterror import QISKitError
 
 
 class InstructionSet(object):
-    pass
+    """Instruction collection."""
 
     def __init__(self):
-        pass
+        """New collection of instructions."""
+        self.instructions = []
 
     def add(self, gate):
-        pass
+        """Add instruction to set."""
+        if not isinstance(gate, Instruction):
+            raise QISKitError("attempt to add non-Instruction" +
+                              " to InstructionSet")
+        self.instructions.append(gate)
 
     def inverse(self):
-        pass
+        """Invert all instructions."""
+        for index, instruction in enumerate(self.instructions):
+            self.instructions[index] = instruction.inverse()
+        return self
 
     def q_if(self, *qregs):
-        pass
+        """Add controls to all instructions."""
+        for gate in self.instructions:
+            gate.q_if(*qregs)
+        return self
 
     def c_if(self, classical, val):
-        pass
+        """Add classical control register to all instructions."""
+        for gate in self.instructions:
+            gate.c_if(classical, val)
+        return self

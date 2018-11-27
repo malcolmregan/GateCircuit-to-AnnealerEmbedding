@@ -5,9 +5,9 @@
 #  Malcolm Regan - mjregan2
 
 
-from qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
-from qiskit import  execute #, available_backends
-from qiskit import Aer
+from converter.qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
+from converter.qiskit import  execute #, available_backends
+#from qiskit import Aer
 
 #2 inputs with  n-bits each : to be compared
 n = 2
@@ -69,13 +69,3 @@ circuit.measure(qin2,cin2)
 circuit.measure(qz,cz)
 
 print(circuit.qasm())
-
-# Execute
-print("Running on simulator...")
-#backend = 'local_qasm_simulator'
-backend = Aer.get_backend('qasm_simulator')
-job = execute(circuit, backend, shots=1000)
-result = job.result()
-print(result.get_counts(circuit))
-
-

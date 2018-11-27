@@ -1,16 +1,28 @@
+# -*- coding: utf-8 -*-
 
+# Copyright 2017, IBM.
+#
+# This source code is licensed under the Apache License, Version 2.0 found in
+# the LICENSE.txt file in the root directory of this source tree.
 
+"""
+Exception for errors raised by the QISKit SDK.
+"""
 
 
 class QISKitError(Exception):
-    pass
+    """Base class for errors raised by the QISKit SDK."""
 
     def __init__(self, *message):
-        pass
+        """Set the error message."""
+        super().__init__(' '.join(message))
+        self.message = ' '.join(message)
 
     def __str__(self):
-        pass
+        """Return the message."""
+        return repr(self.message)
 
 
 class QISKitIndexError(QISKitError, IndexError):
+    """Raised when a sequence subscript is out of range."""
     pass

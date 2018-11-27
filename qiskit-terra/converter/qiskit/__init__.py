@@ -24,8 +24,8 @@ from ._pubsub import Publisher, Subscriber
 import converter.qiskit .extensions.standard
 import converter.qiskit .extensions.quantum_initializer
 
-from converter.qiskit.backends.ibmq import IBMQ
-from converter.qiskit.backends.aer import Aer  # pylint: disable=invalid-name
+#from converter.qiskit.backends.ibmq import IBMQ
+#from converter.qiskit.backends.aer import Aer  # pylint: disable=invalid-name
 
 # to be placed *before* the wrapper imports or any non-import code.
 
