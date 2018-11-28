@@ -36,18 +36,9 @@ def swap(self, ctl, tgt):
     """Apply SWAP from ctl to tgt."""
     if isinstance(ctl, QuantumRegister) and \
             isinstance(tgt, QuantumRegister) and len(ctl) == len(tgt):
-        instructions = InstructionSet()
         for j in range(ctl.size):
-            instructions.add(self.swap((ctl, j), (tgt, j)))
-        return instructions
-
-    self._check_qubit(ctl)
-    self._check_qubit(tgt)
-    self._check_dups([ctl, tgt])
-    return self._attach(SwapGate(ctl, tgt, self))
-
-
-
+            self.swap((ctl, j), (tgt, j))
+        return None
 
     ############################## Write Dwave SWAP ##################################
     elif isinstance(ctl, QuantumRegister) and \
@@ -65,11 +56,8 @@ def swap(self, ctl, tgt):
     with open(filename, "a") as f:
 
         f.write("####################################################\n"\
-                "## SWAP - control: {1} target: {2} ##\n"\
+                "## SWAP - control: {0} target: {1} ##\n"\
                 "####################################################\n\n"\
-                #"if \'{0}\' not in globals():\n"\
-                #"    {0}=1\n"\
-                "     c=1\n"\
                 "if \'{0}\' not in globals():\n"\
                 "    {0}=0\n"\
                 "if \'{1}\' not in globals():\n"\
@@ -80,7 +68,7 @@ def swap(self, ctl, tgt):
                 "sampler = dimod.ExactSolver()\n"\
                 "response = sampler.sample(bqm)\n\n"\
                 "for sample, energy in response.data(['sample', 'energy']):\n"\
-                "    if sample[\'c\']==c and sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and int(energy)==0:\n"\
+                "    if sample[\'c\']==1 and sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and int(energy)==0:\n"\
                 "        c=sample[\'c\']\n"\
                 "        {0}=sample[\'out{0}\']\n"\
                 "        {1}=sample[\'out{1}\']\n"\
@@ -93,7 +81,7 @@ def swap(self, ctl, tgt):
                 "print(\"    in:  {0}={{0}}, {1}={{1}}\".format(tgt1_before,tgt2_before))\n"\
                 "print(\"    out: {0}={{0}}, {1}={{1}}\".format({0},{1}))\n"\
                 "print(\"######################################################\")\n"\
-                "print(\"\\n\\n\\n\")\n\n\n".format(ctl1name, tgt1name))
+                "print(\"\\n\\n\\n\")\n\n\n".format(ctlname, tgtname))
 
     ##################################################################################
     return None

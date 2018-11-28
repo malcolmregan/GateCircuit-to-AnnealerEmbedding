@@ -19,13 +19,13 @@ cin2 = ClassicalRegister(n)
 #output bit: function XORed onto this
 qz = QuantumRegister(1)
 cz = ClassicalRegister(1)
-
+qthing_to_be_swapped_into = QuantumRegister(1)
 #output bit: function XORed onto this
 tmp = QuantumRegister(1)
 tmpc = ClassicalRegister(1)
 
 #beginning of the circuit
-circuit = QuantumCircuit(qin1,qin2,qz,tmp,cin1,cin2,cz,tmpc)
+circuit = QuantumCircuit(qin1,qin2,qz,tmp,cin1,cin2,cz,tmpc, qthing_to_be_swapped_into)
 
 #for all possible combinations of the inputs, just hadamard them:
 circuit.x(qin1[1]) # problem caused here -> qin1[1] gets named q0_0 instead of q0_1
@@ -60,7 +60,7 @@ def equal_nway(qx, qy, temp, qz, n, qc):
   return qc
 
 equal_nway(qin1, qin2, tmp, qz, n, circuit)
-
+circuit.swap(qz, qthing_to_be_swapped_into)
 #reversing tmp
 circuit.x(tmp)
 
@@ -68,5 +68,6 @@ circuit.measure(qin1,cin1)
 circuit.measure(qin2,cin2)
 
 circuit.measure(qz,cz)
+circuit.measure(qthing_to_be_swapped_into, cz)
 
 print(circuit.qasm())
