@@ -44,46 +44,31 @@ def x(self, q):
     ############################## Write Dwave NOT ##################################
     import os
     import sys
-    import __main__
-        
+    import __main__ as main
 
     tgtname = q[0].name + "_" + str(q[1])
 
-    filename = __main__.__file__.split(".")[0]
-    filename = filename + "_dwave.py"
-    if not os.path.exists("./{}".format(filename)):
-        f = open("./{}".format(filename), "a")
-        f.write("#from dwave.system.samplers import DWaveSampler\n"\
-                "#from exact_solver import ExactSolver\n"\
-                "#from dwave.cloud.exceptions import SolverOfflineError\n"\
-                "#import minorminer\n"\
-                "import dimod\n\n")
-    else:
-        f = open("./{}".format(filename), "a")
-         
-    f.write("#######################\n"\
-            "## NOT - target: {0} ##\n"\
-            "#######################\n\n"\
-            "if \'{0}\' not in globals():\n"\
-            "    {0}=0\n\n"\
-            "bqm = dimod.BinaryQuadraticModel({{\'{0}\' : -4, \'out{0}\' : -4}}, {{(\'{0}\', \'out{0}\') : 8}}, 4, dimod.BINARY)\n"\
-            "sampler = dimod.ExactSolver()\n"\
-            "response = sampler.sample(bqm)\n\n"\
-            "for sample, energy in response.data(['sample', 'energy']):\n"\
-            "    if sample[\'{0}\']=={0} and int(energy)==0:\n"\
-            "        {0}=sample[\'out{0}\']\n"\
-            "        tgt_before = sample[\'{0}\']\n"
-            "        #print(sample, energy)\n"\
-            "        break\n\n"\
-            "print(\"######################################################\")\n"\
-            "print(\"NOT operation on {0}:\")\n"\
-            "print(\"    in:  {0}={{0}}\".format(tgt_before))\n"\
-            "print(\"    out: {0}={{0}}\".format({0}))\n"\
-            "print(\"######################################################\")\n"\
-            "print(\"\\n\\n\\n\")\n\n\n".format(tgtname))
-        
-    f.close()
-
+    filename = main.__file__.split(".")[0] + "_dwave.py"
+    with open("./{}".format(filename), "a") as f:
+        f.write("#" * 80 + "\n")
+        f.write("## NOT - target: {0} ##\n".format(tgtname))
+        f.write("#" * 80 + "\n")
+        f.write("if \'{0}\' not in globals():\n".format(tgtname))
+        f.write("    {0}=0\n\n".format(tgtname))
+        f.write("bqm = dimod.BinaryQuadraticModel({{\'{0}\' : -4, \'out{0}\' : -4}}, {{(\'{0}\', \'out{0}\') : 8}}, 4, dimod.BINARY)\n".format(tgtname))
+        f.write("sampler = dimod.ExactSolver()\n")
+        f.write("response = sampler.sample(bqm)\n\n")
+        f.write("for sample, energy in response.data(['sample', 'energy']):\n")
+        f.write("    if sample[\'{0}\']=={0} and int(energy)==0:\n".format(tgtname))
+        f.write("        {0}_before = sample[\'{0}\']\n".format(tgtname))
+        f.write("        {0}=sample[\'out{0}\']\n".format(tgtname))
+        f.write("        break\n\n")
+        f.write("print('#' * 80)\n")
+        f.write("print(\"NOT operation on {0}:\")\n".format(tgtname))
+        f.write("print(\"    in:  {0}={{0}}\".format({0}_before))\n".format(tgtname))
+        f.write("print(\"    out: {0}={{0}}\".format({0}))\n".format(tgtname))
+        f.write("print('#' * 80)\n")
+        f.write("print()\n")
     ##################################################################################
     return None
 
