@@ -14,7 +14,6 @@ from converter.qiskit._instructionset import InstructionSet
 from converter.qiskit._quantumregister import QuantumRegister
 from converter.qiskit.extensions.standard import header  # pylint: disable=unused-import
 
-
 class ToffoliGate(Gate):
     """Toffoli gate."""
 
