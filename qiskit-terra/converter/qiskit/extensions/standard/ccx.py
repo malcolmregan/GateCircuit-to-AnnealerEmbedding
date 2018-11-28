@@ -51,7 +51,7 @@ def ccx(self, ctl1, ctl2, tgt):
     tgtname = tgt[0].name + '_' + str(tgt[1])
 
     filename = main.__file__.split(".")[0] + "_dwave.py"
-    with open("./{}".format(filename), "a") as f:
+    with open(filename, "a") as f:
         f.write("#" * 80 + "\n")
         f.write("## CCNOT - control1: {0} control2: {1} target: {2} ##\n".format(ctl1name,ctl2name,tgtname))
         f.write("#" * 80 + "\n")
