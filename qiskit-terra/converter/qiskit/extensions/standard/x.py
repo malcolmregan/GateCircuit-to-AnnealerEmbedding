@@ -44,12 +44,11 @@ def x(self, q):
         import os
         import sys
         import __main__
-
+        
         if sys.argv[-1] == 'dwave':
             tgtname = list()
             if isinstance(q,tuple):
-                for i in range(q[0].size):
-                    tgtname.extend([q[0].name+'_{}'.format(i)])
+                tgtname.extend([q[0].name+'_{}'.format(q[1])])
             else:
                 for i in range(q.size):
                     tgtname.extend([q.name+'_{}'.format(i)])

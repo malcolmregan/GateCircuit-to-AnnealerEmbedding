@@ -50,8 +50,7 @@ def cx(self, ctl, tgt):
 
             ctlname = list()
             if isinstance(ctl,tuple):
-                for i in range(ctl[0].size):
-                    ctlname.extend([ctl[0].name+'_{}'.format(i)])
+                ctlname.extend([ctl[0].name+'_{}'.format(ctl[1])])
             else:
                 for i in range(ctl.size):
                     ctlname.extend([ctl.name+'_{}'.format(i)])
@@ -59,7 +58,7 @@ def cx(self, ctl, tgt):
             tgtname = list()
             if isinstance(tgt,tuple):
                 for i in range(tgt[0].size):
-                    tgtname.extend([tgt[0].name+'_{}'.format(i)])
+                    tgtname.extend([tgt[0].name+'_{}'.format(tgt[1])])
             else:
                 for i in range(tgt.size):
                     tgtname.extend([tgt.name+'_{}'.format(i)])

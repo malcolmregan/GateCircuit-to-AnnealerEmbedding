@@ -50,7 +50,7 @@ def ccx(self, ctl1, ctl2, tgt):
             ctl1name = list()
             if isinstance(ctl1,tuple):
                 for i in range(ctl1[0].size):
-                    ctl1name.extend([ctl1[0].name+'_{}'.format(i)])
+                    ctl1name.extend([ctl1[0].name+'_{}'.format(ctl1[1])])
             else:
                 for i in range(ctl1.size):
                     ctl1name.extend([ctl1.name+'_{}'.format(i)])
@@ -58,7 +58,7 @@ def ccx(self, ctl1, ctl2, tgt):
             ctl2name = list()
             if isinstance(ctl2,tuple):
                 for i in range(ctl2[0].size):
-                    ctl2name.extend([ctl2[0].name+'_{}'.format(i)])
+                    ctl2name.extend([ctl2[0].name+'_{}'.format(ctl2[1])])
             else:
                 for i in range(ctl2.size):
                     ctl2name.extend([ctl2.name+'_{}'.format(i)])
@@ -66,7 +66,7 @@ def ccx(self, ctl1, ctl2, tgt):
             tgtname = list()
             if isinstance(tgt,tuple):
                 for i in range(tgt[0].size):
-                    tgtname.extend([tgt[0].name+'_{}'.format(i)])
+                    tgtname.extend([tgt[0].name+'_{}'.format(tgt[1])])
             else:
                 for i in range(tgt.size):
                     tgtname.extend([tgt.name+'_{}'.format(i)])
