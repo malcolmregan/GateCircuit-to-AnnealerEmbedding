@@ -4,6 +4,7 @@
 
 import os
 import pkgutil
+import __main__ as main
 
 from . import _util
 
@@ -36,3 +37,12 @@ from .tools._compiler import (compile, execute)
 from . import wrapper
 from . import tools
 
+
+filename = main.__file__.split('.')[0] + '_dwave.py'
+with open(filename, "w") as f:
+    f.write("#!/usr/bin/python3\n"\
+            "from dwave.system.samplers import DWaveSampler\n"\
+            "from exact_solver import ExactSolver\n"\
+            "from dwave.cloud.exceptions import SolverOfflineError\n"\
+            "import minorminer\n"\
+            "import dimod\n\n")
