@@ -37,44 +37,6 @@ class Measure(Instruction):
 
 
 def measure(self, qubit, cbit):
-
-    ############################## Dwave 'Measure' ##################################
-    if 'writeflag' not in globals():
-        global writeflag
-        writeflag = 1
-    if writeflag==0:
-
-        import os
-        import sys
-        import __main__
-
-        if sys.argv[-1] == 'dwave':
-            tgtname = list()
-            if isinstance(qubit,tuple):
-                for i in range(qubit[0].size):
-                    tgtname.extend([qubit[0].name+'_{}'.format(i)])
-            else:
-                for i in range(qubit.size):
-                    tgtname.extend([qubit.name+'_{}'.format(i)])
-
-            filename = __main__.__file__.split(".")[0]
-            filename = filename + "_dwave.py"
-        
-            #f = open("./{}".format(filename), "r")
-            #linelist = f.readlines()
-            #f.close()
-    
-            f = open("./{}".format(filename), "a")
-            for i in range(len(tgtname)):
-                f.write("print(\"Measurement of {0} => {{0}}\".format({0}))\n"\
-                        "\n\n\n".format(tgtname[i]))
-
-            f.close()
-            writeflag=1
-            #return
-
-    ###############################################################################
-
     """Measure quantum bit into classical bit (tuples).
 
     Returns:
@@ -86,15 +48,22 @@ def measure(self, qubit, cbit):
     """
     if isinstance(qubit, QuantumRegister) and \
        isinstance(cbit, ClassicalRegister) and len(qubit) == len(cbit):
-        instructions = InstructionSet()
-        writeflag=0
         for i in range(qubit.size):
-            instructions.add(self.measure((qubit, i), (cbit, i)))
-        return instructions
+            self.measure((qubit, i), (cbit, i))
+        return None
 
-    self._check_qubit(qubit)
-    self._check_creg(cbit[0])
-    cbit[0].check_range(cbit[1])
+    ############################## Dwave 'Measure' ##################################
+    import os
+    import sys
+    import __main__ as main
+
+    tgtname = qubit[0].name + '_' + str(qubit[1])
+    filename = main.__file__.split(".")[0] + "_dwave.py"
+
+    with open(filename, "a") as f:
+        f.write("print(\"Measurement of {0} => {{0}}\".format({0}))\n".format(tgtname))
+    ###############################################################################
+
     return self._attach(Measure(qubit, cbit, self))
 
 
