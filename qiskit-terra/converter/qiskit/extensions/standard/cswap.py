@@ -41,7 +41,7 @@ def cswap(self, ctl1, tgt1, tgt2):
     ############################## Write Dwave CSWAP ##################################
     elif isinstance(ctl1, QuantumRegister) and \
        isinstance(tgt1, QuantumRegister) and \
-       isinstance(tgt2, QuantumRegister) and:
+       isinstance(tgt2, QuantumRegister):
        raise("All registers must be of the same size")
 
     """Apply CSWAP from ctl1 to tgt1 and tgt2."""
@@ -76,9 +76,8 @@ def cswap(self, ctl1, tgt1, tgt2):
             "if \'{2}\' not in globals():\n"\
             "    {2}=0\n\n"\
             "qubit_weights = {\'{1}\' : 1, \'{2}\' : 1, \'out{1}\' : 1, \'out{2}\' : 1, \'a\' : 6, \'b\' 6}"\
-            "binding_weights = {('{0}', 'out{1}') : 2, ('{0}', 'out{2}') : 2, ('{0}', 'a') : -4, ('{0}', 'b') : -4, ('{1}', 'out{1}') : -2, ('{1}', 'a') : 2, ('{1}', 'b') : -2, ('{2}', 'out{2}') : -2, ('{2}', 'a') : -2, ('{2}', 'b') : 2, ('out{1}', 'a') : -4, ('out{2}', 'b') : -4}"\
+            "binding_weights = {(\'{0}\', \'out{1}\') : 2, (\'{0}\', \'out{2}\') : 2, (\'{0}\', \'a\') : -4, (\'{0}\', \'b\') : -4, (\'{1}\', \'out{1}\') : -2, (\'{1}\', \'a\') : 2, (\'{1}\', \'b\') : -2, (\'{2}\', \'out{2}\') : -2, (\'{2}\', \'a\') : -2, (\'{2}\', \'b\') : 2, (\'out{1}\', \'a\') : -4, (\'out{2}\', \'b\') : -4}"\
             "bqm = dimod.BinaryQuadraticModel(qubit_weights, binding_weights, 0, dimod.BINARY) "\
-            "bqm = dimod.BinaryQuadraticModel({{'{0}\' : 1, \'{1}\' : 1, \'out{1}\' : 1, \'anc\' : 4}}, {{(\'{0}\', \'{1}\') : 2, (\'{0}\', \'out{1}\') : -2, (\'{1}\', \'out{1}\') : "\
             "sampler = dimod.ExactSolver()\n"\
             "response = sampler.sample(bqm)\n\n"\
             "for sample, energy in response.data(['sample', 'energy']):\n"\
@@ -86,7 +85,7 @@ def cswap(self, ctl1, tgt1, tgt2):
             "        {0}=sample[\'{0}\']\n"\
             "        {1}=sample[\'{1}\']\n"\
             "        {2}=sample[\'out{2}\']\n"\
-            "        tgt_before = sample[\'{2}\']\n"
+            "        tgt_before = sample[\'{2}\']\n"\
             "        #print(sample, energy)\n"\
             "        break\n\n"\
             "print(\"######################################################\")\n"\
