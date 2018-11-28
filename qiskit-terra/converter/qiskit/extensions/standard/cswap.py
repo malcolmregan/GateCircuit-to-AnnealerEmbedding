@@ -75,9 +75,9 @@ def cswap(self, ctl1, tgt1, tgt2):
             "    {1}=0\n"\
             "if \'{2}\' not in globals():\n"\
             "    {2}=0\n\n"\
-            "qubit_weights = {\'{1}\' : 1, \'{2}\' : 1, \'out{1}\' : 1, \'out{2}\' : 1, \'a\' : 6, \'b\' 6}"\
-            "binding_weights = {(\'{0}\', \'out{1}\') : 2, (\'{0}\', \'out{2}\') : 2, (\'{0}\', \'a\') : -4, (\'{0}\', \'b\') : -4, (\'{1}\', \'out{1}\') : -2, (\'{1}\', \'a\') : 2, (\'{1}\', \'b\') : -2, (\'{2}\', \'out{2}\') : -2, (\'{2}\', \'a\') : -2, (\'{2}\', \'b\') : 2, (\'out{1}\', \'a\') : -4, (\'out{2}\', \'b\') : -4}"\
-            "bqm = dimod.BinaryQuadraticModel(qubit_weights, binding_weights, 0, dimod.BINARY) "\
+            "qubit_weights = {{\'{1}\' : 1, \'{2}\' : 1, \'out{1}\' : 1, \'out{2}\' : 1, \'a\' : 6, \'b\' 6}}"\
+            "binding_weights = {{(\'{0}\', \'out{1}\') : 2, (\'{0}\', \'out{2}\') : 2, (\'{0}\', \'a\') : -4, (\'{0}\', \'b\') : -4, (\'{1}\', \'out{1}\') : -2, (\'{1}\', \'a\') : 2, (\'{1}\', \'b\') : -2, (\'{2}\', \'out{2}\') : -2, (\'{2}\', \'a\') : -2, (\'{2}\', \'b\') : 2, (\'out{1}\', \'a\') : -4, (\'out{2}\', \'b\') : -4}}\n"\
+            "bqm = dimod.BinaryQuadraticModel(qubit_weights, binding_weights, 0, dimod.BINARY)\n"\
             "sampler = dimod.ExactSolver()\n"\
             "response = sampler.sample(bqm)\n\n"\
             "for sample, energy in response.data(['sample', 'energy']):\n"\
