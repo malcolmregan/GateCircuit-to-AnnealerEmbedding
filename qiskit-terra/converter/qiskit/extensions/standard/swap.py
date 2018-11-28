@@ -54,34 +54,31 @@ def swap(self, ctl, tgt):
 
     filename = main.__file__.split(".")[0] + "_dwave.py"
     with open(filename, "a") as f:
-
-        f.write("####################################################\n"\
-                "## SWAP - control: {0} target: {1} ##\n"\
-                "####################################################\n\n"\
-                "if \'{0}\' not in globals():\n"\
-                "    {0}=0\n"\
-                "if \'{1}\' not in globals():\n"\
-                "    {1}=0\n\n"\
-                "qubit_weights = {{\'{0}\' : 1, \'{1}\' : 1, \'out{0}\' : 1, \'out{1}\' : 1, \'a\' : 6, \'b\' : 6}}\n"\
-                "binding_weights = {{(\'c\', \'out{0}\') : 2,(\'c\',\'out{1}\') : 2, (\'c\', \'a\') : -4, (\'c\', \'b\') : -4, (\'{0}\', \'out{0}\') : -2, (\'{0}\', \'a\') : 2, (\'{0}\', \'b\') : -2, (\'{1}\', \'out{1}\') : -2, (\'{1}\', \'a\') : -2, (\'{1}\', \'b\') : 2, (\'out{0}\', \'a\') : -4, (\'out{1}\', \'b\') : -4}}\n"\
-                "bqm = dimod.BinaryQuadraticModel(qubit_weights, binding_weights, 0, dimod.BINARY)\n"\
-                "sampler = dimod.ExactSolver()\n"\
-                "response = sampler.sample(bqm)\n\n"\
-                "for sample, energy in response.data(['sample', 'energy']):\n"\
-                "    if sample[\'c\']==1 and sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and int(energy)==0:\n"\
-                "        c=sample[\'c\']\n"\
-                "        {0}=sample[\'out{0}\']\n"\
-                "        {1}=sample[\'out{1}\']\n"\
-                "        tgt1_before = sample[\'{0}\']\n"\
-                "        tgt2_before = sample[\'{1}\']\n"\
-                "        #print(sample, energy)\n"\
-                "        break\n\n"\
-                "print(\"######################################################\")\n"\
-                "print(\"SWAP operation on {0} (control), {1} (target):\")\n"\
-                "print(\"    in:  {0}={{0}}, {1}={{1}}\".format(tgt1_before,tgt2_before))\n"\
-                "print(\"    out: {0}={{0}}, {1}={{1}}\".format({0},{1}))\n"\
-                "print(\"######################################################\")\n"\
-                "print(\"\\n\\n\\n\")\n\n\n".format(ctlname, tgtname))
+        f.write("#" * 80 + "\n")
+        f.write("## SWAP - control: {0} target: {1} ##\n".format(ctlname, tgtname))
+        f.write("#" * 80 + "\n")
+        f.write("if \'{0}\' not in globals():\n".format(ctlname, tgtname))
+        f.write("    {0}=0\n".format(ctlname, tgtname))
+        f.write("if \'{1}\' not in globals():\n".format(ctlname, tgtname))
+        f.write("    {1}=0\n\n".format(ctlname, tgtname))
+        f.write("qubit_weights = {{\'{0}\' : 1, \'{1}\' : 1, \'out{0}\' : 1, \'out{1}\' : 1, \'a\' : 6, \'b\' : 6}}\n".format(ctlname, tgtname))
+        f.write("binding_weights = {{(\'c\', \'out{0}\') : 2,(\'c\',\'out{1}\') : 2, (\'c\', \'a\') : -4, (\'c\', \'b\') : -4, (\'{0}\', \'out{0}\') : -2, (\'{0}\', \'a\') : 2, (\'{0}\', \'b\') : -2, (\'{1}\', \'out{1}\') : -2, (\'{1}\', \'a\') : -2, (\'{1}\', \'b\') : 2, (\'out{0}\', \'a\') : -4, (\'out{1}\', \'b\') : -4}}\n".format(ctlname, tgtname))
+        f.write("bqm = dimod.BinaryQuadraticModel(qubit_weights, binding_weights, 0, dimod.BINARY)\n")
+        f.write("sampler = dimod.ExactSolver()\n")
+        f.write("response = sampler.sample(bqm)\n\n")
+        f.write("for sample, energy in response.data(['sample', 'energy']):\n")
+        f.write("    if sample[\'c\']==1 and sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and int(energy)==0:\n".format(ctlname, tgtname))
+        f.write("        {0}=sample[\'out{0}\']\n".format(ctlname, tgtname))
+        f.write("        {1}=sample[\'out{1}\']\n".format(ctlname, tgtname))
+        f.write("        tgt1_before = sample[\'{0}\']\n".format(ctlname, tgtname))
+        f.write("        tgt2_before = sample[\'{1}\']\n".format(ctlname, tgtname))
+        f.write("        break\n\n")
+        f.write("print('#' * 80)\n")
+        f.write("print(\"SWAP operation on {0} (control), {1} (target):\")\n".format(ctlname, tgtname))
+        f.write("print(\"    in:  {0}={{0}}, {1}={{1}}\".format(tgt1_before, tgt2_before))\n".format(ctlname, tgtname))
+        f.write("print(\"    out: {0}={{0}}, {1}={{1}}\".format({0}, {1}))\n".format(ctlname, tgtname))
+        f.write("print('#' * 80)\n")
+        f.write("print()\n")
 
     ##################################################################################
     return None
