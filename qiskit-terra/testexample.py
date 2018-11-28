@@ -69,5 +69,3 @@ circuit.measure(qin2,cin2)
 
 circuit.measure(qz,cz)
 circuit.measure(qthing_to_be_swapped_into, cz)
-
-print(circuit.qasm())
