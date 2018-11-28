@@ -28,7 +28,7 @@ class FredkinGate(Gate):
 
     def reapply(self, circ):
         """Reapply this gate to corresponding qubits in circ."""
-        self._modifiers(circ.ccx(self.qargs[0], self.qargs[1], self.qargs[2]))
+        self._modifiers(circ.cswap(self.qargs[0], self.qargs[1], self.qargs[2]))
 
 def cswap(self, ctl1, tgt1, tgt2):
     if isinstance(ctl1, QuantumRegister) and \
@@ -75,7 +75,7 @@ def cswap(self, ctl1, tgt1, tgt2):
             "    {1}=0\n"\
             "if \'{2}\' not in globals():\n"\
             "    {2}=0\n\n"\
-            "qubit_weights = {{\'{1}\' : 1, \'{2}\' : 1, \'out{1}\' : 1, \'out{2}\' : 1, \'a\' : 6, \'b\' 6}}"\
+            "qubit_weights = {{\'{1}\' : 1, \'{2}\' : 1, \'out{1}\' : 1, \'out{2}\' : 1, \'a\' : 6, \'b\' : 6}}\n"\
             "binding_weights = {{(\'{0}\', \'out{1}\') : 2, (\'{0}\', \'out{2}\') : 2, (\'{0}\', \'a\') : -4, (\'{0}\', \'b\') : -4, (\'{1}\', \'out{1}\') : -2, (\'{1}\', \'a\') : 2, (\'{1}\', \'b\') : -2, (\'{2}\', \'out{2}\') : -2, (\'{2}\', \'a\') : -2, (\'{2}\', \'b\') : 2, (\'out{1}\', \'a\') : -4, (\'out{2}\', \'b\') : -4}}\n"\
             "bqm = dimod.BinaryQuadraticModel(qubit_weights, binding_weights, 0, dimod.BINARY)\n"\
             "sampler = dimod.ExactSolver()\n"\
@@ -83,14 +83,15 @@ def cswap(self, ctl1, tgt1, tgt2):
             "for sample, energy in response.data(['sample', 'energy']):\n"\
             "    if sample[\'{0}\']=={0} and sample[\'{1}\']=={1} and sample[\'{2}\']=={2} and int(energy)==0:\n"\
             "        {0}=sample[\'{0}\']\n"\
-            "        {1}=sample[\'{1}\']\n"\
+            "        {1}=sample[\'out{1}\']\n"\
             "        {2}=sample[\'out{2}\']\n"\
-            "        tgt_before = sample[\'{2}\']\n"\
+            "        tgt1_before = sample[\'{1}\']\n"\
+            "        tgt2_before = sample[\'{2}\']\n"\
             "        #print(sample, energy)\n"\
             "        break\n\n"\
             "print(\"######################################################\")\n"\
-            "print(\"CCNOT operation on {0} (control1), {1} (control2) and {2} (target):\")\n"\
-            "print(\"    in:  {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},{1},tgt_before))\n"\
+            "print(\"CSWAP operation on {0} (control1), {1} (target1) and {2} (target2):\")\n"\
+            "print(\"    in:  {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},tgt1_before,tgt2_before))\n"\
             "print(\"    out: {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0},{1},{2}))\n"\
             "print(\"######################################################\")\n"\
             "print(\"\\n\\n\\n\")\n\n\n".format(ctl1name, tgt1name, tgt2name))
