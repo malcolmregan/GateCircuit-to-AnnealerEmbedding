@@ -79,7 +79,7 @@ def cswap(self, ctl1, tgt1, tgt2):
         f.write("        tgt2_before = sample[\'{2}\']\n".format(ctl1name, tgt1name, tgt2name))
         f.write("        break\n\n")
         f.write("print('#' * 80)\n")
-        f.write("print(\"CSWAP operation on {0} (control1), {1} (target1) and {2} (target2):\")\n".format(ctl1name, tgt1name, tgt2name))
+        f.write("print(\"CSWAP operation on {0} (control), {1} (target1) and {2} (target2):\")\n".format(ctl1name, tgt1name, tgt2name))
         f.write("print(\"    in:  {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0}, tgt1_before, tgt2_before))\n".format(ctl1name, tgt1name, tgt2name))
         f.write("print(\"    out: {0}={{0}}, {1}={{1}}, {2}={{2}}\".format({0}, {1}, {2}))\n".format(ctl1name, tgt1name, tgt2name))
         f.write("print('#' * 80)\n")
