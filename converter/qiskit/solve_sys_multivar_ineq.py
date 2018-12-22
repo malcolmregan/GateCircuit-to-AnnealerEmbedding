@@ -1,7 +1,7 @@
 import numpy as np
 from random  import randint, uniform, shuffle
 
-boundmax = 1000
+boundmax = 10000
 num = '0123456789'
 alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 oper = '+-*/'
@@ -220,7 +220,7 @@ def update_bounds(syms):
                     if relation == '>':
                         sym.updatebounds(inter[0], sym.bounds[1])
                 
-                #print(sym.name, sym.bounds, constraint['relation'], constraint['expression'], RHSbound)
+                print(sym.name, sym.bounds, constraint['relation'], constraint['expression'], RHSbound)
     return
 
 def tighten_bounds(syms):
@@ -252,7 +252,7 @@ def find_best_sym(syms):
                     if Rsym.name in expression:
                         if Rsym.isknown == False:
                             unknowncount = unknowncount + 1
-                print(sym.name, expression, unknowncount)
+                #print(sym.name, constraint['relation'], expression, unknowncount)
                 if unknowncount <= bestunknowncount and unknowncount > 0:
                     if sym.bounddist <= bestbounddist:
                         bestsym = sym
@@ -268,7 +268,7 @@ def find_best_sym(syms):
 
 def pick_value(syms):
     sym = find_best_sym(syms)
-    val = round(uniform(sym.bounds[0]+0.1,sym.bounds[1]-0.1))
+    val = round(uniform(sym.bounds[0]+0.1,sym.bounds[1]-0.1),1)
  
     sym.updatebounds(val,val)
     print("value picked for {}: {}".format(sym.name,sym.value))
@@ -355,7 +355,7 @@ def evaluate_sys(sys_ineq, syms):
                     Rval = Rval + sym.value
 
         if relation == '=':
-            iscorrect.append({'inequality': ineq, 'valid': Lval == Rval})
+            iscorrect.append({'inequality': ineq, 'valid': round(float(Lval),1) == round(float(Rval),1)})
         if relation == '>':
             iscorrect.append({'inequality': ineq, 'valid': Lval > Rval})
         if relation == '<':
@@ -369,7 +369,7 @@ def evaluate_constraints(syms):
 
 
 def main():
-    ''' 
+    '''
     # AND encoding (3 bit)
     system_inequalities = ['0 = G', 
                            'w2 > G', 
