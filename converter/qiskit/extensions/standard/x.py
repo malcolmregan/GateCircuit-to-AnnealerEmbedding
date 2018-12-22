@@ -15,15 +15,16 @@ from converter.qiskit import InstructionSet
 from converter.qiskit import QuantumCircuit
 from converter.qiskit import QuantumRegister
 from converter.qiskit.extensions.standard import header  # pylint: disable=unused-import
-
+import numpy as np
 
 class XGate(Gate):
     """Pauli X (bit-flip) gate."""
 
     def __init__(self, qubit, circ=None):
         """Create new X gate."""
+        print(circ)
         super().__init__("x", [], [qubit], circ)
-
+        
     def inverse(self):
         """Invert this gate."""
         return self  # self-inverse
@@ -40,7 +41,32 @@ def x(self, q):
         for j in range(q.size):
             self.x((q, j))
         return None
+    
+    tgtname = q[0].name + "_" + str(q[1]) + "_out"
+    tgtcolumn = self.truthtable.inputnames.index(tgtname)
 
+    othercolumns = list()
+    for i in range(self.truthtable.numinputs):
+        if not i == tgtcolumn:
+            othercolumns.append(i)
+
+    outputidxs = list()
+    for i in range(len(self.truthtable.outputs)):
+        if self.truthtable.outputs[i] == 1:
+            outputidxs.append(i)
+
+    self.truthtable.outputs[outputidxs] = 0
+    for row in outputidxs:
+        staysame = self.truthtable.graycode[row,othercolumns]
+        for k in range(len(self.truthtable.outputs)):
+            if np.array_equal(staysame, self.truthtable.graycode[k,othercolumns]) and not k == row:
+                self.truthtable.outputs[k] = 1
+
+    for i in range(len(self.truthtable.outputs)):
+        print(self.truthtable.graycode[i], self.truthtable.outputs[i])
+    print("\n") 
+
+    '''
     ############################## Write Dwave NOT ##################################
     import os
     import sys
@@ -71,5 +97,6 @@ def x(self, q):
         f.write("print()\n")
     ##################################################################################
     return None
+    '''
 
 QuantumCircuit.x = x

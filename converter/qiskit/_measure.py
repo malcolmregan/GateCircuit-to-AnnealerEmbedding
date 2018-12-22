@@ -13,7 +13,8 @@ from ._instructionset import InstructionSet
 from ._quantumcircuit import QuantumCircuit
 from ._quantumregister import QuantumRegister
 from ._classicalregister import ClassicalRegister
-
+from converter.qiskit.get_annealer_encoding import *
+from converter.qiskit.solve_sys_multivar_ineq import * 
 
 class Measure(Instruction):
     """Quantum measurement in the computational basis."""
@@ -51,7 +52,7 @@ def measure(self, qubit, cbit):
         for i in range(qubit.size):
             self.measure((qubit, i), (cbit, i))
         return None
-
+    '''
     ############################## Dwave 'Measure' ##################################
     import os
     import sys
@@ -63,8 +64,50 @@ def measure(self, qubit, cbit):
     with open(filename, "a") as f:
         f.write("print(\"Measurement of {0} => {{0}}\".format({0}))\n".format(tgtname))
     ###############################################################################
-
+    
     return self._attach(Measure(qubit, cbit, self))
+    '''
+    
+    # Right now just run the solver without regard for the register arguments to the Qiskit measure function
+    # Change this later if you think of a way. 
+    # Also, still need to implement code that writes the Dwave script for the encoding solved for here.
 
+    trutab = self.truthtable
+    eqns = get_ineq_from_truthtable(trutab)
+
+    stop = False
+    count = 0
+    while stop == False and count<1000:
+        symbols = solve(eqns)
+        correct = evaluate_sys(eqns, symbols)
+        truecount = 0
+        for elem in correct:
+            #print(elem['valid'], "\t-", elem['inequality'])
+            if elem['valid']==True:
+                truecount = truecount + 1
+        if truecount == len(correct):
+            stop = True
+        count = count + 1
+        print(count)
+        if count == 1000:
+            yn = 'x'
+            while yn is not 'y' and yn is not 'n':
+                yn = input("Couldn''t find solution. Add Ancilla? (y/n) ")
+                if yn is 'y':
+                    trutab.add_ancilla()
+                    eqns = get_ineq_from_truthtable(trutab)
+                    count = 0
+                if yn is 'n':
+                    stop = True
+
+    print("Count = {}".format(count))
+
+    print("\nAnnealer Encoding:")
+    for symbol in symbols:
+        print(symbol.name, "\t", symbol.value, "\t", symbol.isknown)
+    print("\nCheck:")
+    for i in range(len(eqns)):
+        print(correct[i]['valid'], "\t-\t", eqns[i])
+    print("\nAncillas added: {}".format(trutab.ancillasadded))
 
 QuantumCircuit.measure = measure

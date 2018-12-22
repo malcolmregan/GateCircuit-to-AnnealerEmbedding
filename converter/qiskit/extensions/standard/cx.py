@@ -15,7 +15,7 @@ from converter.qiskit import QuantumCircuit
 from converter.qiskit._instructionset import InstructionSet
 from converter.qiskit._quantumregister import QuantumRegister
 from converter.qiskit.extensions.standard import header  # pylint: disable=unused-import
-
+import numpy as np
 
 class CnotGate(Gate):
     """controlled-NOT gate."""
@@ -50,6 +50,35 @@ def cx(self, ctl, tgt):
             self.cx(ctl, (tgt, j))
         return None
 
+    ctlname = ctl[0].name + '_' + str(ctl[1]) + '_out'
+    tgtname = tgt[0].name + '_' + str(tgt[1]) + '_out'
+    ctlcolumn = self.truthtable.inputnames.index(ctlname)
+    tgtcolumn = self.truthtable.inputnames.index(tgtname)
+    
+    othercolumns = list()
+    for i in range(self.truthtable.numinputs):
+        if not i == tgtcolumn:
+            othercolumns.append(i)
+
+    outputidxs = list()
+    for i in range(len(self.truthtable.outputs)):
+        if self.truthtable.outputs[i] == 1 and self.truthtable.graycode[i, ctlcolumn] == 1:
+            outputidxs.append(i)
+
+    self.truthtable.outputs[outputidxs] = 0
+    for row in outputidxs:
+        staysame = self.truthtable.graycode[row,othercolumns]
+        for k in range(len(self.truthtable.outputs)):
+            if np.array_equal(staysame, self.truthtable.graycode[k,othercolumns]) and not k == row:
+                self.truthtable.outputs[k] = 1
+
+    for i in range(len(self.truthtable.outputs)):
+        print(self.truthtable.graycode[i], self.truthtable.outputs[i])
+    print("\n")
+    
+
+
+    '''
     ############################## Write Dwave CNOT ##################################
 
     import os
@@ -88,6 +117,6 @@ def cx(self, ctl, tgt):
     ##################################################################################
 
     return None
-
+    '''
 
 QuantumCircuit.cx = cx

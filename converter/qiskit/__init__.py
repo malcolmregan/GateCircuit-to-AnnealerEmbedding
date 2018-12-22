@@ -33,8 +33,9 @@ from .tools._compiler import (compile, execute)
 from . import wrapper
 from . import tools
 
-
+'''
 filename = main.__file__.split('.')[0] + '_dwave.py'
 with open(filename, "w") as f:
     f.write("#!/usr/bin/python3\n")
     f.write("import dimod\n\n")
+'''

@@ -13,6 +13,7 @@ from converter.qiskit import QuantumCircuit
 from converter.qiskit._instructionset import InstructionSet
 from converter.qiskit._quantumregister import QuantumRegister
 from converter.qiskit.extensions.standard import header  # pylint: disable=unused-import
+import numpy as np
 
 class ToffoliGate(Gate):
     """Toffoli gate."""
@@ -31,7 +32,6 @@ class ToffoliGate(Gate):
 
 
 def ccx(self, ctl1, ctl2, tgt):
-    ################# Recursively Call across all bits #########################
     if isinstance(ctl1, QuantumRegister) and \
        isinstance(ctl2, QuantumRegister) and \
        isinstance(tgt, QuantumRegister) and \
@@ -39,7 +39,38 @@ def ccx(self, ctl1, ctl2, tgt):
         for i in range(ctl1.size):
             self.ccx((ctl1, i), (ctl2, i), (tgt, i))
         return None
+    
+    ctl1name = ctl1[0].name + '_' + str(ctl1[1]) + '_out'
+    ctl2name = ctl2[0].name + '_' + str(ctl2[1]) + '_out'
+    tgtname = tgt[0].name + '_' + str(tgt[1]) + '_out'
+    ctl1column = self.truthtable.inputnames.index(ctl1name)
+    ctl2column = self.truthtable.inputnames.index(ctl2name)
+    tgtcolumn = self.truthtable.inputnames.index(tgtname)
 
+    othercolumns = list()
+    for i in range(self.truthtable.numinputs):
+        if not i == tgtcolumn:
+            othercolumns.append(i)
+
+    outputidxs = list()
+    for i in range(len(self.truthtable.outputs)):
+        if self.truthtable.outputs[i] == 1 and self.truthtable.graycode[i, ctl1column] == 1 and self.truthtable.graycode[i, ctl2column] == 1:
+            outputidxs.append(i)
+
+    self.truthtable.outputs[outputidxs] = 0
+    for row in outputidxs:
+        staysame = self.truthtable.graycode[row,othercolumns]
+        for k in range(len(self.truthtable.outputs)):
+            if np.array_equal(staysame, self.truthtable.graycode[k,othercolumns]) and not k == row:
+                self.truthtable.outputs[k] = 1
+
+    for i in range(len(self.truthtable.outputs)):
+        print(self.truthtable.graycode[i], self.truthtable.outputs[i])
+    print("\n")
+
+
+
+    '''
     ####################### Write Dwave CCNOT ##################################
     import os
     import sys
@@ -80,5 +111,5 @@ def ccx(self, ctl1, ctl2, tgt):
         f.write("print()\n")
     ############################################################################
     return None
-
+    '''
 QuantumCircuit.ccx = ccx

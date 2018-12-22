@@ -12,6 +12,7 @@ Quantum circuit object.
 """
 import itertools
 from collections import OrderedDict
+import numpy as np
 
 from converter.qiskit.qasm import _qasm
 from converter.qiskit.unrollers import _unroller
@@ -21,6 +22,7 @@ from converter.qiskit._quantumregister import QuantumRegister
 from converter.qiskit._classicalregister import ClassicalRegister
 from qiskit.tools import visualization
 
+from converter.qiskit.get_annealer_encoding import *
 
 def _circuit_from_qasm(qasm, basis=None):
     default_basis = ["id", "u0", "u1", "u2", "u3", "x", "y", "z", "h", "s",
@@ -110,6 +112,40 @@ class QuantumCircuit(object):
         self.qregs = OrderedDict()
         self.cregs = OrderedDict()
         self.add(*regs)
+
+        self.initialize_truth_table()
+    
+
+    def initialize_truth_table(self):
+        regsize = 0
+        circin_names = list()
+        circout_names = list()
+
+        for reg in self.qregs:
+            regsize = regsize + self.qregs[reg].size
+            for i in range(self.qregs[reg].size):
+                name = reg + '_' + str(i)
+                circin_names.append(name)
+                circout_names.append(name+'_out')
+        
+        circin_names.reverse()
+        circout_names.reverse()
+        names = circin_names + circout_names
+
+        in_type = ['Circ_Input']*regsize
+        out_type = ['Circ_Output']*regsize
+
+        types = in_type + out_type
+
+        self.truthtable = truth_table(numinputs=regsize*2, inputnames= names, inputtypes = types)
+        
+        # Initialize self.truthtable.outputs with Circ_Inputs == Circ_Outputs
+        inputidxs = [i for i, x in enumerate(self.truthtable.inputtypes) if x == 'Circ_Input']
+        outputidxs = [i for i, x in enumerate(self.truthtable.inputtypes) if x == 'Circ_Output']
+        for i in range(len(self.truthtable.outputs)):
+            if np.array_equal(self.truthtable.graycode[i,inputidxs], self.truthtable.graycode[i,outputidxs]):
+                self.truthtable.outputs[i] = 1
+            #print(self.truthtable.graycode[i], self.truthtable.outputs[i])
 
     @classmethod
     def _increment_instances(cls):
