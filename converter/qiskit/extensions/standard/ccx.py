@@ -64,9 +64,9 @@ def ccx(self, ctl1, ctl2, tgt):
             if np.array_equal(staysame, self.truthtable.graycode[k,othercolumns]) and not k == row:
                 self.truthtable.outputs[k] = 1
 
-    for i in range(len(self.truthtable.outputs)):
-        print(self.truthtable.graycode[i], self.truthtable.outputs[i])
-    print("\n")
+    #for i in range(len(self.truthtable.outputs)):
+    #    print(self.truthtable.graycode[i], self.truthtable.outputs[i])
+    #print("\n")
 
 
 

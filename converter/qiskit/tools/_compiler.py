@@ -5,12 +5,14 @@ import uuid
 import logging
 
 
-from converter.qiskit import transpiler
-from converter.qiskit.transpiler._passmanager import PassManager
-from converter.qiskit.qobj import Qobj, QobjConfig, QobjExperiment, QobjItem, QobjHeader
-from converter.qiskit.unroll import DagUnroller, JsonBackend
-from converter.qiskit.transpiler._parallel import parallel_map
+#from converter.qiskit import transpiler
+#from converter.qiskit.transpiler._passmanager import PassManager
+#from converter.qiskit.qobj import Qobj, QobjConfig, QobjExperiment, QobjItem, QobjHeader
+#from converter.qiskit.unroll import DagUnroller, JsonBackend
+#from converter.qiskit.transpiler._parallel import parallel_map
 
+from converter.qiskit.get_annealer_encoding import *
+from converter.qiskit.solve_sys_multivar_ineq import *
 
 
 def compile(circuits, backend,
@@ -49,14 +51,43 @@ def _dags_2_qobj_parallel(dag, config=None, basis_gates=None, coupling_map=None)
 
 
 
-def execute(circuits, backend=None,
+def execute(circuit, backend=None,
             config=None, basis_gates=None, coupling_map=None, initial_layout=None,
             shots=1024, max_credits=10, seed=None, qobj_id=None, hpc=None,
             skip_transpiler=False, seed_mapper=None):
-    
-    print(circuits)
 
-    trutab = self.truthtable
+    # 1) find ancillas - output bits that dont get measured
+    #                    and for which there is a logically 
+    #                    equivalent reduced truthtable without
+    #                    them. (ie output bits that dont get 
+    #                    and are logically don't-cares)
+    # 
+    # 2) Reduce truth table
+    #
+    # 3) Solve
+
+    names = circuit.truthtable.inputnames
+    outidxs = [i for i, x in enumerate(circuit.truthtable.inputtypes) if x == 'Circ_Output']
+    circoutputnames = [names[i] for i in outidxs]
+    measuredqubits = circuit.data
+    ancillas = [x for x in circoutputnames if x not in measuredqubits]
+    ancidx = [i for i, x in enumerate(circuit.truthtable.inputnames) if x in ancillas]
+
+    for idx in ancidx:
+        circuit.truthtable.inputtypes[idx] = 'Ancilla'
+
+    #for i in range(len(circuit.truthtable.outputs)):
+    #    print(circuit.truthtable.graycode[i], circuit.truthtable.outputs[i])
+    #print("\n")
+
+    circuit.truthtable.reduce_truthtable()
+
+    #for i in range(len(circuit.truthtable.outputs)):
+    #    print(circuit.truthtable.graycode[i], circuit.truthtable.outputs[i])
+    #print("\n")
+    #input()
+
+    trutab = circuit.truthtable
     eqns = get_ineq_from_truthtable(trutab)
 
     stop = False
@@ -72,11 +103,11 @@ def execute(circuits, backend=None,
         if truecount == len(correct):
             stop = True
         count = count + 1
-        print(count)
+        #print(count)
         if count == 1000:
             yn = 'x'
             while yn is not 'y' and yn is not 'n':
-                yn = input("Couldn''t find solution. Add Ancilla? (y/n) ")
+                yn = input("Couldn't find solution. Add Ancilla? (y/n) ")
                 if yn is 'y':
                     trutab.add_ancilla()
                     eqns = get_ineq_from_truthtable(trutab)

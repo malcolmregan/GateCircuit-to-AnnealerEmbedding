@@ -61,10 +61,11 @@ def x(self, q):
         for k in range(len(self.truthtable.outputs)):
             if np.array_equal(staysame, self.truthtable.graycode[k,othercolumns]) and not k == row:
                 self.truthtable.outputs[k] = 1
-
-    for i in range(len(self.truthtable.outputs)):
-        print(self.truthtable.graycode[i], self.truthtable.outputs[i])
-    print("\n") 
+    
+    #print("x on {}".format(tgtname))
+    #for i in range(len(self.truthtable.outputs)):
+    #    print(self.truthtable.graycode[i], self.truthtable.outputs[i])
+    #print("\n") 
 
     '''
     ############################## Write Dwave NOT ##################################

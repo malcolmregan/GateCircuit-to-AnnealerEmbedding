@@ -72,9 +72,10 @@ def cx(self, ctl, tgt):
             if np.array_equal(staysame, self.truthtable.graycode[k,othercolumns]) and not k == row:
                 self.truthtable.outputs[k] = 1
 
-    for i in range(len(self.truthtable.outputs)):
-        print(self.truthtable.graycode[i], self.truthtable.outputs[i])
-    print("\n")
+    #print("cx on cont: {}, tgt {}".format(ctlname, tgtname))
+    #for i in range(len(self.truthtable.outputs)):
+    #    print(self.truthtable.graycode[i], self.truthtable.outputs[i])
+    #print("\n")
     
 
 

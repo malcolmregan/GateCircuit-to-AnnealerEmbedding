@@ -15,6 +15,7 @@ class SYM:
         self.isknown = False
         self.bounddist = self.bounds[1]-self.bounds[0]
         self.constraints = self.get_symbolic_constraints(sys)
+        self.isdisjointwithsys = False
 
     def updatebounds(self, low, high):
         self.bounds = [round(low,1), round(high,1)]
@@ -99,9 +100,9 @@ class SYM:
                     if relation == '=':
                         self.updatebounds(int(RHS),int(RHS))
                     if relation == '>':
-                        self.updatebounds(int(RHS)+0.1,boundmax)
+                        self.updatebounds(int(RHS),boundmax)
                     if relation == '<':
-                        self.updatebounds(-boundmax,int(RHS)-0.1)
+                        self.updatebounds(-boundmax,int(RHS))
                 
                 #####################################################
                 
@@ -195,20 +196,21 @@ def update_bounds(syms):
                             if RHS[i-1] == '+':
                                 RHSbound[0] = RHSbound[0] + int(RHS[i])
                                 RHSbound[1] = RHSbound[1] + int(RHS[i])
-
-                if RHSbound[0]>RHSbound[1]:
-                    temp = RHSbound[0]
-                    RHSbound[0] = RHSbound[1]
-                    RHSbound[1] = temp
                 
                 if RHSbound[0] < -boundmax:
                     RHSbound[0] = -boundmax
                 if RHSbound[1] > boundmax:
                     RHSbound[1] = boundmax
 
+                if RHSbound[0]>RHSbound[1]:
+                    temp = RHSbound[0]
+                    RHSbound[0] = RHSbound[1]
+                    RHSbound[1] = temp
+
+
                 inter = intersection(sym.bounds, RHSbound, rel=relation)
                 if inter == 'disjoint':
-                    #print('disjoint:', sym.name, sym.bounds, constraint['relation'], constraint['expression'], RHSbound)
+                    print('disjoint:', sym.name, sym.bounds, constraint['relation'], constraint['expression'], RHSbound)
                     return
                 if inter[1]-inter[0] < sym.bounddist:                 
                     if relation == '=':
@@ -238,10 +240,11 @@ def find_best_sym(syms):
     symlist = ['']*len(syms)
     for i in range(len(symlist)):
         symlist[i] = syms[i]
-        
+    
+    bestsym = ''
+
     for sym in syms:
         if sym.isknown == False:
-            bestsym=sym
             for constraint in sym.constraints:
                 expression = constraint['expression']
                 unknowncount = 0
@@ -249,42 +252,65 @@ def find_best_sym(syms):
                     if Rsym.name in expression:
                         if Rsym.isknown == False:
                             unknowncount = unknowncount + 1
+                print(sym.name, expression, unknowncount)
                 if unknowncount <= bestunknowncount and unknowncount > 0:
                     if sym.bounddist <= bestbounddist:
                         bestsym = sym
                         bestbounddist = sym.bounddist
                         bestunknowncount = unknowncount
+   
+    if bestsym == '':
+        for sym in syms:
+            if sym.isknown == False:
+                bestsym = sym
 
     return bestsym
 
 def pick_value(syms):
     sym = find_best_sym(syms)
     val = round(uniform(sym.bounds[0]+0.1,sym.bounds[1]-0.1))
+ 
     sym.updatebounds(val,val)
-
-    #print(sym.name, "=", val, sym.isknown, sym.bounds)
+    print("value picked for {}: {}".format(sym.name,sym.value))
     return
 
 def determine_symbol_values(syms):
-    system_solved = False
     tighten_bounds(syms)
+    system_solved = True
+    for sym in syms:
+        check = sym.isknown
+        if check == False:
+            system_solved = False
+
+    print("After first bound tightening\n\tNew bounds:")
+    for sym in syms:
+        print("\t\t",sym.name, sym.bounds)
+    print("\n")
+
     while system_solved == False:
         pick_value(syms)
         tighten_bounds(syms)
-        #for sym in syms:
-        #    print(sym.name, sym.bounds)
-        #print("\n")
+        print("\tNew bounds:")
+        for sym in syms:
+            print("\t\t",sym.name, sym.bounds)
+        print("\n")
 
         system_solved = True
         for sym in syms:
             check = sym.isknown
             if check == False:
                 system_solved = False
-      
+        
     return syms
 
 def solve(sys_ineq):
     syms = extract_symbols(sys_ineq)
+    print("After symbol initialization\n\tBounds:")
+    for sym in syms:
+        print("\t\t",sym.name, sym.bounds)
+    print("\n")
+
+
     determine_symbol_values(syms)
 
     return syms
@@ -343,7 +369,7 @@ def evaluate_constraints(syms):
 
 
 def main():
-    '''    
+    ''' 
     # AND encoding (3 bit)
     system_inequalities = ['0 = G', 
                            'w2 > G', 
@@ -372,7 +398,7 @@ def main():
                            'w3 + J23 + J03 + w2 + J02 + w0 = G',
                            'w3 + J23 + J13 + w2 + J12 + w1 > G',
                            'w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G']
-
+    
     stop=False
     count = 0
     while stop == False:
@@ -389,6 +415,10 @@ def main():
         count = count + 1    
     
     print(count)
+
+    print("\nSymbol Values: ")
+    for symbol in symbols:
+        print("\t",symbol.name,"\t",symbol.value)
 
 
 if __name__ == "__main__":

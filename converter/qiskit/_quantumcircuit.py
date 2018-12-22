@@ -145,7 +145,11 @@ class QuantumCircuit(object):
         for i in range(len(self.truthtable.outputs)):
             if np.array_equal(self.truthtable.graycode[i,inputidxs], self.truthtable.graycode[i,outputidxs]):
                 self.truthtable.outputs[i] = 1
-            #print(self.truthtable.graycode[i], self.truthtable.outputs[i])
+        
+        #print("truthtable initialized to:")
+        #for i in range(len(self.truthtable.outputs)):
+        #    print(self.truthtable.graycode[i], self.truthtable.outputs[i])
+        #print("\n")
 
     @classmethod
     def _increment_instances(cls):

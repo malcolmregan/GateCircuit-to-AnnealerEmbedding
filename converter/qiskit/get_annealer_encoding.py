@@ -127,7 +127,66 @@ class truth_table:
                 idxs[i] = idxs[i]+1
             newoutputs[idxs[i]] = 1
         self.outputs = newoutputs
+        self.inputnames.append('a{}'.format(self.ancillasadded))
+        self.inputtypes.append('Ancilla')
         self.ancillasadded = self.ancillasadded + 1
+
+    def reduce_truthtable(self):
+        ancillaidxs = []
+        ancillanames = []
+        for i in range(len(self.inputtypes)):
+            if self.inputtypes[i]=='Ancilla':
+                ancillaidxs.append(i)
+                ancillanames.append(self.inputnames[i])
+         
+        ancillaidxs.reverse()
+        ancillanames.reverse()
+        
+        count = 0 
+        for idx in ancillaidxs:
+            numberofswaps = len(self.inputnames) - idx - 1 - count 
+            count = count + 1
+            for i in range(numberofswaps):
+                self.inputnames[idx+i], self.inputnames[idx+i+1] = self.inputnames[idx+i+1], self.inputnames[idx+i]
+                self.inputtypes[idx+i], self.inputtypes[idx+i+1] = self.inputtypes[idx+i+1], self.inputtypes[idx+i]
+                
+                outputsone = np.where(self.outputs)[0]
+        
+                newones = [] 
+                for j in outputsone:
+                    self.outputs[j] = 0
+                    row=[]
+                    for g in range(len(self.graycode[j,:])):
+                        row.append(self.graycode[j,g])
+                    
+                    row = np.asarray(row)
+                    row[idx+i], row[idx+i+1] = row[idx+i+1], row[idx+i]
+        
+                    for k in range(len(self.outputs)):
+                        if np.array_equal(row, self.graycode[k,:]):    
+                            newones.append(k)
+         
+                for m in newones:
+                    self.outputs[m] = 1
+
+        #for i in range(len(self.outputs)):
+        #    print(self.graycode[i], self.outputs[i])
+        #print("\n")
+
+        numancillas = len(ancillaidxs)
+        for i in range(numancillas):
+            self.numinputs = self.numinputs - 1
+            newoutputs = np.zeros(shape = (2 ** self.numinputs), dtype = np.int)
+            for j in range(len(newoutputs)):
+                if 1 in self.outputs[2*j:2*j+2]:
+                    newoutputs[j] = 1
+                else:
+                    newoutputs[j] = 0
+            self.outputs = newoutputs
+            self.inputnames.pop()
+            self.inputtypes.pop()
+            self.generategraycode(self.numinputs)
+
 
 def get_ineq_from_truthtable(truthtable):
     numinputs = truthtable.numinputs
