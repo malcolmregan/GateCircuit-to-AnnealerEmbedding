@@ -11,12 +11,16 @@ GENERAL NOTES
 -----------------------------------------------------------------------------------------------------
 CONTENTS
 -----------------------------------------------------------------------------------------------------
-   I) Gate Circuit-to-Annealer ecnoding by way of intermediate logical truthtable representation 
+   I) Gate circuit-to-annealer ecnoding by way of intermediate logical truthtable representation 
    	  - Covers implementation through an example of a simple XOR function
 	  - TODO list
 	
-   II) Gate Circuit-to-Annealer encoding by way of intermediate bloch sphere truthtable 
+   II) Gate circuit-to-annealer encoding by way of intermediate bloch sphere truthtable 
        representation
+   	  - Notes and ideas on this approach
+	  - TODO list for implementation of this approach
+	  
+   III) Lump annealer encoding as composite of serial annealer encodings 
    	  - Notes and ideas on this approach
 	  - TODO list for implementation of this approach
 
@@ -25,7 +29,8 @@ CONTENTS
 -----------------------------------------------------------------------------------------------------
     
 The following describes how this approach generate a lump annealer encoding from a gate circuit 
-through an example of the XOR function
+through an example of the XOR function. Note: file locations are described assuming the base
+directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
 
 1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. 
    Added to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented 
@@ -285,6 +290,13 @@ TODO:
 -----------------------------------------------------------------------------------------------------
 Notes:
 	
+TODO:
+
+-----------------------------------------------------------------------------------------------------
+(III) LUMP ANNEALER ENCODING AS COMPOSITE OF SERIAL ANNEALER ENCODINGS
+-----------------------------------------------------------------------------------------------------
+Notes:
+
 TODO:
 
 ```
