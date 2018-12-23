@@ -169,9 +169,9 @@ class truth_table:
                 for m in newones:
                     self.outputs[m] = 1
 
-        #for i in range(len(self.outputs)):
-        #    print(self.graycode[i], self.outputs[i])
-        #print("\n")
+            #for i in range(len(self.outputs)):
+            #    print(self.graycode[i], self.outputs[i])
+            #print("\n")
 
         numancillas = len(ancillaidxs)
         for i in range(numancillas):
@@ -246,7 +246,7 @@ def main():
 
     stop = False
     count = 0
-    while stop == False and count<5000:
+    while stop == False:
         symbols = solve(eqns)
         correct = evaluate_sys(eqns, symbols)
         truecount = 0
@@ -257,11 +257,11 @@ def main():
         if truecount == len(correct):
             stop = True
         count = count + 1
-        print(count)
-        if count == 5000:
+        #print(count)
+        if count == 1000:
             yn = 'x'
             while yn is not 'y' and yn is not 'n':
-                yn = input("couldn''t find solution. Add Ancilla? (y/n)")
+                yn = input("Couldn't find solution. Add Ancilla? (y/n) ")
                 if yn is 'y':
                     trutab.add_ancilla()
                     eqns = get_ineq_from_truthtable(trutab)

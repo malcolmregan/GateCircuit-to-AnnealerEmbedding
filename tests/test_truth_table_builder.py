@@ -6,8 +6,7 @@ cr1 = ClassicalRegister(1)
 cr2 = ClassicalRegister(1)
 qc = QuantumCircuit(qr1, qr2, cr1, cr2)
 
-qc.cx(qr1, qr2)
-
+qc.cx(qr1[0], qr2[0])
 qc.measure(qr2, cr2)
 
 execute(qc)

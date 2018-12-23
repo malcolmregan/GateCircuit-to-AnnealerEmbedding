@@ -85,14 +85,15 @@ def execute(circuit, backend=None,
     #for i in range(len(circuit.truthtable.outputs)):
     #    print(circuit.truthtable.graycode[i], circuit.truthtable.outputs[i])
     #print("\n")
-    #input()
+    #print(circuit.truthtable.inputnames)
+
 
     trutab = circuit.truthtable
     eqns = get_ineq_from_truthtable(trutab)
 
     stop = False
     count = 0
-    while stop == False and count<1000:
+    while stop == False:
         symbols = solve(eqns)
         correct = evaluate_sys(eqns, symbols)
         truecount = 0
@@ -103,8 +104,8 @@ def execute(circuit, backend=None,
         if truecount == len(correct):
             stop = True
         count = count + 1
-        #print(count)
-        if count == 1000:
+        print(count)
+        if count == 500:
             yn = 'x'
             while yn is not 'y' and yn is not 'n':
                 yn = input("Couldn't find solution. Add Ancilla? (y/n) ")
