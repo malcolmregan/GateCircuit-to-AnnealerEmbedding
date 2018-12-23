@@ -3,7 +3,6 @@
 Notes:
  - Set PYTHONPATH to QuantumProject directory to run examples/tests
    export PYTHONPATH=$(pwd)
- - Solver (solve_sys_multivar_ineq.py) currently prints out alot of stuff for debugging
 
 General Description:
 The following describes how these scripts generate a lump adiabatic encoding from a gate circuit through 
@@ -238,15 +237,21 @@ converter/qiskit/get_adiabatic_encoding.py
 
    Solver functions and classes are implemented in converter/qiskit/solve_sys_multivar_ineq.py
 
-8) *Not yet implemented* Last, a script which runs the found encoding on an annealer will be written by execute().
+8) *Not yet implemented* Last, a script which runs the found encoding on an annealer will be written by 
+   execute().
 
 TODO:
-1) Get solver into a place where it can determine in one shot if system is solvable or not (hopefully in correct implementation, 
-   disjoint bounds will be the indicator of an unsolvable system)
+1) Get solver into a place where it can determine in one shot if system is solvable or not (hopefully in 
+   correct implementation, disjoint bounds will be the indicator of an unsolvable system)
+
 2) Truthtable attribute of QuantumCircuit class gets too massive for even moderately sized circuits
-	- Find out how to do gate operations and truthtable reduction affect output column without the crutch of the gray code
+	- Find out how to do gate operations and truthtable reduction on output column without the crutch 
+	  of the gray code
 		- Investigate how fourier transform of output column changes under gate operations
-	- Perform truthtable reduction before gate operations. As currently implemented, gate operations are very costly
+	- Perform truthtable reduction before gate operations. As currently implemented, gate operations are 
+	  very costly
+
 3) Write script in execute() that creates dwave script with the encoding that was found
+
 4) Need to implement fredkin and swap gates.
 ```
