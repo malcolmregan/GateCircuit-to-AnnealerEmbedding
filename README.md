@@ -125,9 +125,9 @@ converter/qiskit/get_adiabatic_encoding.py
                                                     
                                                                   qc.data.append('q1_0_out')
 
-5) execute() is implemented in converter/qiskit/tools/_compiler.py. execute() first recasts bits not measured as ancillas and 
-   reduces the truth table accordingly as mentioned above. reduce_truthtable() is implemented as a class method of truthtable in 
-   converter/qiskit/get_adiabatic_encoding.py
+5) execute() is implemented in converter/qiskit/tools/_compiler.py. execute() first recasts bits not 
+   measured as ancillas and reduces the truth table accordingly as mentioned above. reduce_truthtable() 
+   is implemented as a class method of truthtable in converter/qiskit/get_adiabatic_encoding.py
 
         from converter.qiskit import QuantumCircuit
         from converter.qiskit import ClassicalRegister, QuantumRegister,
@@ -149,20 +149,20 @@ converter/qiskit/get_adiabatic_encoding.py
     'q0_0',
  'Circ_Input' <--.         .------> 'q1_0_out', 'Circ_Output'
                   \       /
-   'q1_0', <----.  \     /   .----> 'q0_0_out', 'Ancilla' <--- Type change
- 'Circ_Input'    \  \   /   /                                  so it can be
-               [[ 0  0  0  0 ]    1                            identified in                  .-------> 'q0_0', 'Circ_Input'
-                [ 0  0  0  1 ]    0                            reduce_truthtable()           / .------> 'q1_0', 'Circ_Input'
-                [ 0  0  1  0 ]    0                                                         / / .-----> 'q1_0_out', 'Circ_Output'
-                [ 0  0  1  1 ]    0                                                        / / /
-                [ 0  1  0  0 ]    0                                                    [[ 0 0 0 ]    1
-                [ 0  1  0  1 ]    1                                                     [ 0 0 1 ]    0
-                [ 0  1  1  0 ]    0                                                     [ 0 1 0 ]    0
-                [ 0  1  1  1 ]    0                                                     [ 0 1 1 ]    1
-                [ 1  0  0  0 ]    0 --------------- reduce_truthtable() --------------> [ 1 0 0 ]    0 
-                [ 1  0  0  1 ]    0                                                     [ 1 0 1 ]    1
-                [ 1  0  1  0 ]    1                                                     [ 1 1 0 ]    1
-                [ 1  0  1  1 ]    0                                                     [ 1 1 1 ]]   0
+   'q1_0', <----.  \     /   .----> 'q0_0_out', 'Ancilla' <-. 
+ 'Circ_Input'    \  \   /   /         .---------------------'  
+               [[ 0  0  0  0 ]    1   '-> Type change                      .-------> 'q0_0', 'Circ_Input'
+                [ 0  0  0  1 ]    0       so it can be                    / .------> 'q1_0', 'Circ_Input'
+                [ 0  0  1  0 ]    0       identified in                  / / .-----> 'q1_0_out', 'Circ_Output'
+                [ 0  0  1  1 ]    0       reduce_truthtable()           / / /        'Circ_Output'
+                [ 0  1  0  0 ]    0                                [[ 0 0 0 ]    1
+                [ 0  1  0  1 ]    1                                 [ 0 0 1 ]    0
+                [ 0  1  1  0 ]    0                                 [ 0 1 0 ]    0
+                [ 0  1  1  1 ]    0                                 [ 0 1 1 ]    1
+                [ 1  0  0  0 ]    0 ----- reduce_truthtable() ----> [ 1 0 0 ]    0 
+                [ 1  0  0  1 ]    0                                 [ 1 0 1 ]    1
+                [ 1  0  1  0 ]    1                                 [ 1 1 0 ]    1
+                [ 1  0  1  1 ]    0                                 [ 1 1 1 ]]   0
                 [ 1  1  0  0 ]    0
                 [ 1  1  0  1 ]    0
                 [ 1  1  1  0 ]    0
