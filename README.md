@@ -3,9 +3,8 @@
 -----------------------------------------------------------------------------------------------------
 GENERAL NOTES
 -----------------------------------------------------------------------------------------------------
- - Set PYTHONPATH to Lump-Annealer-Encoding-From-Gate-Circuit/logical directory
-   or Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere
-   to run corresponding examples
+ - Set PYTHONPATH to Lump-Annealer-Encoding-From-Gate-Circuit/logical directory or
+   Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere directory to run corresponding examples
    
    e.g., ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical$ export PYTHONPATH=$(pwd)
 
@@ -279,8 +278,8 @@ TODO:
 
 4) Implement Fredkin and swap gates.
 
-5) Change README example to an XNOR (NXOR?) to illustrate that this implementation works on multi qubit
-   gates
+5) Change README example to an XNOR (NXOR?) to illustrate that this implementation can generate a 
+   single annealer encoding for multi-gate circuits
 
 -----------------------------------------------------------------------------------------------------
 (II) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE BLOCH SPHERE TRUTHTABLE REPRESENTATION
