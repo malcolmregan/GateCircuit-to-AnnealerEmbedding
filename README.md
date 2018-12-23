@@ -1,12 +1,28 @@
 # Lump Quantum Annealer Encoding from Quantum Gate Circuit
 ```
-Notes:
- - Set PYTHONPATH to QuantumProject directory to run examples
-   ~/path/to/QuantumProject$ export PYTHONPATH=$(pwd)
+General Notes:
+ - Set PYTHONPATH to Lump-Annealer-Encoding-From-Gate-Circuit/logical directory
+   or Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere
+   to run corresponding examples
+   
+   e.g., ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical$ export PYTHONPATH=$(pwd)
 
-General Description:
-The following describes how these scripts generate a lump annealer encoding from a gate circuit through 
-an example of the XOR function
+--------------------------------------------------------------------------------------------------
+Contents:
+   I) Gate Circuit-to-Annealer by way of intermediate logical truthtable encoding 
+   	- Covers approach through an example of a simple XOR function
+	- TODO list for this approach
+	
+   II) Gate Circuit-to-Annealer by way of intermediate bloch sphere truthtable encoding
+   	- Notes and ideas on this approach
+--------------------------------------------------------------------------------------------------
+
+
+(I) GATE CIRCUIT-TO-ANNEALER BY WAY OF INTERMEDIATE LOGICAL TRUTHTABLE ENCODING
+--------------------------------------------------------------------------------
+    
+The following describes how this approach generate a lump annealer encoding from a gate circuit 
+through an example of the XOR function
 
 1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. Added 
    to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented in 
@@ -257,4 +273,6 @@ TODO:
 3) Write script in execute() that creates dwave script with the encoding that was found
 
 4) Implement Fredkin and swap gates.
+-------------------------------------------------------------------------------------------------------------
+
 ```
