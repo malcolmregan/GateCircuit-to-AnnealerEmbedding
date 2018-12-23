@@ -11,8 +11,7 @@ GENERAL NOTES
 -----------------------------------------------------------------------------------------------------
 CONTENTS
 -----------------------------------------------------------------------------------------------------
-   I) Gate Circuit-to-Annealer ecnoding by way of intermediate logical truthtable 
-      representation 
+   I) Gate Circuit-to-Annealer ecnoding by way of intermediate logical truthtable representation 
    	  - Covers implementation through an example of a simple XOR function
 	  - TODO list
 	
