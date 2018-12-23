@@ -184,56 +184,57 @@ converter/qiskit/get_adiabatic_encoding.py
                   [ 1 1 0 ]    1                                  'w1 + w2 + J12 = G',
                   [ 1 1 1 ]]   0                                  'w0 + w1 + w2 + J01 + J02 + J12 > G'] 
 
-    The system of inequalities is generated as a list of strings by the get_ineq_from_truthtable() function in 
-    converter/qiskit/get_annealer_encoding.py 
+    The system of inequalities is generated as a list of strings by the get_ineq_from_truthtable() function
+    in converter/qiskit/get_annealer_encoding.py 
 
-7) This list of inequalities is then passed to the solver. The solver works by extracting symbols their constraints from the 
-   equations, and iterating over the constraints to determine the bounds of the symbols. When bounds converge a value is picked 
-   for the symbol having a constraint composed of the least amount of unknown symbols and the smallest bounds. After a value is 
-   picked, the constraints of all symbols are iterated over again and their bounds are tightened further. This is repeated until 
-   all symbols have values.
+7) This list of inequalities is then passed to the solver. The solver works by extracting symbols their 
+   constraints from the equations, and iterating over the constraints to determine the bounds of the symbols. 
+   When bounds converge a value is picked for the symbol having a constraint composed of the least amount of 
+   unknown symbols and the smallest bounds. After a value is picked, the constraints of all symbols are 
+   iterated over again and their bounds are tightened further. This is repeated until all symbols have 
+   values.
 
-   If a valid solution cannot be found, as in the case of the 3-bit XOR truthtable above, an ancilla is added. All 1's in the 
-   output are place on ancilla 0's except for the last 1 in the output which is placed on an ancilla 1. If the system still 
-   cannot be solved another ancilla is added, this time all 1's in the output are placed on ancilla 0's except for the second-to-
-   last output 1 which is placed on an ancilla 1. This can be continued until all output ones are on rows corresponding to 1's of 
-   different ancillas.
+   If a valid solution cannot be found, as in the case of the 3-bit XOR truthtable above, an ancilla is 
+   added. All 1's in the output are place on ancilla 0's except for the last 1 in the output which is placed 
+   on an ancilla 1. If the system still cannot be solved another ancilla is added, this time all 1's in the 
+   output are placed on ancilla 0's except for the second-to-last output 1 which is placed on an ancilla 1. 
+   This can be continued until all output ones are on rows corresponding to 1's of different ancillas.
 
-   This works well for smaller systems of inequalities or simpler large systems of inequalities but does not work on larger, more 
-   complicated systems yet. Once solved the qubit and coupler weights are reported:
+   This works well for smaller systems of inequalities or simpler large systems of inequalities but does not 
+   work on larger, more complicated systems yet. Once solved the qubit and coupler weights are reported:
 		
-				Annealer Encoding:
-					w3 	 40.7 	 
-					J03 	 -906.5 	 
-					J01 	 779.4 	 
-					J13 	 -368.4 	 
-					J23 	 491.1 	 
-					w0 	 972.5 	 
-					w1 	 327.7 	 
-					J02 	 -991.8 	 
-					J12 	 -721.7 	 
-					w2 	 394.0 	 
-					G 	 0 	 
+		Annealer Encoding:
+			w3 	 40.7 	 
+			J03 	 -906.5 	 
+			J01 	 779.4 	 
+			J13 	 -368.4 	 
+			J23 	 491.1 	 
+			w0 	 972.5 	 
+			w1 	 327.7 	 
+			J02 	 -991.8 	 
+			J12 	 -721.7 	 
+			w2 	 394.0 	 
+			G 	 0 	 
 
-				Check:
-					True 	-	 0 = G
-					True 	-	 w0 > G
-					True 	-	 w1 > G
-					True 	-	 w1 + J01 + w0 > G
-					True 	-	 w2 > G
-					True 	-	 w2 + J02 + w0 > G
-					True 	-	 w2 + J12 + w1 = G
-					True 	-	 w2 + J12 + J02 + w1 + J01 + w0 > G
-					True 	-	 w3 > G
-					True 	-	 w3 + J03 + w0 > G
-					True 	-	 w3 + J13 + w1 = G
-					True 	-	 w3 + J13 + J03 + w1 + J01 + w0 > G
-					True 	-	 w3 + J23 + w2 > G
-					True 	-	 w3 + J23 + J03 + w2 + J02 + w0 = G
-					True 	-	 w3 + J23 + J13 + w2 + J12 + w1 > G
-					True 	-	 w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G
+		Check:
+			True 	-	 0 = G
+			True 	-	 w0 > G
+			True 	-	 w1 > G
+			True 	-	 w1 + J01 + w0 > G
+			True 	-	 w2 > G
+			True 	-	 w2 + J02 + w0 > G
+			True 	-	 w2 + J12 + w1 = G
+			True 	-	 w2 + J12 + J02 + w1 + J01 + w0 > G
+			True 	-	 w3 > G
+			True 	-	 w3 + J03 + w0 > G
+			True 	-	 w3 + J13 + w1 = G
+			True 	-	 w3 + J13 + J03 + w1 + J01 + w0 > G
+			True 	-	 w3 + J23 + w2 > G
+			True 	-	 w3 + J23 + J03 + w2 + J02 + w0 = G
+			True 	-	 w3 + J23 + J13 + w2 + J12 + w1 > G
+			True 	-	 w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G
 
-				Ancillas added: 1
+		Ancillas added: 1
 
    Solver functions and classes are implemented in converter/qiskit/solve_sys_multivar_ineq.py
 
