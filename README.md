@@ -9,8 +9,8 @@ The following describes how these scripts generate a lump adiabatic encoding fro
 an example of the XOR function
 
 1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. Added 
-to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented in 
-converter/qiskit/get_adiabatic_encoding.py
+   to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented in 
+   converter/qiskit/get_adiabatic_encoding.py
 
 	from converter.qiskit import QuantumCircuit 
         from converter.qiskit import ClassicalRegister, QuantumRegister, 
