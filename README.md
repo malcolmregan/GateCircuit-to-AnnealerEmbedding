@@ -153,7 +153,7 @@ converter/qiskit/get_adiabatic_encoding.py
  'Circ_Input'    \  \   /   /         .---------------------'  
                [[ 0  0  0  0 ]    1   '-> Type change                      .-------> 'q0_0', 'Circ_Input'
                 [ 0  0  0  1 ]    0       so it can be                    / .------> 'q1_0', 'Circ_Input'
-                [ 0  0  1  0 ]    0       identified in                  / / .-----> 'q1_0_out', 'Circ_Output'
+                [ 0  0  1  0 ]    0       identified in                  / / .-----> 'q1_0_out',
                 [ 0  0  1  1 ]    0       reduce_truthtable()           / / /        'Circ_Output'
                 [ 0  1  0  0 ]    0                                [[ 0 0 0 ]    1
                 [ 0  1  0  1 ]    1                                 [ 0 0 1 ]    0
@@ -168,20 +168,21 @@ converter/qiskit/get_adiabatic_encoding.py
                 [ 1  1  1  0 ]    0
                 [ 1  1  1  1 ]]   1
 
-	If the ancilla bit to be removed is not in the least significant position elements of truthtable.inputnames, 
-	truthtable.inputtypes, and truthtable.outputs are adjusted until it is. Then, the reduced output is constructed from the 
-	old output.
+	If the ancilla bit to be removed is not in the least significant position elements of 
+	truthtable.inputnames, truthtable.inputtypes, and truthtable.outputs are adjusted until it is. 
+	Then, the reduced output is constructed from the old output.
 
-6) Next in execute(), a system of inequalities in terms of annealer qubit and coupler weights are generated from the truthtable
+6) Next in execute(), a system of inequalities in terms of annealer qubit and coupler weights are generated 
+   from the truthtable
 
-	                      [[ 0 0 0 ]    1           system_inequalities = ['0 = G',
-                               [ 0 0 1 ]    0                                  'w0 > G',
-                               [ 0 1 0 ]    0                                  'w1 > G',
-                               [ 0 1 1 ]    1                                  'wo + w1 = G',
-                               [ 1 0 0 ]    0                                  'w2 > G',
-                               [ 1 0 1 ]    1                                  'w1 + w2 + J12 = G',
-                               [ 1 1 0 ]    1                                  'w1 + w2 + J12 = G',
-                               [ 1 1 1 ]]   0                                  'w0 + w1 + w2 + J01 + J02 + J12 > G'] 
+	         [[ 0 0 0 ]    1           system_inequalities = ['0 = G',
+                  [ 0 0 1 ]    0                                  'w0 > G',
+                  [ 0 1 0 ]    0                                  'w1 > G',
+                  [ 0 1 1 ]    1                                  'wo + w1 = G',
+                  [ 1 0 0 ]    0                                  'w2 > G',
+                  [ 1 0 1 ]    1                                  'w1 + w2 + J12 = G',
+                  [ 1 1 0 ]    1                                  'w1 + w2 + J12 = G',
+                  [ 1 1 1 ]]   0                                  'w0 + w1 + w2 + J01 + J02 + J12 > G'] 
 
     The system of inequalities is generated as a list of strings by the get_ineq_from_truthtable() function in 
     converter/qiskit/get_annealer_encoding.py 
