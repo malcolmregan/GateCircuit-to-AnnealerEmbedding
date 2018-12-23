@@ -250,9 +250,10 @@ TODO:
 	- Find out how to do gate operations and truthtable reduction on output column without the crutch 
 	  of the gray code
 		- Investigate how fourier transform of output column changes under gate operations
-	- Perform truthtable reduction before gate operations. As currently implemented, gate operations are 
-	  very costly
-
+	- Look into perrforming truthtable reduction before gate operations. As currently implemented,
+	  gate operations take a long time on large truthtables
+	- Find way to encode output bits position on bloch sphere
+	  
 3) Write script in execute() that creates dwave script with the encoding that was found
 
 4) Implement Fredkin and swap gates.
