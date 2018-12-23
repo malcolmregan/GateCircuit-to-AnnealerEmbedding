@@ -1,32 +1,37 @@
 # Lump Quantum Annealer Encoding from Quantum Gate Circuit
 ```
-General Notes:
+-----------------------------------------------------------------------------------------------------
+GENERAL NOTES
+-----------------------------------------------------------------------------------------------------
  - Set PYTHONPATH to Lump-Annealer-Encoding-From-Gate-Circuit/logical directory
    or Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere
    to run corresponding examples
    
    e.g., ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical$ export PYTHONPATH=$(pwd)
 
---------------------------------------------------------------------------------------------------
-Contents:
-   I) Gate Circuit-to-Annealer by way of intermediate logical truthtable encoding 
-   	- Covers approach through an example of a simple XOR function
-	- TODO list for this approach
+-----------------------------------------------------------------------------------------------------
+CONTENTS
+-----------------------------------------------------------------------------------------------------
+   I) Gate Circuit-to-Annealer ecnoding by way of intermediate logical truthtable 
+      representation 
+   	  - Covers implementation through an example of a simple XOR function
+	  - TODO list
 	
-   II) Gate Circuit-to-Annealer by way of intermediate bloch sphere truthtable encoding
-   	- Notes and ideas on this approach
---------------------------------------------------------------------------------------------------
+   II) Gate Circuit-to-Annealer encoding by way of intermediate bloch sphere truthtable 
+       representation
+   	  - Notes and ideas on this approach
+	  - TODO list for implementation of this approach
 
-
-(I) GATE CIRCUIT-TO-ANNEALER BY WAY OF INTERMEDIATE LOGICAL TRUTHTABLE ENCODING
---------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+(I) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE LOGICAL TRUTHTABLE REPRESENTATION
+-----------------------------------------------------------------------------------------------------
     
 The following describes how this approach generate a lump annealer encoding from a gate circuit 
 through an example of the XOR function
 
-1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. Added 
-   to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented in 
-   converter/qiskit/get_annealer_encoding.py
+1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. 
+   Added to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented 
+   in converter/qiskit/get_annealer_encoding.py
 
 	from converter.qiskit import QuantumCircuit 
         from converter.qiskit import ClassicalRegister, QuantumRegister, 
@@ -273,6 +278,15 @@ TODO:
 3) Write script in execute() that creates dwave script with the encoding that was found
 
 4) Implement Fredkin and swap gates.
--------------------------------------------------------------------------------------------------------------
+
+5) Change README example to an XNOR (NXOR?) to illustrate that this implementation works on multi qubit
+   gates
+
+-----------------------------------------------------------------------------------------------------
+(II) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE BLOCH SPHERE TRUTHTABLE REPRESENTATION
+-----------------------------------------------------------------------------------------------------
+Notes:
+	
+TODO:
 
 ```
