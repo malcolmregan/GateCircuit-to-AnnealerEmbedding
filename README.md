@@ -32,41 +32,42 @@ converter/qiskit/get_adiabatic_encoding.py
 			qc.truthtable.inputtypes = ['Circ_Input','Circ_Input','Circ_Output','Circ_Output']
 			qc.truthtable.outputs = numpy vector of length (2 ** truthtable.numinputs) 
 						it is initialized with 1's in positions where input bits are
-						equal to output bits in the graycode. The left half columns are
-						inputbits and the right half columns are output bits.
+						equal to output bits in the graycode. The left half columns 
+						are inputbits and the right half columns are output bits.
 						qc.truthtable.graycode = gray code as a numpy array with 
 						(2 ** truthtable.numinputs) rows and (truthtable.numinputs)
-						columns. this is used in routines that modify
-						truthtable.output such as gate functions and truthtable
-						reduction. However, it is inefficient and will be eliminated once
-								better gate and reduction routines are implemented
+						columns. this is used in routines that modify 
+						truthtable.output such as gate functions and truthtable 
+						reduction. However, it is inefficient and will be eliminated 
+						once better gate and reduction routines are implemented
 
                                                                                            
-                              'q0_0', 'Circ_Input' <-----.         .------> 'q1_0_out', 'Circ_Output'
-                                                          \       /                                          
-                              'q1_0', 'Circ_Input' <----.  \     /   .----> 'q0_0_out', 'Circ_Output'
-                                                         \  \   /   /
-					               [[ 0  0  0  0 ]    1 
-	        					[ 0  0  0  1 ]    0
-						        [ 0  0  1  0 ]    0
-						        [ 0  0  1  1 ]    0
-                                                        [ 0  1  0  0 ]    0
-                                                        [ 0  1  0  1 ]    1
- 		truthtable.graycode as initialized -->  [ 0  1  1  0 ]    0  <-- values of truthtable.outputs  
-							[ 0  1  1  1 ]    0       correponding to grey code rows
-                                                        [ 1  0  0  0 ]    0
-    						        [ 1  0  0  1 ]    0
-							[ 1  0  1  0 ]    1
-					                [ 1  0  1  1 ]    0
-	                                                [ 1  1  0  0 ]    0 
-							[ 1  1  0  1 ]    0
-	                                                [ 1  1  1  0 ]    0
-							[ 1  1  1  1 ]]   1
+                       'q0_0', 'Circ_Input' <-----.         .------> 'q1_0_out', 'Circ_Output'
+                                                   \       /                                          
+                       'q1_0', 'Circ_Input' <----.  \     /   .----> 'q0_0_out', 'Circ_Output'
+                                                  \  \   /   /
+				               [[ 0  0  0  0 ]    1 
+	        				[ 0  0  0  1 ]    0
+					        [ 0  0  1  0 ]    0
+			 		        [ 0  0  1  1 ]    0
+                                                [ 0  1  0  0 ]    0
+                                                [ 0  1  0  1 ]    1
+ 	truthtable.graycode as initialized -->  [ 0  1  1  0 ]    0  <-- values of truthtable.outputs  
+						[ 0  1  1  1 ]    0       correponding to grey code rows
+                                                [ 1  0  0  0 ]    0
+    					        [ 1  0  0  1 ]    0
+						[ 1  0  1  0 ]    1
+ 				                [ 1  0  1  1 ]    0
+                                                [ 1  1  0  0 ]    0 
+						[ 1  1  0  1 ]    0
+                                                [ 1  1  1  0 ]    0
+						[ 1  1  1  1 ]]   1
 
 
-2) Gate operations modify values truthtable.output. They are currently implemented in converter/qiskit/extension/standard/x.py,  
-   cx.py. ccx.py, etc. but in the future, these scripts will just serve to append the instruction to a list (specifically, 
-   QuantumCircuit.data) so that they can be carried out after the truthtable is reduced.
+2) Gate operations modify values truthtable.output. They are currently implemented in 
+   converter/qiskit/extension/standard/x.py, cx.py. ccx.py, etc. but in the future, these scripts will just 
+   serve to append the instruction to a list (specifically, QuantumCircuit.data) so that they can be carried 
+   out after the truthtable is reduced.
 	
         from converter.qiskit import QuantumCircuit
         from converter.qiskit import ClassicalRegister, QuantumRegister,
