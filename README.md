@@ -1,6 +1,6 @@
 # QuantumProject
 Notes:
- - You need to set PYTHONPATH to QuantumProject directory to run examples/tests
+ - Set PYTHONPATH to QuantumProject directory to run examples/tests
    export PYTHONPATH=$(pwd)
  - Solver currently prints out alot of stuff for debugging
 
@@ -10,6 +10,10 @@ The following describes how these scripts generate a lump adiabatic encoding fro
 
 1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. Added to quantum circuit in 
    converter/qiskit/_quantumcircuit.py. truthtable class implemented in converter/qiskit/get_adiabatic_encoding.py
+
+	from converter.qiskit import QuantumCircuit 
+        from converter.qiskit import ClassicalRegister, QuantumRegister, 
+	from converter.qiskit import execute
 
 	qr0 = QuantumRegister(1)
 	qr1 = QuantumRegister(1)
@@ -27,12 +31,12 @@ The following describes how these scripts generate a lump adiabatic encoding fro
 											inputbits and the right half columns are output bits.
 								qc.truthtable.graycode = gray code as a numpy array with (2 ** truthtable.numinputs) rows and
 											(truthtable.numinputs) columns. this is used in routines that modify
-											truthtable.output such as gate functions and truthtale reduction. However,
+											truthtable.output such as gate functions and truthtable reduction. However,
 											it is inefficient and will be eliminated once better gate and reduction
 											routines are implemented
 
                                                                                            
-                                                                      'q0_0',  'Circ_Input' <-----.         .------> 'q1_0_out', 'Circ_Output'
+                                                                       'q0_0', 'Circ_Input' <-----.         .------> 'q1_0_out', 'Circ_Output'
                                                                                                    \       /                                          
                                                                        'q1_0', 'Circ_Input' <----.  \     /   .----> 'q0_0_out', 'Circ_Output'
                                                                                                   \  \   /   /
@@ -57,6 +61,10 @@ The following describes how these scripts generate a lump adiabatic encoding fro
 2) Gate operations modify values truthtable.output. They are currently implemented in converter/qiskit/extension/standard/x.py, cx.py. ccx.py, etc. but in the future,
    these scripts will just serve to append the instruction to a list (specifically, QuantumCircuit.data) so that they can be carried out after the truthtable is reduced.
 	
+        from converter.qiskit import QuantumCircuit
+        from converter.qiskit import ClassicalRegister, QuantumRegister,
+        from converter.qiskit import execute
+
 	qr0 = QuantumRegister(1)
         qr1 = QuantumRegister(1)
         cr0 = ClassicalRegister(1)
@@ -88,6 +96,10 @@ The following describes how these scripts generate a lump adiabatic encoding fro
    for determining which bits will be considered ancillas and eliminated from the truthtable. ie any bit with type 'Circ_Output' that isn't measured  will be recast
    as type 'Ancilla' when execute is called.
 
+        from converter.qiskit import QuantumCircuit
+        from converter.qiskit import ClassicalRegister, QuantumRegister,
+        from converter.qiskit import execute
+
         qr0 = QuantumRegister(1)
         qr1 = QuantumRegister(1)
         cr0 = ClassicalRegister(1)
@@ -100,12 +112,29 @@ The following describes how these scripts generate a lump adiabatic encoding fro
 	qc.measure(qr1,cr1)  ---------------->  in converter/qiskit/_measure.py the only
                                                 significant thing that happens is: 
                                                     
-                                                                  qc.data.append('qr1_0_out')
+                                                                  qc.data.append('q1_0_out')
 
 5) execute() is implemented in converter/qiskit/tools/_compiler.py. execute() first recasts bits not measured as ancillas and reduces the truth table accordingly
    as mentioned above. reduce_truthtable() is implemented as a class method of truthtable in converter/qiskit/get_adiabatic_encoding.py
 
-       'q0_0',  'Circ_Input' <-----.         .------> 'q1_0_out', 'Circ_Output'
+        from converter.qiskit import QuantumCircuit
+        from converter.qiskit import ClassicalRegister, QuantumRegister,
+        from converter.qiskit import execute
+
+        qr0 = QuantumRegister(1)
+        qr1 = QuantumRegister(1)
+        cr0 = ClassicalRegister(1)
+        cr1 = ClassicalRegister(1)
+
+        qc = QuantumRegister(qr0,qr1,cr0,cr1)
+
+        qc.cx(qr0[0],qr1[0])
+
+        qc.measure(qr1,cr1)
+
+	execute(qc)
+
+        'q0_0', 'Circ_Input' <-----.         .------> 'q1_0_out', 'Circ_Output'
                                     \       /
         'q1_0', 'Circ_Input' <----.  \     /   .----> 'q0_0_out', 'Ancilla' <--- Type change
                                    \  \   /   /                                  so it can be
