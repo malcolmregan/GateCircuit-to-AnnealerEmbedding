@@ -2,7 +2,7 @@
 ```
 Notes:
  - Set PYTHONPATH to QuantumProject directory to run examples/tests
-   export PYTHONPATH=$(pwd)
+   ~/path/to/QuantumProject$ export PYTHONPATH=$(pwd)
 
 General Description:
 The following describes how these scripts generate a lump adiabatic encoding from a gate circuit through 
