@@ -187,9 +187,9 @@ an example of the XOR function
     in converter/qiskit/get_annealer_encoding.py 
 
 7) This list of inequalities is then passed to the solver. The solver works by extracting symbols and their 
-   constraints from the equations, and iterating over the constraints to determine the bounds of the 
-   symbols. When bounds converge a value is picked for the symbol having a constraint composed of the 
-   least amount of unknown symbols and the smallest bounds. After a value is picked, the constraints of 
+   constraints from the equations, and iterating over the constraints to tighten the bounds of the 
+   symbols. When bounds converge, a value is picked for the symbol having a constraint composed of the 
+   least amount of unknown symbols and the tightest bounds. After a value is picked, the constraints of 
    all symbols are iterated over again and their bounds are tightened further. This is repeated until all 
    symbols have values.
 
@@ -200,7 +200,9 @@ an example of the XOR function
    This can be continued until all output ones are on rows corresponding to 1's of different ancillas.
 
    This works well for smaller systems of inequalities or simpler large systems of inequalities but does not 
-   work on larger, more complicated systems yet. Once solved the qubit and coupler weights are reported:
+   work on larger, more complicated systems yet. The solver still needs alot of work.
+   
+   Once the system is solved, qubit and coupler weights are reported:
 		
 		Annealer Encoding:
 			w3 	 40.7 	 
