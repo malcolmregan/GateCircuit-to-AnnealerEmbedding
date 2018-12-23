@@ -1,4 +1,4 @@
-# Lump Adiabatic Encoding from Quantum Gate Circuit
+# Lump Quantum Annealer Encoding from Quantum Gate Circuit
 ```
 Notes:
  - Set PYTHONPATH to QuantumProject directory to run examples/tests
@@ -150,10 +150,10 @@ an example of the XOR function
                   \       /
    'q1_0', <----.  \     /   .----> 'q0_0_out', 'Ancilla' <-. 
  'Circ_Input'    \  \   /   /         .---------------------'  
-               [[ 0  0  0  0 ]    1   '-> Type change                      .-------> 'q0_0', 'Circ_Input'
-                [ 0  0  0  1 ]    0       so it can be                    / .------> 'q1_0', 'Circ_Input'
-                [ 0  0  1  0 ]    0       identified in                  / / .-----> 'q1_0_out',
-                [ 0  0  1  1 ]    0       reduce_truthtable()           / / /        'Circ_Output'
+               [[ 0  0  0  0 ]    1   '-> Type change                     .-------> 'q0_0', 'Circ_Input'
+                [ 0  0  0  1 ]    0       so it can be                   / .------> 'q1_0', 'Circ_Input'
+                [ 0  0  1  0 ]    0       identified in                 / / .-----> 'q1_0_out',
+                [ 0  0  1  1 ]    0       reduce_truthtable()          / / /        'Circ_Output'
                 [ 0  1  0  0 ]    0                                [[ 0 0 0 ]    1
                 [ 0  1  0  1 ]    1                                 [ 0 0 1 ]    0
                 [ 0  1  1  0 ]    0                                 [ 0 1 0 ]    0
@@ -186,7 +186,7 @@ an example of the XOR function
     The system of inequalities is generated as a list of strings by the get_ineq_from_truthtable() function
     in converter/qiskit/get_annealer_encoding.py 
 
-7) This list of inequalities is then passed to the solver. The solver works by extracting symbols their 
+7) This list of inequalities is then passed to the solver. The solver works by extracting symbols and their 
    constraints from the equations, and iterating over the constraints to determine the bounds of the 
    symbols. When bounds converge a value is picked for the symbol having a constraint composed of the 
    least amount of unknown symbols and the smallest bounds. After a value is picked, the constraints of 
