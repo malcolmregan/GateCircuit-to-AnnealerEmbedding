@@ -1,4 +1,5 @@
-# QuantumProject
+# Lump Adiabatic Encoding from Quantum Gate Circuit
+```bash
 Notes:
  - Set PYTHONPATH to QuantumProject directory to run examples/tests
    export PYTHONPATH=$(pwd)
@@ -228,3 +229,4 @@ TODO:
 		- Investigate how fourier transform of output column changes under gate operations
 	- Perform truthtable reduction before gate operations. As currently implemented, gate operations are very costly
 3) Write script in execute() that creates dwave script with the encoding that was found
+```
