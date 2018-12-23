@@ -184,10 +184,10 @@ of the XOR function
     converter/qiskit/get_annealer_encoding.py 
 
 7) This list of inequalities is then passed to the solver. The solver works by extracting symbols their constraints from the 
-   equations, iterating over the constraints to determine the bounds of the symbols. When bounds converge a value is picked for   
-   the symbol having a constraint composed of the least amount of unknown symbols and the smalls bounds. After a value is pick 
-   the constraints of all symbols are iterated over and their bounds are tightened further. This is repeated until all symbols 
-   have values.
+   equations, and iterating over the constraints to determine the bounds of the symbols. When bounds converge a value is picked 
+   for the symbol having a constraint composed of the least amount of unknown symbols and the smallest bounds. After a value is 
+   picked, the constraints of all symbols are iterated over again and their bounds are tightened further. This is repeated until 
+   all symbols have values.
 
    If a valid solution cannot be found, as in the case of the 3-bit XOR truthtable above, an ancilla is added. All 1's in the 
    output are place on ancilla 0's except for the last 1 in the output which is placed on an ancilla 1. If the system still 
@@ -240,7 +240,7 @@ TODO:
 1) Get solver into a place where it can determine in one shot if system is solvable or not (hopefully in correct implementation, 
    disjoint bounds will be the indicator of an unsolvable system)
 2) Truthtable attribute of QuantumCircuit class gets too massive for even moderately sized circuits
-	- Find out how gate operations and truthtable reduction affect output column without the crutch of the truthtable
+	- Find out how to do gate operations and truthtable reduction affect output column without the crutch of the gray code
 		- Investigate how fourier transform of output column changes under gate operations
 	- Perform truthtable reduction before gate operations. As currently implemented, gate operations are very costly
 3) Write script in execute() that creates dwave script with the encoding that was found
