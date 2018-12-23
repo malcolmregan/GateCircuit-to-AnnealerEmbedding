@@ -211,7 +211,7 @@ def update_bounds(syms):
  
                 inter = intersection(sym.bounds, RHSbound, rel=relation)
                 if inter == 'disjoint':
-                    print('disjoint:', sym.name, sym.bounds, constraint['relation'], constraint['expression'], RHSbound)
+                    #print('disjoint bounds:', sym.name, sym.bounds, constraint['relation'], constraint['expression'], RHSbound)
                     sym.isdisjointwithsys = True
                     return
 
@@ -223,7 +223,7 @@ def update_bounds(syms):
                     if relation == '>':
                         sym.updatebounds(inter[0], sym.bounds[1])
                 
-                print(sym.name, sym.bounds, constraint['relation'], constraint['expression'], RHSbound)
+                #print(sym.name, sym.bounds, constraint['relation'], constraint['expression'], RHSbound)
     
     return
 
@@ -276,7 +276,7 @@ def pick_value(syms):
     val = round(uniform(sym.bounds[0]+offset,sym.bounds[1]-offset),1)
     sym.updatebounds(val,val)
     
-    print("value picked for {}: {}".format(sym.name,sym.value))
+    #print("value picked for {}: {}".format(sym.name,sym.value))
     return
 
 def determine_symbol_values(syms):
@@ -287,18 +287,18 @@ def determine_symbol_values(syms):
         if check == False:
             system_solved = False
 
-    print("After first bound tightening\n\tNew bounds:")
-    for sym in syms:
-        print("\t\t",sym.name, sym.bounds)
-    print("\n")
+    #print("After first bound tightening\n\tNew bounds:")
+    #for sym in syms:
+    #    print("\t\t",sym.name, sym.bounds)
+    #print("\n")
 
     while system_solved == False:
         pick_value(syms)
         tighten_bounds(syms)
-        print("\tNew bounds:")
-        for sym in syms:
-            print("\t\t",sym.name, sym.bounds)
-        print("\n")
+        #print("\tNew bounds:")
+        #for sym in syms:
+        #    print("\t\t",sym.name, sym.bounds)
+        #print("\n")
 
         system_solved = True
         for sym in syms:
@@ -310,10 +310,10 @@ def determine_symbol_values(syms):
 
 def solve(sys_ineq):
     syms = extract_symbols(sys_ineq)
-    print("After symbol initialization\n\tBounds:")
-    for sym in syms:
-        print("\t\t",sym.name, sym.bounds)
-    print("\n")
+    #print("After symbol initialization\n\tBounds:")
+    #for sym in syms:
+    #    print("\t\t",sym.name, sym.bounds)
+    #print("\n")
 
     determine_symbol_values(syms)
 

@@ -73,19 +73,29 @@ def execute(circuit, backend=None,
     ancillas = [x for x in circoutputnames if x not in measuredqubits]
     ancidx = [i for i, x in enumerate(circuit.truthtable.inputnames) if x in ancillas]
 
+    
+
     for idx in ancidx:
         circuit.truthtable.inputtypes[idx] = 'Ancilla'
 
     #for i in range(len(circuit.truthtable.outputs)):
     #    print(circuit.truthtable.graycode[i], circuit.truthtable.outputs[i])
     #print("\n")
-
+    
+    beforelen = circuit.truthtable.numinputs
     circuit.truthtable.reduce_truthtable()
+    afterlen = circuit.truthtable.numinputs
 
     #for i in range(len(circuit.truthtable.outputs)):
     #    print(circuit.truthtable.graycode[i], circuit.truthtable.outputs[i])
     #print("\n")
     #print(circuit.truthtable.inputnames)
+
+    if afterlen < beforelen:
+        if beforelen - afterlen == 1:
+            print("Truthtable reduced: 1 ancilla removed")
+        else:
+            print("Truthtable reduced: {} ancillas removed".format(beforelen - afterlen))
 
 
     trutab = circuit.truthtable
@@ -93,6 +103,9 @@ def execute(circuit, backend=None,
 
     stop = False
     count = 0
+    maxcount = 500
+    reportsteps = 100
+
     while stop == False:
         symbols = solve(eqns)
         correct = evaluate_sys(eqns, symbols)
@@ -104,8 +117,9 @@ def execute(circuit, backend=None,
         if truecount == len(correct):
             stop = True
         count = count + 1
-        print(count)
-        if count == 500:
+        if count % reportsteps == 0:
+            print("{}/{} attempts made to solve".format(count, maxcount))
+        if count == maxcount:
             yn = 'x'
             while yn is not 'y' and yn is not 'n':
                 yn = input("Couldn't find solution. Add Ancilla? (y/n) ")
@@ -116,11 +130,11 @@ def execute(circuit, backend=None,
                 if yn is 'n':
                     stop = True
 
-    print("Count = {}".format(count))
+    #print("Count = {}".format(count))
 
     print("\nAnnealer Encoding:")
     for symbol in symbols:
-        print(symbol.name, "\t", symbol.value, "\t", symbol.isknown)
+        print(symbol.name, "\t", symbol.value)
     print("\nCheck:")
     for i in range(len(eqns)):
         print(correct[i]['valid'], "\t-\t", eqns[i])

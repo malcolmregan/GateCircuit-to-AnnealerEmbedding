@@ -257,7 +257,7 @@ def main():
         if truecount == len(correct):
             stop = True
         count = count + 1
-        #print(count)
+        print("{}/1000 attempts made to solve".format(count))
         if count == 1000:
             yn = 'x'
             while yn is not 'y' and yn is not 'n':
