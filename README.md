@@ -6,11 +6,12 @@ Notes:
  - Solver (solve_sys_multivar_ineq.py) currently prints out alot of stuff for debugging
 
 General Description:
-The following describes how these scripts generate a lump adiabatic encoding from a gate circuit through an example 
-of the XOR function
+The following describes how these scripts generate a lump adiabatic encoding from a gate circuit through 
+an example of the XOR function
 
-1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. Added to quantum circuit in 
-   converter/qiskit/_quantumcircuit.py. truthtable class implemented in converter/qiskit/get_adiabatic_encoding.py
+1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. Added 
+to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented in 
+converter/qiskit/get_adiabatic_encoding.py
 
 	from converter.qiskit import QuantumCircuit 
         from converter.qiskit import ClassicalRegister, QuantumRegister, 
@@ -22,22 +23,22 @@ of the XOR function
 	cr1 = ClassicalRegister(1)
 	
 	qc = QuantumRegister(qr0,qr1,cr0,cr1) ----.
-						  |
-						 \|/ 
-				In this case, when QuantumRegister is called its truthtable
-				attribute is initialized as follows:
-					qc.truthtable.numinputs = 4 (2 for input and 2 for output)
-					qc.truthtable.inputnames = ['q1_0','q0_0','q1_0_out','q0_0_out']
-					qc.truthtable.inputtypes = ['Circ_Input','Circ_Input','Circ_Output','Circ_Output']
-					qc.truthtable.outputs = numpy vector of length (2 ** truthtable.numinputs) 
-								it is initialized with 1's in positions where input bits are
-								equal to output bits in the graycode. The left half columns are
-								inputbits and the right half columns are output bits.
-								qc.truthtable.graycode = gray code as a numpy array with 
-								(2 ** truthtable.numinputs) rows and (truthtable.numinputs)
-								columns. this is used in routines that modify
-								truthtable.output such as gate functions and truthtable
-								reduction. However, it is inefficient and will be eliminated once
+	   .--------------------------------------'				  
+	   |					 
+	   '-->	In this case, when QuantumRegister is called its truthtable
+		attribute is initialized as follows:
+			qc.truthtable.numinputs = 4 (2 for input and 2 for output)			
+			qc.truthtable.inputnames = ['q1_0','q0_0','q1_0_out','q0_0_out']
+			qc.truthtable.inputtypes = ['Circ_Input','Circ_Input','Circ_Output','Circ_Output']
+			qc.truthtable.outputs = numpy vector of length (2 ** truthtable.numinputs) 
+						it is initialized with 1's in positions where input bits are
+						equal to output bits in the graycode. The left half columns are
+						inputbits and the right half columns are output bits.
+						qc.truthtable.graycode = gray code as a numpy array with 
+						(2 ** truthtable.numinputs) rows and (truthtable.numinputs)
+						columns. this is used in routines that modify
+						truthtable.output such as gate functions and truthtable
+						reduction. However, it is inefficient and will be eliminated once
 								better gate and reduction routines are implemented
 
                                                                                            
