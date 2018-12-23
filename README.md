@@ -85,26 +85,27 @@ converter/qiskit/get_adiabatic_encoding.py
              '---> Before cx:                       After cx:
                                           
                       [[ 0  0  0  0 ]    1            [[ 0  0  0  0 ]    1
-                       [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0       Positions of 1's in  
-                       [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0       truthtable.output are changed
-                       [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0       in positions where the 
-                       [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0       control bit ('q0_0_out')
-                       [ 0  1  0  1 ]    1 <---.       [ 0  1  0  1 ]    0	 is one. They are moved to
-                       [ 0  1  1  0 ]    0      \      [ 0  1  1  0 ]    0       positions where rows of
-                       [ 0  1  1  1 ]    0       '---> [ 0  1  1  1 ]    1       truthtable.graycode are
-                       [ 1  0  0  0 ]    0             [ 1  0  0  0 ]    0       identical in all bits except
-                       [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0       the target bit ('q1_0_out').
+                       [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0     Positions of 1's in  
+                       [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0     truthtable.output are changed
+                       [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0     in positions where the 
+                       [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0     control bit ('q0_0_out')
+                       [ 0  1  0  1 ]    1 <---.       [ 0  1  0  1 ]    0     is one. They are moved to
+                       [ 0  1  1  0 ]    0      \      [ 0  1  1  0 ]    0     positions where rows of
+                       [ 0  1  1  1 ]    0       '---> [ 0  1  1  1 ]    1     truthtable.graycode are
+                       [ 1  0  0  0 ]    0             [ 1  0  0  0 ]    0     identical in all bits except
+                       [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0     the target bit ('q1_0_out').
                        [ 1  0  1  0 ]    1             [ 1  0  1  0 ]    1
-                       [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0       Similar routines are 
-                       [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0       implemented to other gates.
+                       [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0     Similar routines are 
+                       [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     implemented to other gates.
                        [ 1  1  0  1 ]    0             [ 1  1  0  1 ]    0
                        [ 1  1  1  0 ]    0       .---> [ 1  1  1  0 ]    1
                        [ 1  1  1  1 ]]   1 <----'      [ 1  1  1  1 ]]   0
 
 
-3) Calling measure appends the measure instruction to a list (specifically, QuantumCircuit.data) so that it can be known when 
-   execute() is called. This is necessary for determining which bits will be considered ancillas and eliminated from the 
-   truthtable. ie any bit with type 'Circ_Output' that isn't measured  will be recast as type 'Ancilla' when execute is called.
+3) Calling measure appends the measure instruction to a list (specifically, QuantumCircuit.data) so that it 
+   can be known when execute() is called. This is necessary for determining which bits will be considered 
+   ancillas and eliminated from the truthtable. ie any bit with type 'Circ_Output' that isn't measured will 
+   be recast as type 'Ancilla' when execute is called.
 
         from converter.qiskit import QuantumCircuit
         from converter.qiskit import ClassicalRegister, QuantumRegister,
