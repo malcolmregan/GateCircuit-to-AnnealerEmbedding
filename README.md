@@ -1,11 +1,11 @@
 # Lump Quantum Annealer Encoding from Quantum Gate Circuit
 ```
 Notes:
- - Set PYTHONPATH to QuantumProject directory to run examples/tests
+ - Set PYTHONPATH to QuantumProject directory to run examples
    ~/path/to/QuantumProject$ export PYTHONPATH=$(pwd)
 
 General Description:
-The following describes how these scripts generate a lump adiabatic encoding from a gate circuit through 
+The following describes how these scripts generate a lump annealer encoding from a gate circuit through 
 an example of the XOR function
 
 1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. Added 
