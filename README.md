@@ -52,7 +52,7 @@ an example of the XOR function
                                                 [ 0  1  0  0 ]    0
                                                 [ 0  1  0  1 ]    1
  	truthtable.graycode as initialized -->  [ 0  1  1  0 ]    0  <-- values of truthtable.outputs  
-						[ 0  1  1  1 ]    0      corresponding to grey code rows
+						[ 0  1  1  1 ]    0      corresponding to gray code rows
                                                 [ 1  0  0  0 ]    0
     					        [ 1  0  0  1 ]    0
 						[ 1  0  1  0 ]    1
