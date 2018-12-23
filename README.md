@@ -95,7 +95,7 @@ an example of the XOR function
                        [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0     the target bit ('q1_0_out').
                        [ 1  0  1  0 ]    1             [ 1  0  1  0 ]    1
                        [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0     Similar routines are 
-                       [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     implemented to other gates.
+                       [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     implemented for other gates.
                        [ 1  1  0  1 ]    0       .---> [ 1  1  0  1 ]    1
                        [ 1  1  1  0 ]    0      /      [ 1  1  1  0 ]    0
                        [ 1  1  1  1 ]]   1 <---'       [ 1  1  1  1 ]]   0
