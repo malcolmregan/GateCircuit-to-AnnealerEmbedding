@@ -253,5 +253,5 @@ TODO:
 
 3) Write script in execute() that creates dwave script with the encoding that was found
 
-4) Need to implement fredkin and swap gates.
+4) Implement Fredkin and swap gates.
 ```
