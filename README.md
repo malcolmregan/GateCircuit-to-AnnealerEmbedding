@@ -188,11 +188,11 @@ converter/qiskit/get_adiabatic_encoding.py
     in converter/qiskit/get_annealer_encoding.py 
 
 7) This list of inequalities is then passed to the solver. The solver works by extracting symbols their 
-   constraints from the equations, and iterating over the constraints to determine the bounds of the symbols. 
-   When bounds converge a value is picked for the symbol having a constraint composed of the least amount of 
-   unknown symbols and the smallest bounds. After a value is picked, the constraints of all symbols are 
-   iterated over again and their bounds are tightened further. This is repeated until all symbols have 
-   values.
+   constraints from the equations, and iterating over the constraints to determine the bounds of the 
+   symbols. When bounds converge a value is picked for the symbol having a constraint composed of the 
+   least amount of unknown symbols and the smallest bounds. After a value is picked, the constraints of 
+   all symbols are iterated over again and their bounds are tightened further. This is repeated until all 
+   symbols have values.
 
    If a valid solution cannot be found, as in the case of the 3-bit XOR truthtable above, an ancilla is 
    added. All 1's in the output are place on ancilla 0's except for the last 1 in the output which is placed 
