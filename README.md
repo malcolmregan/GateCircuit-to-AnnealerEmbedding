@@ -30,15 +30,15 @@ an example of the XOR function
 			qc.truthtable.inputnames = ['q1_0','q0_0','q1_0_out','q0_0_out']
 			qc.truthtable.inputtypes = ['Circ_Input','Circ_Input','Circ_Output','Circ_Output']
 			qc.truthtable.outputs = numpy vector of length (2 ** truthtable.numinputs) 
-						it is initialized with 1's in positions where input bits are
+						It is initialized with 1's in positions where input bits are
 						equal to output bits in the graycode. The left half columns 
-						are inputbits and the right half columns are output bits.
-						qc.truthtable.graycode = gray code as a numpy array with 
-						(2 ** truthtable.numinputs) rows and (truthtable.numinputs)
-						columns. this is used in routines that modify 
-						truthtable.output such as gate functions and truthtable 
-						reduction. However, it is inefficient and will be eliminated 
-						once better gate and reduction routines are implemented
+						are input bits and the right half columns are output bits.
+			qc.truthtable.graycode = Gray code as a numpy array with (2 ** truthtable.numinputs) 
+						rows and (truthtable.numinputs) columns. This is used in 
+						routines that modify truthtable.output such as gate 
+						functions and truthtable reduction. However, it is 
+						inefficient and will be eliminated once better gate and 
+						reduction routines are implemented
 
                                                                                            
                        'q0_0', 'Circ_Input' <-----.         .------> 'q1_0_out', 'Circ_Output'
