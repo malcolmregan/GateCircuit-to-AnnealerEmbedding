@@ -96,9 +96,9 @@ an example of the XOR function
                        [ 1  0  1  0 ]    1             [ 1  0  1  0 ]    1
                        [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0     Similar routines are 
                        [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     implemented to other gates.
-                       [ 1  1  0  1 ]    0             [ 1  1  0  1 ]    0
-                       [ 1  1  1  0 ]    0       .---> [ 1  1  1  0 ]    1
-                       [ 1  1  1  1 ]]   1 <----'      [ 1  1  1  1 ]]   0
+                       [ 1  1  0  1 ]    0       .---> [ 1  1  0  1 ]    1
+                       [ 1  1  1  0 ]    0      /      [ 1  1  1  0 ]    0
+                       [ 1  1  1  1 ]]   1 <---'       [ 1  1  1  1 ]]   0
 
 
 3) Calling measure appends the measure instruction to a list (specifically, QuantumCircuit.data) so that it 
@@ -155,17 +155,17 @@ an example of the XOR function
                 [ 0  0  1  0 ]    0       identified in                 / / .-----> 'q1_0_out',
                 [ 0  0  1  1 ]    0       reduce_truthtable()          / / /        'Circ_Output'
                 [ 0  1  0  0 ]    0                                [[ 0 0 0 ]    1
-                [ 0  1  0  1 ]    1                                 [ 0 0 1 ]    0
+                [ 0  1  0  1 ]    0                                 [ 0 0 1 ]    0
                 [ 0  1  1  0 ]    0                                 [ 0 1 0 ]    0
-                [ 0  1  1  1 ]    0                                 [ 0 1 1 ]    1
+                [ 0  1  1  1 ]    1                                 [ 0 1 1 ]    1
                 [ 1  0  0  0 ]    0 ----- reduce_truthtable() ----> [ 1 0 0 ]    0 
                 [ 1  0  0  1 ]    0                                 [ 1 0 1 ]    1
                 [ 1  0  1  0 ]    1                                 [ 1 1 0 ]    1
                 [ 1  0  1  1 ]    0                                 [ 1 1 1 ]]   0
                 [ 1  1  0  0 ]    0
-                [ 1  1  0  1 ]    0
+                [ 1  1  0  1 ]    1
                 [ 1  1  1  0 ]    0
-                [ 1  1  1  1 ]]   1
+                [ 1  1  1  1 ]]   0
 
 	If the ancilla bit to be removed is not in the least significant position elements of 
 	truthtable.inputnames, truthtable.inputtypes, and truthtable.outputs are adjusted until it is. 
