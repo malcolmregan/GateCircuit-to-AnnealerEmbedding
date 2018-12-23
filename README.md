@@ -81,22 +81,22 @@ converter/qiskit/get_adiabatic_encoding.py
         qc = QuantumRegister(qr0,qr1,cr0,cr1)  
 
 	qc.cx(qr0[0],qr1[0]) 
-	              
-		  Before cx:                       After cx:
+	    \          
+             '---> Before cx:                       After cx:
                                           
                       [[ 0  0  0  0 ]    1            [[ 0  0  0  0 ]    1
-                       [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0       Positions of 1's in truthable.output are 
-                       [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0       changed where if the control bit ('q0_0_out')
-                       [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0       if one.
-                       [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0
-                       [ 0  1  0  1 ]    1 <---.       [ 0  1  0  1 ]    0	  They are moved to positions where rows of
-                       [ 0  1  1  0 ]    0      \      [ 0  1  1  0 ]    0       truthtable.graycode are identical in all bits
-                       [ 0  1  1  1 ]    0       '---> [ 0  1  1  1 ]    1       except the target bit ('q1_0_out')
-                       [ 1  0  0  0 ]    0             [ 1  0  0  0 ]    0
-                       [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0       Similar routines are implemented for other gates
+                       [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0       Positions of 1's in  
+                       [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0       truthtable.output are changed
+                       [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0       in positions where the 
+                       [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0       control bit ('q0_0_out')
+                       [ 0  1  0  1 ]    1 <---.       [ 0  1  0  1 ]    0	 is one. They are moved to
+                       [ 0  1  1  0 ]    0      \      [ 0  1  1  0 ]    0       positions where rows of
+                       [ 0  1  1  1 ]    0       '---> [ 0  1  1  1 ]    1       truthtable.graycode are
+                       [ 1  0  0  0 ]    0             [ 1  0  0  0 ]    0       identical in all bits except
+                       [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0       the target bit ('q1_0_out').
                        [ 1  0  1  0 ]    1             [ 1  0  1  0 ]    1
-                       [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0
-                       [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0
+                       [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0       Similar routines are 
+                       [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0       implemented to other gates.
                        [ 1  1  0  1 ]    0             [ 1  1  0  1 ]    0
                        [ 1  1  1  0 ]    0       .---> [ 1  1  1  0 ]    1
                        [ 1  1  1  1 ]]   1 <----'      [ 1  1  1  1 ]]   0
@@ -238,7 +238,6 @@ converter/qiskit/get_adiabatic_encoding.py
 8) *Not yet implemented* Last, a script which runs the found encoding on an annealer will be written by execute().
 
 TODO:
-
 1) Get solver into a place where it can determine in one shot if system is solvable or not (hopefully in correct implementation, 
    disjoint bounds will be the indicator of an unsolvable system)
 2) Truthtable attribute of QuantumCircuit class gets too massive for even moderately sized circuits
@@ -246,4 +245,5 @@ TODO:
 		- Investigate how fourier transform of output column changes under gate operations
 	- Perform truthtable reduction before gate operations. As currently implemented, gate operations are very costly
 3) Write script in execute() that creates dwave script with the encoding that was found
+4) Need to implement fredkin and swap gates.
 ```
