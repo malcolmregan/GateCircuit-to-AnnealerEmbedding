@@ -80,9 +80,9 @@ an example of the XOR function
         qc = QuantumRegister(qr0,qr1,cr0,cr1)  
 
 	qc.cx(qr0[0],qr1[0]) 
-	    \          
-             '---> Before cx:                       After cx:
-                                          
+	    \                                                     .----------> Target bit 'q1_0_out'
+             '---> Before cx:                       After cx:    /  .--------> Control bit 'q0_0_out'
+                                                                /  /
                       [[ 0  0  0  0 ]    1            [[ 0  0  0  0 ]    1
                        [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0     Positions of 1's in  
                        [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0     truthtable.output are changed
