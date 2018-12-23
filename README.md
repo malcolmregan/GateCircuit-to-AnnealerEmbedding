@@ -10,7 +10,7 @@ an example of the XOR function
 
 1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. Added 
    to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented in 
-   converter/qiskit/get_adiabatic_encoding.py
+   converter/qiskit/get_annealer_encoding.py
 
 	from converter.qiskit import QuantumCircuit 
         from converter.qiskit import ClassicalRegister, QuantumRegister, 
@@ -126,7 +126,7 @@ an example of the XOR function
 
 5) execute() is implemented in converter/qiskit/tools/_compiler.py. execute() first recasts bits not 
    measured as ancillas and reduces the truth table accordingly as mentioned above. reduce_truthtable() 
-   is implemented as a class method of truthtable in converter/qiskit/get_adiabatic_encoding.py
+   is implemented as a class method of truthtable in converter/qiskit/get_annealer_encoding.py
 
         from converter.qiskit import QuantumCircuit
         from converter.qiskit import ClassicalRegister, QuantumRegister,
