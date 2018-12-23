@@ -1,5 +1,5 @@
 # Lump Adiabatic Encoding from Quantum Gate Circuit
-```bash
+```
 Notes:
  - Set PYTHONPATH to QuantumProject directory to run examples/tests
    export PYTHONPATH=$(pwd)
