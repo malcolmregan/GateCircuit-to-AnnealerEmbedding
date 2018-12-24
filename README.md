@@ -3,6 +3,7 @@
 -----------------------------------------------------------------------------------------------------
 GENERAL NOTES
 -----------------------------------------------------------------------------------------------------
+ 
  - Set PYTHONPATH to Lump-Annealer-Encoding-From-Gate-Circuit/logical directory or
    Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere directory to run corresponding examples
    
@@ -11,12 +12,13 @@ GENERAL NOTES
 -----------------------------------------------------------------------------------------------------
 CONTENTS
 -----------------------------------------------------------------------------------------------------
-   I) Gate circuit-to-annealer ecnoding by way of intermediate logical truth table representation 
-   	  - Covers implementation through an example of a simple XOR function
+
+   I) Gate circuit-to-lump annealer encoding by way of intermediate logical truth table 
+      representation
+   	  - Covers implementation through an example of an XNOR function
 	  - TODO list
 	
-   II) Gate circuit-to-annealer encoding by way of intermediate bloch sphere truth table 
-       representation
+   II) Bloch sphere truth table representation of qubit
    	  - Notes and ideas on this approach
 	  - TODO list for implementation of this approach
 	  
@@ -27,9 +29,14 @@ CONTENTS
 -----------------------------------------------------------------------------------------------------
 (I) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE LOGICAL TRUTH TABLE REPRESENTATION
 -----------------------------------------------------------------------------------------------------
-    
+
+This approach will be unable to scale to any practical circuit, as practical circuits often 
+require upwards of 100 qubits. Clearly, solving a system of 2**100 inequalities is infeasible.
+However, the classes and functions used to implement this approach will hopefully be useful
+in the later part of this project, discussed in sections II and III.
+
 The following describes how this approach generate a lump annealer encoding from a gate circuit 
-through an example of the XOR function. Note: file locations are described assuming the base
+through an example of the XNOR function. Note: file locations are described assuming the base
 directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
 
 1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. 
@@ -45,8 +52,8 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
 	cr0 = ClassicalRegister(1)
 	cr1 = ClassicalRegister(1)
 	
-	qc = QuantumRegister(qr0,qr1,cr0,cr1) ----.
-	   .--------------------------------------'				  
+	qc = QuantumCircuit(qr0,qr1,cr0,cr1) ----.
+	   .-------------------------------------'				  
 	   |					 
 	   '-->	In this case, when QuantumRegister is called its truthtable
 		attribute is initialized as follows:
@@ -101,30 +108,51 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
         cr0 = ClassicalRegister(1)
         cr1 = ClassicalRegister(1)
 
-        qc = QuantumRegister(qr0,qr1,cr0,cr1)  
-
-	qc.cx(qr0[0],qr1[0]) 
-	    \                                                     .----------> Target bit 'q1_0_out'
-             '---> Before cx:                       After cx:    /  .--------> Control bit 'q0_0_out'
-                                                                /  /
-                      [[ 0  0  0  0 ]    1            [[ 0  0  0  0 ]    1
-                       [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0     Positions of 1's in  
-                       [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0     truthtable.output are changed
-                       [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0     in positions where the 
-                       [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0     control bit ('q0_0_out')
-                       [ 0  1  0  1 ]    1 <---.       [ 0  1  0  1 ]    0     is one. They are moved to
-                       [ 0  1  1  0 ]    0      \      [ 0  1  1  0 ]    0     positions where rows of
-                       [ 0  1  1  1 ]    0       '---> [ 0  1  1  1 ]    1     truthtable.graycode are
-                       [ 1  0  0  0 ]    0             [ 1  0  0  0 ]    0     identical in all bits except
-                       [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0     the target bit ('q1_0_out').
-                       [ 1  0  1  0 ]    1             [ 1  0  1  0 ]    1
-                       [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0     Similar routines are 
-                       [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     implemented for other gates.
-                       [ 1  1  0  1 ]    0       .---> [ 1  1  0  1 ]    1
-                       [ 1  1  1  0 ]    0      /      [ 1  1  1  0 ]    0
-                       [ 1  1  1  1 ]]   1 <---'       [ 1  1  1  1 ]]   0
-
-
+        qc = QuantumCircuit(qr0,qr1,cr0,cr1)  
+     
+        qc.cx(qr0[0],qr1[0])--,
+     .--qc.x(qr1[0])          |
+     |        .---------------'                                    .----------> Target bit 'q1_0_out'
+     |        '---> Before cx:                       After cx:    /  .--------> Control bit 'q0_0_out'
+     |                                                           /  /
+     |                 [[ 0  0  0  0 ]    1            [[ 0  0  0  0 ]    1
+     |                  [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0     Positions of 1's in  
+     |                  [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0     truthtable.output are changed
+     |                  [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0     in positions where the 
+     |                  [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0     control bit ('q0_0_out')
+     |                  [ 0  1  0  1 ]    1 <---.       [ 0  1  0  1 ]    0     is one. They are moved to
+     |                  [ 0  1  1  0 ]    0      \      [ 0  1  1  0 ]    0     positions where rows of
+     |                  [ 0  1  1  1 ]    0       '---> [ 0  1  1  1 ]    1     truthtable.graycode are
+     |                  [ 1  0  0  0 ]    0             [ 1  0  0  0 ]    0     identical in all bits except
+     |                  [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0     the target bit ('q1_0_out').
+     |                  [ 1  0  1  0 ]    1             [ 1  0  1  0 ]    1
+     |                  [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0     
+     |                  [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     
+     |                  [ 1  1  0  1 ]    0       .---> [ 1  1  0  1 ]    1
+     |                  [ 1  1  1  0 ]    0      /      [ 1  1  1  0 ]    0
+     |                  [ 1  1  1  1 ]]   1 <---'       [ 1  1  1  1 ]]   0|
+     |
+     |
+     '------------> Before x:                       After x:      ,-----------> Target bit 'q1_0_out'
+                                                                 /  
+                       [[ 0  0  0  0 ]    1 <---,      [[ 0  0  0  0 ]    0
+                        [ 0  0  0  1 ]    0      \      [ 0  0  0  1 ]    0     Positions of 1's in  
+                        [ 0  0  1  0 ]    0       '---> [ 0  0  1  0 ]    1     truthtable.output are changed
+                        [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0     to positions where the 
+                        [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0     rows of truthtable.graycode
+                        [ 0  1  0  1 ]    0       ,---> [ 0  1  0  1 ]    1     identical except for 
+                        [ 0  1  1  0 ]    0      /      [ 0  1  1  0 ]    0     the target bit ('q1_0_out').
+                        [ 0  1  1  1 ]    1 <---'       [ 0  1  1  1 ]    0     
+                        [ 1  0  0  0 ]    0       ,---> [ 1  0  0  0 ]    1    
+                        [ 1  0  0  1 ]    0      /      [ 1  0  0  1 ]    0     Similar routines are
+                        [ 1  0  1  0 ]    1 <---'       [ 1  0  1  0 ]    0     implemented for other gates
+                        [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0    
+                        [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     
+                        [ 1  1  0  1 ]    1 <---,       [ 1  1  0  1 ]    0
+                        [ 1  1  1  0 ]    0      \      [ 1  1  1  0 ]    0
+                        [ 1  1  1  1 ]]   0       '---> [ 1  1  1  1 ]]   1
+     
+     
 3) Calling measure appends the measure instruction to a list (specifically, QuantumCircuit.data) so that it 
    can be known when execute() is called. This is necessary for determining which bits will be considered 
    ancillas and eliminated from the truthtable. ie any bit with type 'Circ_Output' that isn't measured will 
@@ -139,7 +167,7 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
         cr0 = ClassicalRegister(1)
         cr1 = ClassicalRegister(1)
 
-        qc = QuantumRegister(qr0,qr1,cr0,cr1)
+        qc = QuantumCircuit(qr0,qr1,cr0,cr1)
 
         qc.cx(qr0[0],qr1[0])
                                                  
@@ -174,22 +202,22 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
                   \       /
    'q1_0', <----.  \     /   .----> 'q0_0_out', 'Ancilla' <-. 
  'Circ_Input'    \  \   /   /         .---------------------'  
-               [[ 0  0  0  0 ]    1   '-> Type change                     .-------> 'q0_0', 'Circ_Input'
+               [[ 0  0  0  0 ]    0   '-> Type change                     .-------> 'q0_0', 'Circ_Input'
                 [ 0  0  0  1 ]    0       so it can be                   / .------> 'q1_0', 'Circ_Input'
-                [ 0  0  1  0 ]    0       identified in                 / / .-----> 'q1_0_out',
+                [ 0  0  1  0 ]    1       identified in                 / / .-----> 'q1_0_out',
                 [ 0  0  1  1 ]    0       reduce_truthtable()          / / /        'Circ_Output'
-                [ 0  1  0  0 ]    0                                [[ 0 0 0 ]    1
-                [ 0  1  0  1 ]    0                                 [ 0 0 1 ]    0
-                [ 0  1  1  0 ]    0                                 [ 0 1 0 ]    0
-                [ 0  1  1  1 ]    1                                 [ 0 1 1 ]    1
-                [ 1  0  0  0 ]    0 ----- reduce_truthtable() ----> [ 1 0 0 ]    0 
-                [ 1  0  0  1 ]    0                                 [ 1 0 1 ]    1
-                [ 1  0  1  0 ]    1                                 [ 1 1 0 ]    1
-                [ 1  0  1  1 ]    0                                 [ 1 1 1 ]]   0
+                [ 0  1  0  0 ]    0                                [[ 0 0 0 ]    0
+                [ 0  1  0  1 ]    1                                 [ 0 0 1 ]    1
+                [ 0  1  1  0 ]    0                                 [ 0 1 0 ]    1
+                [ 0  1  1  1 ]    0                                 [ 0 1 1 ]    0
+                [ 1  0  0  0 ]    1 ----- reduce_truthtable() ----> [ 1 0 0 ]    1 
+                [ 1  0  0  1 ]    0                                 [ 1 0 1 ]    0
+                [ 1  0  1  0 ]    0                                 [ 1 1 0 ]    0
+                [ 1  0  1  1 ]    0                                 [ 1 1 1 ]]   1
                 [ 1  1  0  0 ]    0
-                [ 1  1  0  1 ]    1
+                [ 1  1  0  1 ]    0
                 [ 1  1  1  0 ]    0
-                [ 1  1  1  1 ]]   0
+                [ 1  1  1  1 ]]   1
 
 	If the ancilla bit to be removed is not in the least significant position elements of 
 	truthtable.inputnames, truthtable.inputtypes, and truthtable.outputs are adjusted until it is. 
@@ -198,14 +226,14 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
 6) Next in execute(), a system of inequalities in terms of annealer qubit and coupler weights are generated 
    from the truthtable
 
-	         [[ 0 0 0 ]    1           system_inequalities = ['0 = G',
-                  [ 0 0 1 ]    0                                  'w0 > G',
-                  [ 0 1 0 ]    0                                  'w1 > G',
-                  [ 0 1 1 ]    1                                  'wo + w1 = G',
-                  [ 1 0 0 ]    0                                  'w2 > G',
-                  [ 1 0 1 ]    1                                  'w1 + w2 + J12 = G',
-                  [ 1 1 0 ]    1                                  'w1 + w2 + J12 = G',
-                  [ 1 1 1 ]]   0                                  'w0 + w1 + w2 + J01 + J02 + J12 > G'] 
+	         [[ 0 0 0 ]    0           system_inequalities = ['0 > G',
+                  [ 0 0 1 ]    1                                  'w0 = G',
+                  [ 0 1 0 ]    1                                  'w1 = G',
+                  [ 0 1 1 ]    0                                  'wo + w1 > G',
+                  [ 1 0 0 ]    1                                  'w2 = G',
+                  [ 1 0 1 ]    0                                  'w1 + w2 + J12 > G',
+                  [ 1 1 0 ]    0                                  'w1 + w2 + J12 > G',
+                  [ 1 1 1 ]]   1                                  'w0 + w1 + w2 + J01 + J02 + J12 = G'] 
 
     The system of inequalities is generated as a list of strings by the get_ineq_from_truthtable() function
     in converter/qiskit/get_annealer_encoding.py 
@@ -217,7 +245,7 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
    all symbols are iterated over again and their bounds are tightened further. This is repeated until all 
    symbols have values.
 
-   If a valid solution cannot be found, as in the case of the 3-bit XOR truthtable above, an ancilla is 
+   If a valid solution cannot be found, as in the case of the 3-bit XNOR truthtable above, an ancilla is 
    added. All 1's in the output are place on ancilla 0's except for the last 1 in the output which is placed 
    on an ancilla 1. If the system still cannot be solved another ancilla is added, this time all 1's in the 
    output are placed on ancilla 0's except for the second-to-last output 1 which is placed on an ancilla 1. 
@@ -229,35 +257,35 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
    Once the system is solved, qubit and coupler weights are reported:
 		
 		Annealer Encoding:
-			w3 	 40.7 	 
-			J03 	 -906.5 	 
-			J01 	 779.4 	 
-			J13 	 -368.4 	 
-			J23 	 491.1 	 
-			w0 	 972.5 	 
-			w1 	 327.7 	 
-			J02 	 -991.8 	 
-			J12 	 -721.7 	 
-			w2 	 394.0 	 
-			G 	 0 	 
+			J02 	 -364.5
+			w0 	 831.3
+			J23 	 141.8
+			w3 	 -43.3
+			w1 	 -43.3	
+			G 	 -43.3
+			J01 	 -517.9
+			J12 	 120.3
+			J03 	 -426.6
+			J13 	 302.2
+			w2 	 -43.3
 
 		Check:
-			True 	-	 0 = G
+			True 	-	 0 > G
 			True 	-	 w0 > G
-			True 	-	 w1 > G
+			True 	-	 w1 = G
 			True 	-	 w1 + J01 + w0 > G
-			True 	-	 w2 > G
+			True 	-	 w2 = G
 			True 	-	 w2 + J02 + w0 > G
-			True 	-	 w2 + J12 + w1 = G
+			True 	-	 w2 + J12 + w1 > G
 			True 	-	 w2 + J12 + J02 + w1 + J01 + w0 > G
-			True 	-	 w3 > G
+			True 	-	 w3 = G
 			True 	-	 w3 + J03 + w0 > G
-			True 	-	 w3 + J13 + w1 = G
+			True 	-	 w3 + J13 + w1 > G
 			True 	-	 w3 + J13 + J03 + w1 + J01 + w0 > G
 			True 	-	 w3 + J23 + w2 > G
-			True 	-	 w3 + J23 + J03 + w2 + J02 + w0 = G
+			True 	-	 w3 + J23 + J03 + w2 + J02 + w0 > G
 			True 	-	 w3 + J23 + J13 + w2 + J12 + w1 > G
-			True 	-	 w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G
+			True 	-	 w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 = G
 
 		Ancillas added: 1
 
@@ -265,7 +293,7 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
 
 8) *Not yet implemented* Last, a script which runs the found encoding on an annealer will be written by 
    execute().
-
+   
 TODO:
 1) Get solver into a place where it can determine in one shot if system is solvable or not (hopefully in 
    correct implementation, disjoint bounds will be the indicator of an unsolvable system)
@@ -288,13 +316,16 @@ TODO:
    single annealer encoding for multi-gate circuits
 
 -----------------------------------------------------------------------------------------------------
-(II) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE BLOCH SPHERE TRUTH TABLE REPRESENTATION
+(II) BLOCH SPHERE TRUTH TABLE REPRESENTATION OF QUBIT
 -----------------------------------------------------------------------------------------------------
+
 Notes:
 
-    Truth table could be used to represent position on Bloch sphere
-    this could be more efficient and allow implementation of phase gates
-
+    Truth table could be used to represent position of qubit on Bloch sphere instead of representing
+    a bits logical value. This would result in massive truth tables and as such, the best approach 
+    would be to determine annealer encodings of single gates and from those, find a way to  
+    a lump annealer encoding as a composite of these.
+    
    	                   theta bits <---,-,     ,-,---> phi bits  
    	                                   \ \   / / 
    	theta = 0,      phi = 0          [[ 0 0 0 0 ]    0
@@ -325,14 +356,12 @@ Notes:
    
     Right now I'm thinking the theta bits should represent the same descretization
     as phi. That is, theta is in the interval (0=2*pi, 2*pi/(2**num_theta_bits)).
-    The reson is: Even though any position on the bloch sphere can be described
+    The reason is: Even though any position on the bloch sphere can be described
     by theta on the continous interval (0, pi), if theta is descritized by 
     a power of two, there will be no point corresponding to the point
     theta = pi/2. 
 
     The size of the truth table can expand as finer resolution is needed.
-
-    How to prepare an annealer equivalent of Bell state?
 
 TODO:
 
@@ -341,6 +370,7 @@ TODO:
 -----------------------------------------------------------------------------------------------------
 (III) LUMP ANNEALER ENCODING AS COMPOSITE OF SINGLE GATE ANNEALER ENCODINGS
 -----------------------------------------------------------------------------------------------------
+
 Notes:
 
    Annealer encodings of single gates are known
