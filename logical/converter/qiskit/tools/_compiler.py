@@ -90,6 +90,7 @@ def execute(circuit, backend=None,
     #    print(circuit.truthtable.graycode[i], circuit.truthtable.outputs[i])
     #print("\n")
     #print(circuit.truthtable.inputnames)
+    
 
     if afterlen < beforelen:
         if beforelen - afterlen == 1:
