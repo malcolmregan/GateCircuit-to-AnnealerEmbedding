@@ -41,12 +41,19 @@ def h(self, q):
             self.h((q, j))
         return None
 
-    tgtname = q[0].name + "_" + str(q[1]) + "_out"
-    tgtcolumn = self.truthtable.inputnames.index(tgtname)
+    tgtnames = list()
+    for theta in [0,1]:
+        tgtnames.append(q[0].name + "_" + str(q[1]) + "_theta_" + str(theta) + "_out")
+    for phi in [0,1]:
+        tgtnames.append(q[0].name + "_" + str(q[1]) + "_phi_" + str(phi) + "_out")
+    
+    tgtcolumns = list()
+    for i in range(len(tgtnames)):
+        tgtcolumns.append(self.truthtable.inputnames.index(tgtnames[i]))
 
     othercolumns = list()
     for i in range(self.truthtable.numinputs):
-        if not i == tgtcolumn:
+        if not i in tgtcolumns:
             othercolumns.append(i)
 
     outputidxs = list()

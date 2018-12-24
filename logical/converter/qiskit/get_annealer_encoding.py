@@ -105,11 +105,7 @@ class truth_table:
         print("")
 
     def add_ancilla(self):
-        # This only works for the first ancilla
-        # implement a way to detect how many ancillas have already been added and make sure that 
-        # it works for different cases
-        #
-        # Also, right now it just puts all output ones on ancilla zeros except for the last output
+        # Right now it just puts all output ones on ancilla zeros except for the last output
         # which is put on an ancilla one maybe there is a better way to select which 
         # outputs are put on ancilla ones
         #

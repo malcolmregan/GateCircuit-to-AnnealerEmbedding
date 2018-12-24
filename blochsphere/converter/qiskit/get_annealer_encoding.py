@@ -105,18 +105,14 @@ class truth_table:
         print("")
 
     def add_ancilla(self):
-        # This only works for the first ancilla
-        # implement a way to detect how many ancillas have already been added and make sure that 
-        # it works for different cases
-        #
-        # Also, right now it just puts all output ones on ancilla zeros except for the last output
+        # Right now it just puts all output ones on ancilla zeros except for the last output
         # which is put on an ancilla one maybe there is a better way to select which 
         # outputs are put on ancilla ones
         #
         # The maximum number of ancilla bits that can be added is the number
         # of 1's in truthtable.outputs - this shouldn't ever be an issue but may be worth 
-        # implementing especially if the solver doesn't improve
-
+        # implementing especially if the solver doesn't improve 
+        
         self.numinputs = self.numinputs + 1
         self.generategraycode(self.numinputs)
         newoutputs = np.zeros(shape = (2 ** self.numinputs), dtype = np.int)
@@ -130,8 +126,13 @@ class truth_table:
         self.inputnames.append('a{}'.format(self.ancillasadded))
         self.inputtypes.append('Ancilla')
         self.ancillasadded = self.ancillasadded + 1
+        
 
     def reduce_truthtable(self):
+
+        # Must change for bloch sphere representation
+        pass
+        '''
         ancillaidxs = []
         ancillanames = []
         for i in range(len(self.inputtypes)):
@@ -186,7 +187,7 @@ class truth_table:
             self.inputnames.pop()
             self.inputtypes.pop()
             self.generategraycode(self.numinputs)
-
+        '''
 
 def get_ineq_from_truthtable(truthtable):
     numinputs = truthtable.numinputs
