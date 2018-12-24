@@ -401,6 +401,22 @@ Notes:
 		 
   How does one determine an annealer graph of XNOR gate from the above? 
   
+  
+        Ancilla          J01 = 844.4	     Output                  Input
+      w0 = 433.3 O------------------------O,w1 = 112.8          ,O w4 = -729.9 
+                 | \    J03 =           / | \                  / |
+		 |    \ -767.5       /    |  '----------------'  |
+		 |       \        /       |        J14 = ?       |
+		 |          \  /          |                      | 
+     J02 =-471.2 |          /  \          | J13 = -606           | J45 = 823.7
+		 |       /        \       |                      |
+		 |    / J12 =        \    |                      |
+		 | /    -185.2          \ |                      |
+       w2 = 72.4 O------------------------O w3 = 493.2           O w5 = -729.9
+         Input		 J23 = 239.8         Input                   Output   
+  
+  
+  
   Want to do this with bloch sphere qubit encodings
  
 TODO:
