@@ -189,7 +189,7 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
         cr0 = ClassicalRegister(1)
         cr1 = ClassicalRegister(1)
 
-        qc = QuantumRegister(qr0,qr1,cr0,cr1)
+        qc = QuantumCircuit(qr0,qr1,cr0,cr1)
 
         qc.cx(qr0[0],qr1[0])
 
@@ -323,6 +323,9 @@ Notes:
     ***Currently, Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere is just a copy of 
     Lump-Annealer_Encoding-From-Gate-Circuit/logical. It will be modified soon.***
     
+    File locations are described assuming the base directory is 
+    ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere/
+    
     Truth table could be used to represent position of qubit on Bloch sphere instead of representing
     a bits logical value which would allow implementation of Hadamard and phase gates. This would 
     result in massive truth tables and as such, the best approach would be to determine annealer 
@@ -365,6 +368,27 @@ Notes:
     theta = pi/2. 
 
     The size of the truth table can expand as finer resolution is needed.
+    
+    Annealer encodings for single gates bloch sphere truth table qubit representation:
+    	
+	Hadamard: 
+    	
+	Z:
+	
+	Y:
+	
+	X:
+	
+	Controlled-X:
+	
+	Toffoli:
+	
+	Swap:
+	
+	Fredkin:
+	
+	T:
+	
 
 TODO:
 
@@ -423,8 +447,14 @@ Notes:
                    '------------------------------------------------------------'
 
                                        Ground state = ?
-
+				       
+                  This connectivity is setup to run on a Dwave simulator in 
+	          Lump-Annealer-Encoding-From-Gate-Circuit/composite
+	          for investigation of how/if this could work
+                
+ 
   Want to do this with bloch sphere qubit encodings of gates
+  
  
 TODO:
 
