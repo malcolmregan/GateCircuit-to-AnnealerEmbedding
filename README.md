@@ -374,7 +374,7 @@ Notes:
 
     The size of the truth table can expand as finer resolution is needed.
     
-    Annealer encodings for single gates bloch sphere truth table qubit representation:
+    Annealer encodings for single gates using bloch sphere truth table qubit representation:
     	
 	Hadamard: 
     	
