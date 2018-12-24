@@ -377,7 +377,7 @@ Notes:
 
    Annealer encodings of single gates are known
    There is probably a way to efficiently and algorithmically determine a lump adiabatic 
-   from its component single gate encodings.
+   encoding of a circuit from its component single gate encodings.
    
    	XNOR example (assuming full connectivity of annealer qubits):
 	
