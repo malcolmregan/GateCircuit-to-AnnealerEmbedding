@@ -336,10 +336,10 @@ Notes:
 	theta = 0,	phi = 3*pi/2      [ 0 0 1 1 ]    0
 	theta = pi/2,	phi = 0	          [ 0 1 0 0 ]    1 <------ output vector = 1 to
 	theta = pi/2,	phi = pi/2        [ 0 1 0 1 ]    0         indicate where a given 
-	theta = pi/2,	phi = pi          [ 0 1 1 0 ]    0         bit is (just output bits
-	theta = pi/2,	phi = 3*pi/2      [ 0 1 1 1 ]    0         of the function or do all
-	theta = pi,	phi = 0	          [ 1 0 0 0 ]    0         bits in circuit need to be
-	theta = pi,	phi = pi/2        [ 1 0 0 1 ]    0         represented?)
+	theta = pi/2,	phi = pi          [ 0 1 1 0 ]    0         bit is
+	theta = pi/2,	phi = 3*pi/2      [ 0 1 1 1 ]    0         
+	theta = pi,	phi = 0	          [ 1 0 0 0 ]    0         
+	theta = pi,	phi = pi/2        [ 1 0 0 1 ]    0         
 	theta = pi,	phi = pi          [ 1 0 1 0 ]    0
 	theta = pi,	phi = 3*pi/2      [ 1 0 1 1 ]    0
 	theta = 3*pi/2,	phi = 0	          [ 1 1 0 0 ]    0
