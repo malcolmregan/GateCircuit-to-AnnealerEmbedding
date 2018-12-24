@@ -324,9 +324,10 @@ Notes:
     Lump-Annealer_Encoding-From-Gate-Circuit/logical. It will be modified soon.***
     
     Truth table could be used to represent position of qubit on Bloch sphere instead of representing
-    a bits logical value. This would result in massive truth tables and as such, the best approach 
-    would be to determine annealer encodings of single gates and from those, find a way to  
-    create a lump annealer encoding as a composite of these.
+    a bits logical value which would allow implementation of Hadamard and phase gates. This would 
+    result in massive truth tables and as such, the best approach would be to determine annealer 
+    encodings of single gates and from those, find a way to create a lump annealer encoding as a 
+    composite of these.
     
    	                   theta bits <---,-,     ,-,---> phi bits  
    	                                   \ \   / / 
@@ -348,16 +349,16 @@ Notes:
 	theta =	3*pi/2, phi = 3*pi/2      [ 1 1 1 1 ]]   0
 		     
 		       
-    The truth table represents discrete points on the Bloch sphere and the output vector
-    indicates the position of an output bit
+    Rows in truth table represent discrete points on the Bloch sphere and 
+    the output vector indicates the position of a qubit
     
     The phi bits go from 0=2*pi (where all phi bits are 0) 
     to 2*pi-2*pi/(2**num_of_phi_bits) (where all phi bits are 1)
-    not having the row where all phi bits are 1 equal to 2*pi allows
+    Not having the row where all phi bits are 1 equal to 2*pi allows
     for there to be discrete points at phi = 0, pi and pi/2.
    
-    Right now I'm thinking the theta bits should represent the same descretization
-    as phi. That is, theta is in the interval (0=2*pi, 2*pi/(2**num_theta_bits)).
+    Right now, I'm thinking the theta bits should represent the same discretization
+    as phi. That is, theta is in the interval (0=2*pi, 2*pi/(2**num_of_theta_bits)).
     The reason is: Even though any position on the bloch sphere can be described
     by theta on the continous interval (0, pi), if theta is descritized by 
     a power of two, there will be no point corresponding to the point
