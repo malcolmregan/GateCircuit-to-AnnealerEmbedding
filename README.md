@@ -57,7 +57,7 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
 	   |					 
 	   '-->	In this case, when QuantumRegister is called its truthtable
 		attribute is initialized as follows:
-			qc.truthtable.numinputs = 4 (2 for input and 2 for output)			
+			qc.truthtable.numinputs = 4 (2 for qr0 and 2 for qr1)			
 			qc.truthtable.inputnames = ['q1_0','q0_0','q1_0_out','q0_0_out']
 			qc.truthtable.inputtypes = ['Circ_Input','Circ_Input','Circ_Output','Circ_Output']
 			qc.truthtable.outputs = numpy vector of length (2 ** truthtable.numinputs) 
