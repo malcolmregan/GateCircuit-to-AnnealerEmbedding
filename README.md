@@ -20,7 +20,7 @@ CONTENTS
    	  - Notes and ideas on this approach
 	  - TODO list for implementation of this approach
 	  
-   III) Lump annealer encoding as composite of serial annealer encodings 
+   III) Lump annealer encoding as composite of single gate annealer encodings 
    	  - Notes and ideas on this approach
 	  - TODO list for implementation of this approach
 
@@ -332,11 +332,12 @@ Notes:
 
     The size of the truth table can expand as finer resolution is needed.
 
+    How to prepare an annealer equivalent of Bell state?
 
 TODO:
 
 -----------------------------------------------------------------------------------------------------
-(III) LUMP ANNEALER ENCODING AS COMPOSITE OF SERIAL ANNEALER ENCODINGS
+(III) LUMP ANNEALER ENCODING AS COMPOSITE OF SINGLE ANNEALER ENCODINGS
 -----------------------------------------------------------------------------------------------------
 Notes:
 
@@ -353,7 +354,9 @@ Notes:
                      /     \
 		    O-------O
 		    
-  This would be even better if the bloch sphere encoding was used
+  Determining single gate encodings using bloch sphere representation would enable
+  Hadamard and phase gates to be implemented.
+  
 TODO:
 
 ```
