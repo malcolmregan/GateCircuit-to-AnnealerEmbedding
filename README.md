@@ -320,7 +320,9 @@ TODO:
 -----------------------------------------------------------------------------------------------------
 
 Notes:
-
+    ***Currently, Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere is just a copy of 
+    Lump-Annealer_Encoding-From-Gate-Circuit/logical. It will be modified soon.***
+    
     Truth table could be used to represent position of qubit on Bloch sphere instead of representing
     a bits logical value. This would result in massive truth tables and as such, the best approach 
     would be to determine annealer encodings of single gates and from those, find a way to  
@@ -397,8 +399,7 @@ Notes:
 		                                           
 		      Ground state = 0                       Ground state = -729.9
 		 
-  How does one determine an annealer graph of NXOR gate from the above? 
-  
+  How does one determine an annealer graph of XNOR gate from the above? 
   
   Want to do this with bloch sphere qubit encodings
  
