@@ -325,9 +325,7 @@ TODO:
 -----------------------------------------------------------------------------------------------------
 
 Notes:
-    ***Currently, Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere is just a copy of 
-    Lump-Annealer_Encoding-From-Gate-Circuit/logical. It will be modified soon.***
-    
+
     File locations are described assuming the base directory is 
     ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/blochsphere/
     
@@ -458,7 +456,7 @@ Notes:
                                        Ground state = ?
 				       
                   This connectivity is setup to run on a Dwave simulator in 
-	          Lump-Annealer-Encoding-From-Gate-Circuit/composite
+	          Lump-Annealer-Encoding-From-Gate-Circuit/composite/XNORfromXORandXtest.py
 	          for investigation of how/if this could work
                 
  
