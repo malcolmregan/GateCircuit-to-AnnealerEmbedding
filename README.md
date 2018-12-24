@@ -330,9 +330,7 @@ Notes:
     a power of two, there will be no point corresponding to the point
     theta = pi/2. 
 
-    3 bits per coordinate variable seems like a good starting point 
-    maybe crude but is a good starting point:
-    	- The solver has had some luck with truthtables of this size
+    The size of the truth table can expand as finer resolution is needed.
 
 
 TODO:
