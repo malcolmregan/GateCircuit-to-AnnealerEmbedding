@@ -346,14 +346,14 @@ Notes:
 	theta = pi/2,	phi = pi          [ 0 1 1 0 ]    0         bit is
 	theta = pi/2,	phi = 3*pi/2      [ 0 1 1 1 ]    0         
 	theta = pi,	phi = 0	          [ 1 0 0 0 ]    0         
-	theta = pi,	phi = pi/2        [ 1 0 0 1 ]    0         
-	theta = pi,	phi = pi          [ 1 0 1 0 ]    0
-	theta = pi,	phi = 3*pi/2      [ 1 0 1 1 ]    0
-	theta = 3*pi/2,	phi = 0	          [ 1 1 0 0 ]    0
-	theta = 3*pi/2,	phi = pi/2        [ 1 1 0 1 ]    0
-        theta = 3*pi/2, phi = pi          [ 1 1 1 0 ]    0
-	theta =	3*pi/2, phi = 3*pi/2      [ 1 1 1 1 ]]   0
-		     
+	theta = pi,	phi = pi/2        [ 1 0 0 1 ]    0              ,--------
+	theta = pi,	phi = pi          [ 1 0 1 0 ]    0             | Don't cares	    
+	theta = pi,	phi = 3*pi/2      [ 1 0 1 1 ]    0             | b/c theta = 3*pi/2 
+	theta = 3*pi/2,	phi = 0	          [ 1 1 0 0 ]    0 <-----,---- | is same as         
+	theta = 3*pi/2,	phi = pi/2        [ 1 1 0 1 ]    0 <----,      | theta = pi/2 ?        
+        theta = 3*pi/2, phi = pi          [ 1 1 1 0 ]    0 <---,       | Would this still
+	theta =	3*pi/2, phi = 3*pi/2      [ 1 1 1 1 ]]   0 <--'        | be a valid encoding?
+		                                                        '--------
 		       
     Rows in truth table represent discrete points on the Bloch sphere and 
     the output vector indicates the position of a qubit
