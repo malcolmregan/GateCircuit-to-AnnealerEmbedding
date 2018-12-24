@@ -20,6 +20,9 @@ CONTENTS
 	
    II) Bloch sphere truth table representation of qubit
    	  - Notes and ideas on this approach
+	  	- General Notes
+		- Annealer Encodings for single gates using Bloch sphere
+		  truth table representation of qubit
 	  - TODO list for implementation of this approach
 	  
    III) Lump annealer encoding as composite of single gate annealer encodings 
@@ -35,9 +38,11 @@ require upwards of 100 qubits. Clearly, solving a system of 2**100 inequalities 
 However, the classes and functions used to implement this approach will hopefully be useful
 in the later part of this project, discussed in sections II and III.
 
-The following describes how this approach generate a lump annealer encoding from a gate circuit 
-through an example of the XNOR function. Note: file locations are described assuming the base
-directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
+The following describes how this approach generates a lump annealer encoding from a multi-gate 
+circuit through an example of the XNOR function. 
+
+File locations are described assuming the base directory is 
+~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
 
 1) Truthtable initialized in QuantumCircuit class based on the lengths of its QuantumRegisters. 
    Added to quantum circuit in converter/qiskit/_quantumcircuit.py. truthtable class implemented 
