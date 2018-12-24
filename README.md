@@ -375,9 +375,9 @@ Notes:
     The size of the truth table can expand as finer resolution is needed.
     
     Annealer encodings for single gates using bloch sphere truth table qubit representation:
-    	
-	Hadamard: 
-    	
+  
+	Hadamard:
+ 	   	
 	Z:
 	
 	Y:
@@ -397,7 +397,11 @@ Notes:
 
 TODO:
 
-    Everything
+    1) Change reduce_truthtable() of truthtable class in
+       blochsphere/converter/qiskit/get_annealer_encoding.py to work with Bloch sphere truthtable
+    2) Think about how add_ancilla() of truthtable class in
+       blochsphere/converter/qiskit/get_annealer_encoding.py
+    3) Implement gate operations for bloch sphere truth table representation of qubit
 
 -----------------------------------------------------------------------------------------------------
 (III) LUMP ANNEALER ENCODING AS COMPOSITE OF SINGLE GATE ANNEALER ENCODINGS
