@@ -11,11 +11,11 @@ GENERAL NOTES
 -----------------------------------------------------------------------------------------------------
 CONTENTS
 -----------------------------------------------------------------------------------------------------
-   I) Gate circuit-to-annealer ecnoding by way of intermediate logical truthtable representation 
+   I) Gate circuit-to-annealer ecnoding by way of intermediate logical truth table representation 
    	  - Covers implementation through an example of a simple XOR function
 	  - TODO list
 	
-   II) Gate circuit-to-annealer encoding by way of intermediate bloch sphere truthtable 
+   II) Gate circuit-to-annealer encoding by way of intermediate bloch sphere truth table 
        representation
    	  - Notes and ideas on this approach
 	  - TODO list for implementation of this approach
@@ -25,7 +25,7 @@ CONTENTS
 	  - TODO list for implementation of this approach
 
 -----------------------------------------------------------------------------------------------------
-(I) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE LOGICAL TRUTHTABLE REPRESENTATION
+(I) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE LOGICAL TRUTH TABLE REPRESENTATION
 -----------------------------------------------------------------------------------------------------
     
 The following describes how this approach generate a lump annealer encoding from a gate circuit 
@@ -288,11 +288,11 @@ TODO:
    single annealer encoding for multi-gate circuits
 
 -----------------------------------------------------------------------------------------------------
-(II) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE BLOCH SPHERE TRUTHTABLE REPRESENTATION
+(II) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE BLOCH SPHERE TRUTH TABLE REPRESENTATION
 -----------------------------------------------------------------------------------------------------
 Notes:
 
-    Truthtable could be used to represent position on Bloch sphere
+    Truth table could be used to represent position on Bloch sphere
     this could be more efficient and allow implementation of phase gates
 
    	                   theta bits <---,-,     ,-,---> phi bits  
@@ -336,8 +336,10 @@ Notes:
 
 TODO:
 
+    Everything
+
 -----------------------------------------------------------------------------------------------------
-(III) LUMP ANNEALER ENCODING AS COMPOSITE OF SINGLE ANNEALER ENCODINGS
+(III) LUMP ANNEALER ENCODING AS COMPOSITE OF SINGLE GATE ANNEALER ENCODINGS
 -----------------------------------------------------------------------------------------------------
 Notes:
 
@@ -358,5 +360,7 @@ Notes:
   Hadamard and phase gates to be implemented.
   
 TODO:
+
+    Everything
 
 ```
