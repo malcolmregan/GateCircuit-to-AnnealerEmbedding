@@ -124,13 +124,20 @@ class QuantumCircuit(object):
         for reg in self.qregs:
             regsize = regsize + self.qregs[reg].size
             for i in range(self.qregs[reg].size):
-                name = reg + '_' + str(i)
-                circin_names.append(name)
-                circout_names.append(name+'_out')
+                for phi in [0,1]:
+                    name = reg + '_' + str(i) + '_phi_' + str(phi)
+                    circin_names.append(name)
+                    circout_names.append(name+'_out')
+                for theta in [0,1]:
+                    name = reg + '_' + str(i) + '_theta_' + str(theta)
+                    circin_names.append(name)
+                    circout_names.append(name+'_out')
         
         circin_names.reverse()
         circout_names.reverse()
         names = circin_names + circout_names
+
+        regsize = regsize*4
 
         in_type = ['Circ_Input']*regsize
         out_type = ['Circ_Output']*regsize
@@ -146,10 +153,13 @@ class QuantumCircuit(object):
             if np.array_equal(self.truthtable.graycode[i,inputidxs], self.truthtable.graycode[i,outputidxs]):
                 self.truthtable.outputs[i] = 1
         
-        #print("truthtable initialized to:")
+
+
+        #print("Truth table initialized to:")
         #for i in range(len(self.truthtable.outputs)):
         #    print(self.truthtable.graycode[i], self.truthtable.outputs[i])
         #print("\n")
+        #input()
 
     @classmethod
     def _increment_instances(cls):
