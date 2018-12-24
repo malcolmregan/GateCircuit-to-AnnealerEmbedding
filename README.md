@@ -277,19 +277,64 @@ TODO:
 	- Look into perrforming truthtable reduction before gate operations. As currently implemented,
 	  gate operations take a long time on large truthtables
 	- Find way to encode output bits position on bloch sphere
+
+3) After system of inequalities are solved, adjust found encoding to represent actual Dwave connectivity 
 	  
-3) Write script in execute() that creates dwave script with the encoding that was found
+4) Write script in execute() that creates dwave script with the encoding that was found
 
-4) Implement Fredkin and swap gates.
+5) Implement Fredkin and swap gates.
 
-5) Change README example to an XNOR (NXOR?) to illustrate that this implementation can generate a 
+6) Change README example to an XNOR (NXOR?) to illustrate that this implementation can generate a 
    single annealer encoding for multi-gate circuits
 
 -----------------------------------------------------------------------------------------------------
 (II) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE BLOCH SPHERE TRUTHTABLE REPRESENTATION
 -----------------------------------------------------------------------------------------------------
 Notes:
-	
+
+    Truthtable could be used to represent position on Bloch sphere
+    this could be more efficient and allow implementation of phase gates
+
+   	                   theta bits <---,-,     ,-,---> phi bits  
+   	                                   \ \   / / 
+   	theta = 0,      phi = 0          [[ 0 0 0 0 ]    0
+	theta = 0,      phi = pi/2        [ 0 0 0 1 ]    0 
+	theta = 0,      phi = pi          [ 0 0 1 0 ]    0
+	theta = 0,	phi = 3*pi/2      [ 0 0 1 1 ]    0
+	theta = pi/2,	phi = 0	          [ 0 1 0 0 ]    1 <------ output vector = 1 to
+	theta = pi/2,	phi = pi/2        [ 0 1 0 1 ]    0         indicate where a given 
+	theta = pi/2,	phi = pi          [ 0 1 1 0 ]    0         bit is (just output bits
+	theta = pi/2,	phi = 3*pi/2      [ 0 1 1 1 ]    0         of the function or do all
+	theta = pi,	phi = 0	          [ 1 0 0 0 ]    0         bits in circuit need to be
+	theta = pi,	phi = pi/2        [ 1 0 0 1 ]    0         represented?)
+	theta = pi,	phi = pi          [ 1 0 1 0 ]    0
+	theta = pi,	phi = 3*pi/2      [ 1 0 1 1 ]    0
+	theta = 3*pi/2,	phi = 0	          [ 1 1 0 0 ]    0
+	theta = 3*pi/2,	phi = pi/2        [ 1 1 0 1 ]    0
+        theta = 3*pi/2, phi = pi          [ 1 1 1 0 ]    0
+	theta =	3*pi/2, phi = 3*pi/2      [ 1 1 1 1 ]]   0
+		     
+		       
+    The truth table represents discrete points on the Bloch sphere and the output vector
+    indicates the position of an output bit
+    
+    The phi bits go from 0=2*pi (where all phi bits are 0) 
+    to 2*pi-2*pi/(2**num_of_phi_bits) (where all phi bits are 1)
+    not having the row where all phi bits are 1 equal to 2*pi allows
+    for there to be discrete points at phi = 0, pi and pi/2.
+   
+    Right now I'm thinking the theta bits should represent the same descretization
+    as phi. That is, theta is in the interval (0=2*pi, 2*pi/(2**num_theta_bits)).
+    The reson is: Even though any position on the bloch sphere can be described
+    by theta on the continous interval (0, pi), if theta is descritized by 
+    a power of two, there will be no point corresponding to the point
+    theta = pi/2. 
+
+    3 bits per coordinate variable seems like a good starting point 
+    maybe crude but is a good starting point:
+    	- The solver has had some luck with truthtables of this size
+
+
 TODO:
 
 -----------------------------------------------------------------------------------------------------
@@ -297,6 +342,20 @@ TODO:
 -----------------------------------------------------------------------------------------------------
 Notes:
 
+   Annealer encodings of single gates are known
+   There is probably a way to efficiently and algorithmically determine a lump adiabatic 
+   from its component single gate encodings.
+   
+   	XNOR example:
+	
+		XOR gate encoding:           NOT gate encoding
+   			    
+   		       ,O.
+		      /   \  
+                     /     \
+		    O-------O
+		    
+  This would be even better if the bloch sphere encoding was used
 TODO:
 
 ```
