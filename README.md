@@ -116,36 +116,36 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
      |        '---> Before cx:                       After cx:    /  .--------> Control bit 'q0_0_out'
      |                                                           /  /
      |                 [[ 0  0  0  0 ]    1            [[ 0  0  0  0 ]    1
-     |                  [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0     Positions of 1's in  
-     |                  [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0     truthtable.output are changed
-     |                  [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0     in positions where the 
-     |                  [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0     control bit ('q0_0_out')
-     |                  [ 0  1  0  1 ]    1 <---.       [ 0  1  0  1 ]    0     is one. They are moved to
-     |                  [ 0  1  1  0 ]    0      \      [ 0  1  1  0 ]    0     positions where rows of
-     |                  [ 0  1  1  1 ]    0       '---> [ 0  1  1  1 ]    1     truthtable.graycode are
-     |                  [ 1  0  0  0 ]    0             [ 1  0  0  0 ]    0     identical in all bits except
-     |                  [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0     the target bit ('q1_0_out').
+     |                  [ 0  0  0  1 ]    0             [ 0  0  0  1 ]    0    Positions of 1's in  
+     |                  [ 0  0  1  0 ]    0             [ 0  0  1  0 ]    0    truthtable.output are changed
+     |                  [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0    in positions where the 
+     |                  [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0    control bit ('q0_0_out')
+     |                  [ 0  1  0  1 ]    1 <---.       [ 0  1  0  1 ]    0    is one. They are moved to
+     |                  [ 0  1  1  0 ]    0      \      [ 0  1  1  0 ]    0    positions where rows of
+     |                  [ 0  1  1  1 ]    0       '---> [ 0  1  1  1 ]    1    truthtable.graycode are
+     |                  [ 1  0  0  0 ]    0             [ 1  0  0  0 ]    0    identical in all bits except
+     |                  [ 1  0  0  1 ]    0             [ 1  0  0  1 ]    0    the target bit ('q1_0_out').
      |                  [ 1  0  1  0 ]    1             [ 1  0  1  0 ]    1
      |                  [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0     
      |                  [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     
      |                  [ 1  1  0  1 ]    0       .---> [ 1  1  0  1 ]    1
      |                  [ 1  1  1  0 ]    0      /      [ 1  1  1  0 ]    0
-     |                  [ 1  1  1  1 ]]   1 <---'       [ 1  1  1  1 ]]   0|
+     |                  [ 1  1  1  1 ]]   1 <---'       [ 1  1  1  1 ]]   0
      |
      |
      '------------> Before x:                       After x:      ,-----------> Target bit 'q1_0_out'
                                                                  /  
                        [[ 0  0  0  0 ]    1 <---,      [[ 0  0  0  0 ]    0
-                        [ 0  0  0  1 ]    0      \      [ 0  0  0  1 ]    0     Positions of 1's in  
-                        [ 0  0  1  0 ]    0       '---> [ 0  0  1  0 ]    1     truthtable.output are changed
-                        [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0     to positions where the 
-                        [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0     rows of truthtable.graycode
-                        [ 0  1  0  1 ]    0       ,---> [ 0  1  0  1 ]    1     identical except for 
-                        [ 0  1  1  0 ]    0      /      [ 0  1  1  0 ]    0     the target bit ('q1_0_out').
+                        [ 0  0  0  1 ]    0      \      [ 0  0  0  1 ]    0    Positions of 1's in  
+                        [ 0  0  1  0 ]    0       '---> [ 0  0  1  0 ]    1    truthtable.output are changed
+                        [ 0  0  1  1 ]    0             [ 0  0  1  1 ]    0    to positions where the 
+                        [ 0  1  0  0 ]    0             [ 0  1  0  0 ]    0    rows of truthtable.graycode
+                        [ 0  1  0  1 ]    0       ,---> [ 0  1  0  1 ]    1    identical except for 
+                        [ 0  1  1  0 ]    0      /      [ 0  1  1  0 ]    0    the target bit ('q1_0_out').
                         [ 0  1  1  1 ]    1 <---'       [ 0  1  1  1 ]    0     
                         [ 1  0  0  0 ]    0       ,---> [ 1  0  0  0 ]    1    
-                        [ 1  0  0  1 ]    0      /      [ 1  0  0  1 ]    0     Similar routines are
-                        [ 1  0  1  0 ]    1 <---'       [ 1  0  1  0 ]    0     implemented for other gates
+                        [ 1  0  0  1 ]    0      /      [ 1  0  0  1 ]    0    Similar routines are
+                        [ 1  0  1  0 ]    1 <---'       [ 1  0  1  0 ]    0    implemented for other gates
                         [ 1  0  1  1 ]    0             [ 1  0  1  1 ]    0    
                         [ 1  1  0  0 ]    0             [ 1  1  0  0 ]    0     
                         [ 1  1  0  1 ]    1 <---,       [ 1  1  0  1 ]    0
@@ -291,7 +291,10 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
 
    Solver functions and classes are implemented in converter/qiskit/solve_sys_multivar_ineq.py
 
-8) *Not yet implemented* Last, a script which runs the found encoding on an annealer will be written by 
+8) *Not yet implemented* After this general encoding is found, it will be adjusted to correspond to 
+   actual Dwave connecticity 
+ 
+9) *Not yet implemented* Last, a script which runs the found encoding on an annealer will be written by 
    execute().
    
 TODO:
@@ -312,9 +315,6 @@ TODO:
 
 5) Implement Fredkin and swap gates.
 
-6) Change README example to an XNOR (NXOR?) to illustrate that this implementation can generate a 
-   single annealer encoding for multi-gate circuits
-
 -----------------------------------------------------------------------------------------------------
 (II) BLOCH SPHERE TRUTH TABLE REPRESENTATION OF QUBIT
 -----------------------------------------------------------------------------------------------------
@@ -324,7 +324,7 @@ Notes:
     Truth table could be used to represent position of qubit on Bloch sphere instead of representing
     a bits logical value. This would result in massive truth tables and as such, the best approach 
     would be to determine annealer encodings of single gates and from those, find a way to  
-    a lump annealer encoding as a composite of these.
+    create a lump annealer encoding as a composite of these.
     
    	                   theta bits <---,-,     ,-,---> phi bits  
    	                                   \ \   / / 
@@ -377,18 +377,31 @@ Notes:
    There is probably a way to efficiently and algorithmically determine a lump adiabatic 
    from its component single gate encodings.
    
-   	XNOR example:
+   	XNOR example (assuming full connectivity of annealer qubits):
 	
-		XOR gate encoding:           NOT gate encoding
-   			    
-   		       ,O.
-		      /   \  
-                     /     \
-		    O-------O
-		    
-  Determining single gate encodings using bloch sphere representation would enable
-  Hadamard and phase gates to be implemented.
+       		     XOR gate encoding                         NOT gate encoding
+                    -------------------                       -------------------
+               
+        Ancilla          J01 = 844.4	     Output                  Input
+      w0 = 433.3 O------------------------O w1 = 112.8           O w4 = -729.9 
+                 | \    J03 =           / |                      |
+		 |    \ -767.5       /    |                      |
+		 |       \        /       |                      |
+		 |          \  /          |                      | 
+     J02 =-471.2 |          /  \          | J13 = -606           | J45 = 823.7
+		 |       /        \       |                      |
+		 |    / J12 =        \    |                      |
+		 | /    -185.2          \ |                      |
+       w2 = 72.4 O------------------------O w3 = 493.2           O w5 = -729.9
+         Input		 J23 = 239.8         Input                   Output                      
+		                                           
+		      Ground state = 0                       Ground state = -729.9
+		 
+  How does one determine an annealer graph of NXOR gate from the above? 
   
+  
+  Want to do this with bloch sphere qubit encodings
+ 
 TODO:
 
     Everything
