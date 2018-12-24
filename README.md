@@ -376,11 +376,12 @@ TODO:
 
 Notes:
 
-   Annealer encodings of single gates are known
-   There is probably a way to efficiently and algorithmically determine a lump adiabatic 
-   encoding of a circuit from its component single gate encodings.
+   If possible, it would probably be much more efficient to algorithmically determine a lump 
+   adiabatic encoding of a circuit from its component single gate encodings than to determine
+   a lump adiabatic from a tuthtable as described above.
    
-   	XNOR example (assuming full connectivity of annealer qubits):
+   	Consider an XOR and a NOT encoding (assuminf full connectivity) 
+	and try to compose a XNOR encoding from these
 	
        		     XOR gate encoding                         NOT gate encoding
                     -------------------                       -------------------
