@@ -292,7 +292,7 @@ directory is ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical/
    Solver functions and classes are implemented in converter/qiskit/solve_sys_multivar_ineq.py
 
 8) *Not yet implemented* After this general encoding is found, it will be adjusted to correspond to 
-   actual Dwave connecticity 
+   actual Dwave connectivity 
  
 9) *Not yet implemented* Last, a script which runs the found encoding on an annealer will be written by 
    execute().
