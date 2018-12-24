@@ -30,24 +30,23 @@ import numpy as np
 '''
 
 qubit_weights = {'w0' : 433.3,
-                 'w1' : 112.8,                        
+                 'w1' : 112.8,
                  'w2' : 72.4,
                  'w3' : 493.2,
                  'w4' : -729.9,
                  'w5' : -729.9}
 
-coupler_weights = {('w0','w1') : 844.4,
-                   ('w0','w2') : -471.2,
-                   ('w0','w3') : -767.5,
-                   ('w1','w2') : -185.2,
-                   ('w1','w3') : -606,
-                   ('w2','w3') : 239.8,
-                   ('w4','w5') : 823.7,
-                   ('w0','w4') : 0,
-                   ('w1','w4') : 1,
-                   ('w2','w4') : 1,
-                   ('w3','w4') : 1}
-
+coupler_weights = {('w0','w1') : 844.4,     # J01
+                   ('w0','w2') : -471.2,    # J02
+                   ('w0','w3') : -767.5,    # J03
+                   ('w1','w2') : -185.2,    # J12
+                   ('w1','w3') : -606,      # J13
+                   ('w2','w3') : 239.8,     # J23
+                   ('w4','w5') : 823.7,     # J45
+                   ('w0','w4') : 0,         # J04
+                   ('w1','w4') : 1,         # J14
+                   ('w2','w4') : 1,         # J24
+                   ('w3','w4') : 1}         # J34
 
 bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
 sampler = dimod.ExactSolver()
@@ -62,4 +61,3 @@ for sample, energy in response.data(['sample','energy']):
 for sample, energy in response.data(['sample', 'energy']):
     if energy == groundstate:
         print(sample['w2'], sample['w3'], sample['w5'], energy)
-
