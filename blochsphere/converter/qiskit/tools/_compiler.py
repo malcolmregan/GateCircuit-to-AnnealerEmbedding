@@ -103,7 +103,7 @@ def execute(circuit, backend=None,
 
     stop = False
     count = 0
-    maxcount = 500
+    maxcount = 10000
     reportsteps = 100
 
     while stop == False:
@@ -122,7 +122,7 @@ def execute(circuit, backend=None,
         if count == maxcount:
             yn = 'x'
             while yn is not 'y' and yn is not 'n':
-                yn = input("Couldn't find solution. Add Ancilla? (y/n) ")
+                yn = 'y' #input("Couldn't find solution. Add Ancilla? (y/n) ")
                 if yn is 'y':
                     trutab.add_ancilla()
                     eqns = get_ineq_from_truthtable(trutab)

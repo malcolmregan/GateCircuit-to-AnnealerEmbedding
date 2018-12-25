@@ -150,7 +150,13 @@ class QuantumCircuit(object):
         inputidxs = [i for i, x in enumerate(self.truthtable.inputtypes) if x == 'Circ_Input']
         outputidxs = [i for i, x in enumerate(self.truthtable.inputtypes) if x == 'Circ_Output']
         for i in range(len(self.truthtable.outputs)):
-            if np.array_equal(self.truthtable.graycode[i,inputidxs], self.truthtable.graycode[i,outputidxs]):
+            if np.array_equal(self.truthtable.graycode[i,inputidxs], self.truthtable.graycode[i,outputidxs]) \
+                            and (np.array_equal(np.asarray([0,0,0,0]), self.truthtable.graycode[i,outputidxs]) \
+                            or np.array_equal(np.asarray([0,1,0,0]), self.truthtable.graycode[i,outputidxs]) \
+                            or np.array_equal(np.asarray([0,1,0,1]), self.truthtable.graycode[i,outputidxs]) \
+                            or np.array_equal(np.asarray([0,1,1,0]), self.truthtable.graycode[i,outputidxs]) \
+                            or np.array_equal(np.asarray([0,1,1,1]), self.truthtable.graycode[i,outputidxs]) \
+                            or np.array_equal(np.asarray([1,0,0,0]), self.truthtable.graycode[i,outputidxs])):
                 self.truthtable.outputs[i] = 1
         
 
