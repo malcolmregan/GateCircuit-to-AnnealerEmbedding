@@ -32,9 +32,6 @@ class HGate(Gate):
         """Reapply this gate to corresponding qubits in circ."""
         self._modifiers(circ.h(self.qargs[0]))
 
-
-
-
 def h(self, q):
     if isinstance(q, QuantumRegister):
         for j in range(q.size):
@@ -67,7 +64,56 @@ def h(self, q):
         for k in range(len(self.truthtable.outputs)):
             if np.array_equal(staysame, self.truthtable.graycode[k,othercolumns]) and not k == row:
                 self.truthtable.outputs[k] = 1
-    
+   
+
+    '''
+    t1 t0 p1 p0    H     t1 t0 p1 p0
+    0  0  0  0   ====>   0  1  0  0  
+    0  0  0  1   ====>   0  1  0  0 <-, 
+    0  0  1  0   ====>   0  1  0  0 <--,
+    0  0  1  1   ====>   0  1  0  0 <---,
+    0  1  0  0   ====>   0  0  0  0      ',
+    0  1  0  1   ====>   0  1  1  1        ',       These rows
+    0  1  1  0   ====>   1  0  0  0          ',     don't matter
+    0  1  1  1   ====>   0  1  0  1            :--> find better  
+    1  0  0  0   ====>   0  1  1  0          .'     way to represent
+    1  0  0  1   ====>   0  1  1  0 <-------'       qubit on Bloch sphere 
+    1  0  1  0   ====>   0  1  1  0 <------'        
+    1  0  1  1   ====>   0  1  1  0 <-----'
+    1  1  0  0   ====>   1  0  0  0 <----'
+    1  1  0  1   ====>   1  1  1  1 <---'
+    1  1  1  0   ====>   0  0  0  0 <--'
+    1  1  1  1   ====>   1  1  0  1 <-'
+    '''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     #print("x on {}".format(tgtname))
     #for i in range(len(self.truthtable.outputs)):
     #    print(self.truthtable.graycode[i], self.truthtable.outputs[i])
