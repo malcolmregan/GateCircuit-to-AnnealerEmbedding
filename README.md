@@ -491,36 +491,71 @@ Notes:
 		 
                                       XNOR gate encoding 
 				     -------------------- 
-  
-                                           JO4 = ?
-                    ,------------------------------------------,
-        Ancilla   .'       J01 = 844.4       Output             '.     Input
-      w0 = 433.3 O------------------------O, w1 = 112.8     ,----,O, w4 = -729.9 
-                 |'.    J03 =           .'| ',            ,'   ,' | '.
-                 |  ''. -767.5       .''  |   '----------'    /   |   ',
-                 |     ''.        .''     |     J14 = ?      /    |     '-------,
-                 |        ''.  .''        |                 /     |              ', 
-     J02 =-471.2 |          .''.          | J13 = -606     /      | J45 = 823.7   |
-                 |       .''    ''.       |               / J34   |               | 
-                 |    .''J12 =     ''.    |   ,----------' = ?    |               |
-                 |,.''  -185.2        ''.,| ,'                    |               | J24 = ?
+                  ,-----------------------------------------------------------,
+                 |                         JO4 = ?                             ',
+                 |  ,------------------------------------------,                 ',
+        Ancilla  |.'       J01 = 844.4        **Ancilla**           '.     **Ancilla**     ',
+      w0 = 433.3 O------------------------O, w1 = 112.8     ,----,O, w4 = -729.9     ',
+                 |'.    J03 =           .'|\',            ,'   ,' | '.                |
+                 |  ''. -767.5       .''  | \ '----------'    /   |   ',              | J05 = ?
+                 |     ''.        .''     |  \  J14 = ?      /    |     '-------,     |
+                 |        ''.  .''        |   ',  J15 = ?   /     |              ',,,''
+     J02 =-471.2 |          .''.          | J13 '----------/-,    | J45 = 823.7,,'|
+                 |       .''    ''.       | = -606        /   \   |        ,,''   | 
+                 |    .''J12 =     ''.    |   ,----------'     \  |    ,,''       |
+                 |,.''  -185.2        ''.,| ,'    J34 = ?       \ |,,''           | J24 = ?
        w2 = 72.4 O------------------------O' w3 = 493.2           O w5 = -729.9   |
-         Input   |       J23 = 239.8         Input                   Output       |               
-                 ',                                                              ,'
-                   '------------------------------------------------------------'
-
+         Input ,'|       J23 = 239.8      |   Input             ,' ',   Output    |               
+             ,'  |                        '--------------------'     ',           |
+           ,'    |                                J35 = ?              '----------|---,
+	   |     |                        J25 = ?                                ,'   | J25 = ? 
+           |	  '-------------------------------------------------------------'     |
+            '-------------------------------------------------------------------------'
                                        Ground state = ?
 				       
                   This connectivity is setup to run on a Dwave simulator in 
 	          Lump-Annealer-Encoding-From-Gate-Circuit/composite/XNORfromXORandXtest.py
 	          for investigation of how/if this could work
-		  
-		  --> Try passing the inequalities for a 6 bit XNOR truthtable to the solver
-                      and initializing the known variables with the values above. 
-		      If this works, try with other combination of gates whose truth table
-                      is known. Maybe a pattern of how two gates are joined will become
-		      apparent.
-		      
+	
+	Solving the system of inequalities corresponding to an XNOR with three ancilla bits 
+	for the unknown ground state and coupler weights between the 2 subencodings (using 
+	the values for variables from XOR and NOT encodings) is not possible as the values
+	of known variables immediately pose contradicting constraints on the ground state:
+	
+	False 	- 0 > G
+	False 	- 433.3 > G
+	False 	- 112.8 > G
+	False 	- 112.8 + 844.4 + 433.3 > G
+	True 	- 72.4 = G
+	False 	- 72.4 + -471.2 + 433.3 > G
+	False 	- 72.4 + -185.2 + 112.8 > G
+	False 	- 72.4 + -185.2 + -471.2 + 112.8 + 844.4 + 433.3 > G
+	False 	- 493.2 > G
+	True 	- 493.2 + -767.5 + 433.3 = G
+	False 	- 493.2 + -606 + 112.8 > G
+	False 	- 493.2 + -606 + -767.5 + 112.8 + 844.4 + 433.3 > G
+	False 	- 493.2 + 239.8 + 72.4 > G
+	False 	- 493.2 + 239.8 + -767.5 + 72.4 + -471.2 + 433.3 > G
+	False 	- 493.2 + 239.8 + -606 + 72.4 + -185.2 + 112.8 > G
+	False 	- 493.2 + 239.8 + -606 + -767.5 + 72.4 + -185.2 + -471.2 + 112.8 + 844.4 + 433.3 > G
+	False 	- -729.9 > G
+	True 	- -729.9 + J04 + 433.3 > G
+	True 	- -729.9 + J14 + 112.8 > G
+	True 	- -729.9 + J14 + J04 + 112.8 + 844.4 + 433.3 > G
+	False 	- -729.9 + J24 + 72.4 > G
+	True 	- -729.9 + J24 + J04 + 72.4 + -471.2 + 433.3 > G
+	True 	- -729.9 + J24 + J14 + 72.4 + -185.2 + 112.8 > G
+	True 	- -729.9 + J24 + J14 + J04 + 72.4 + -185.2 + -471.2 + 112.8 + 844.4 + 433.3 > G
+	False 	- -729.9 + J34 + 493.2 > G
+	True 	- -729.9 + J34 + J04 + 493.2 + -767.5 + 433.3 > G
+	True 	- -729.9 + J34 + J14 + 493.2 + -606 + 112.8 > G
+	True 	- -729.9 + J34 + J14 + J04 + 493.2 + -606 + -767.5 + 112.8 + 844.4 + 433.3 > G
+	False 	- -729.9 + J34 + J24 + 493.2 + 239.8 + 72.4 > G
+	True 	- -729.9 + J34 + J24 + J04 + 493.2 + 239.8 + -767.5 + 72.4 + -471.2 + 433.3 > G
+	True 	- -729.9 + J34 + J24 + J14 + 493.2 + 239.8 + -606 + 72.4 + -185.2 + 112.8 > G
+        .... etc. ....
+        .... etc. ....
+		
   Want to do this with bloch sphere qubit encodings of gates
   
  
