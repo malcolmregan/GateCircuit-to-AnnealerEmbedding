@@ -433,7 +433,7 @@ Notes:
                             1  1  1  0   ====>   0  0  0  0 <--'
                             1  1  1  1   ====>   1  1  0  1 <-'
 		
-		I will change this once a better way to represent a qubit if implemented 
+		I will change this once a better way to represent a qubit is implemented 
               
  	   	
 	Z:
