@@ -557,6 +557,12 @@ Notes:
         .... etc. ....
         .... etc. ....
 		
+	This indicates the fact (which probably should have been obvious to me) that two encodings
+	representing logic functions cannot be trivially combined into one encoding representing 
+	a composite function.
+	
+	--> try and add a coupling embedding inbetween the circuits.
+		
   Want to do this with bloch sphere qubit encodings of gates
   
  
