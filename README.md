@@ -407,8 +407,8 @@ Notes:
     
 	Hadamard: 
 	
-		Hadamard gate very inelegantly implemented in
-		converter/qiskit/extensions/standard.h for the 4-bit Bloch sphere qubit
+		Hadamard gate is very inelegantly implemented in
+		converter/qiskit/extensions/standard/h.py for the 4-bit Bloch sphere qubit
 		representation shown above.
 		
 		Right now it pretty much just maps a 1 on a given row to a different row 
@@ -423,7 +423,12 @@ Notes:
                             1  0  0  0   ====>   0  1  1  0                                 
                                                                                                
 		I will change this once a better way to represent a qubit is implemented 
-              
+		
+		The script examples/Hadamard.py is setup to solve for an annealer encoding
+		of th Hadamard gate. However, the solver is not yet able to solve the 
+		system of 256 inequalities generated from the Hadamard truth table, 
+		even though it only has six ground state rows. I believe I will be able to 
+		get the solver to the point where it can accomplish this, though.
  	   	
 	Z:
 	
