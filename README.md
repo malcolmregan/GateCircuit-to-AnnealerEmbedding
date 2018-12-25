@@ -383,18 +383,18 @@ Notes:
                                 ,'                  |             ,'   ',
                                '                    |           ,'       '
                               /                     |         ,' <--------\------ theta = [0 1] OR [1 1]
-                             ,                  ,,,,|----''';'''-.,        ,      phi =   [0 1]    [1 1]
+                             ,                  ,,,,|----''';'''-.,        ,      phi =   [1 0]    [0 0]
                             ,         ,,,,-'''''    |     ,'       ''.,     ,
                             ,    ..'''              |   ,'             '.,  ,
                       ,    , ,,''                   | ,'                  ',.,   ,
                     ,'______'_______________________|'______________________'_____', y
                      ',    ,,                     ,'|                       ,,   ,'
-  theta = [1 1] OR [0 1]    ,'-                 ,'  |                   ,,'',  theta = [0 1] OR [1 1]
-  phi   = [0 0]    [1 0]    ,  '.             ,'    |              ,,,''    ,  phi   = [0 0]    [1 0]
+  theta = [0 1] OR [1 1]    ,'-                 ,'  |                   ,,'',  theta = [0 1] OR [1 1]
+  phi   = [1 1]    [0 1]    ,  '.             ,'    |              ,,,''    ,  phi   = [0 1]    [1 1]
                              ,   '',,       ,'      |    ,,,,,-''''         ,
                               \      ''-,,,;,,,,----|''''                  /
   theta = [0 1] OR [1 1] ------',-----> ,'          |                    ,'
-  phi   = [1 1]    [0 1]         ',   ,'            |                  ,'
+  phi   = [0 0]    [1 0]         ',   ,'            |                  ,'
                                    ','              |               ,,'
                                   ,' '',,           |           ,,''
                                 ,'       '',,       |       ,,''
@@ -403,9 +403,38 @@ Notes:
                             x                      \|/ theta = [1 0] OR [1 0] OR [1 0] OR [1 0]
                                                     '  phi   = [0 0]    [0 1]    [1 0]    [1 1]
     
-    Annealer encodings for single gates using bloch sphere truth table qubit representation:
-  
-	Hadamard:
+    Annealer encodings for single gates using crude 4-bit bloch sphere truth table representation 
+    of qubit:
+    
+	Hadamard: 
+	
+		Hadamard gate very inelegantly implemented in
+		converter/qiskit/extensions/standard.h for the 4-bit Bloch sphere qubit
+		representation shown above.
+		
+		Right now it pretty much just maps a 1 on a given row to a different row 
+		as follows:
+	        
+                            t1 t0 p1 p0    H     t1 t0 p1 p0
+                            0  0  0  0   ====>   0  1  0  0  
+                            0  0  0  1   ====>   0  1  0  0 <-, 
+                            0  0  1  0   ====>   0  1  0  0 <--,
+                            0  0  1  1   ====>   0  1  0  0 <---,
+                            0  1  0  0   ====>   0  0  0  0      ',
+                            0  1  0  1   ====>   0  1  1  1        ',       These rows
+                            0  1  1  0   ====>   1  0  0  0          ',     don't matter.
+                            0  1  1  1   ====>   0  1  0  1            :--> Find better  
+                            1  0  0  0   ====>   0  1  1  0          .'     way to represent
+                            1  0  0  1   ====>   0  1  1  0 <-------'       qubit on Bloch  
+                            1  0  1  0   ====>   0  1  1  0 <------'        sphere.
+                            1  0  1  1   ====>   0  1  1  0 <-----'
+                            1  1  0  0   ====>   1  0  0  0 <----'
+                            1  1  0  1   ====>   1  1  1  1 <---'
+                            1  1  1  0   ====>   0  0  0  0 <--'
+                            1  1  1  1   ====>   1  1  0  1 <-'
+		
+		I will change this once a better way to represent a qubit if implemented 
+              
  	   	
 	Z:
 	
@@ -420,16 +449,18 @@ Notes:
 	Swap:
 	
 	Fredkin:
-	
-	T:
-	
+
+    Need 6 bit truth table for single qubit to represent a T gate
+    
+    	
 
 TODO:
 
     1) Change reduce_truthtable() of truthtable class in
        blochsphere/converter/qiskit/get_annealer_encoding.py to work with Bloch sphere truthtable
     2) Think about how add_ancilla() of truthtable class in
-       blochsphere/converter/qiskit/get_annealer_encoding.py
+       blochsphere/converter/qiskit/get_annealer_encoding.py needs to change if at all and change
+       it if it does
     3) Implement gate operations for bloch sphere truth table representation of qubit
 
 -----------------------------------------------------------------------------------------------------
