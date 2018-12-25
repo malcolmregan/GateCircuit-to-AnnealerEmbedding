@@ -79,8 +79,8 @@ File locations are described assuming the base directory is
                                                                                            
                        'q0_0', 'Circ_Input' <-----.         .------> 'q1_0_out', 'Circ_Output'
                                                    \       /                                          
-                       'q1_0', 'Circ_Input' <----.  \     /   .----> 'q0_0_out', 'Circ_Output'
-                                                  \  \   /   /
+                       'q1_0', 'Circ_Input' <----.  \     /  .-----> 'q0_0_out', 'Circ_Output'
+                                                  \  \   /  /
 				               [[ 0  0  0  0 ]    1 
 	        				[ 0  0  0  1 ]    0
 					        [ 0  0  1  0 ]    0
