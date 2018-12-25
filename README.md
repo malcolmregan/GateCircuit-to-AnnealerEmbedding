@@ -557,9 +557,9 @@ Notes:
         .... etc. ....
         .... etc. ....
 		
-	This indicates the fact (which probably should have been obvious to me) that two encodings
-	representing logic functions cannot be trivially combined into one encoding representing 
-	a composite function.
+	This indicates the fact (which probably should have been obvious to me) that two arbitrary
+	encodings representing logic functions cannot be trivially combined into one encoding 
+	representing a composite function.
 	
 	--> try and add a coupling embedding inbetween the circuits.
 		
