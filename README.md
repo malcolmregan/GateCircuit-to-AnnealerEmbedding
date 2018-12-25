@@ -354,6 +354,42 @@ Notes:
         theta = 3*pi/2, phi = pi          [ 1 1 1 0 ]    0 <---,       | Would this still
 	theta =	3*pi/2, phi = 3*pi/2      [ 1 1 1 1 ]]   0 <--'        | be a valid encoding?
 		                                                        '---------
+									
+                                                    z
+                                                    .
+                                                   /|\ theta = [   ] OR [   ] OR [   ] OR [   ]
+                                                    |  phi   = [   ]    [   ]    [   ]    [   ]
+                                             ,,,-'''|'''-,,,            __,
+                                         ,,''       |       '',,        ,'|
+                                     ,,''           |           '',,, ,'
+                                  ,''               |               ,',
+                                ,'                  |             ,'   ',
+                               '                    |           ,'       '
+                              /                     |         ,' <--------\------ theta = [   ] OR [   ]
+                             ,                  ,,,,|----''';'''-.,        ,      phi =   [   ] OR [   ]
+                            ,         ,,,,-'''''    |     ,'       ''.,     ,
+                            ,    ..'''              |   ,'             '.,  ,
+                      ,    , ,,''                   | ,'                  ',.,   ,
+                    ,'______'_______________________|'______________________'_____', y
+                     ',    ,,                     ,'|                       ,,   ,'
+  theta = [   ] OR [   ]    ,'-                 ,'  |                   ,,'',  theta = [   ] OR [   ]
+  phi   = [   ] OR [   ]    ,  '.             ,'    |              ,,,''    ,  phi   = [   ]    [   ]
+                             ,   '',,       ,'      |    ,,,,,-''''         ,
+                              \      ''-,,,;,,,,----|''''                  /
+  theta = [   ] OR [   ] ------',-----> ,'          |                    ,'
+  phi   = [   ] OR [   ]         ',   ,'            |                  ,'
+                                   ','              |               ,,'
+                                  ,' '',,           |           ,,''
+                                ,'       '',,       |       ,,''
+                             |,'             '''-,,,|,,,-'''
+                             '--                    |
+                            x                      \|/ theta = [   ] OR [   ] OR [   ] OR [   ]
+                                                    '  phi   = [   ] OR [   ] OR [   ] OR [   ]
+~                                                                                                                                                                                                           
+~                                                                                                                                                                                                           
+~                                                                                                                                                                                                           
+~                                                                                                                                                                                                           
+~                                                                                                     
 		       
     Rows in truth table represent discrete points on the Bloch sphere and 
     the output vector indicates the position of a qubit
