@@ -39,11 +39,13 @@ def h(self, q):
         return None
 
     tgtnames = list()
-    for theta in [0,1]:
+    for theta in [1,0]:
         tgtnames.append(q[0].name + "_" + str(q[1]) + "_theta_" + str(theta) + "_out")
-    for phi in [0,1]:
+    for phi in [1,0]:
         tgtnames.append(q[0].name + "_" + str(q[1]) + "_phi_" + str(phi) + "_out")
-    
+   
+
+    print(tgtnames)
     tgtcolumns = list()
     for i in range(len(tgtnames)):
         tgtcolumns.append(self.truthtable.inputnames.index(tgtnames[i]))
@@ -59,10 +61,48 @@ def h(self, q):
             outputidxs.append(i)
 
     self.truthtable.outputs[outputidxs] = 0
-    for row in outputidxs:
-        staysame = self.truthtable.graycode[row,othercolumns]
+
+    map = np.asarray([[[0,0,0,0],[0,1,0,0]],
+                      [[0,0,0,1],[0,1,0,0]],
+                      [[0,0,1,0],[0,1,0,0]],
+                      [[0,0,1,1],[0,1,0,0]],
+                      [[0,1,0,0],[0,0,0,0]],
+                      [[0,1,0,1],[0,1,1,1]],
+                      [[0,1,1,0],[1,0,0,0]],
+                      [[0,1,1,1],[0,1,0,1]],
+                      [[1,0,0,0],[0,1,1,0]],
+                      [[1,0,0,1],[0,1,1,0]],
+                      [[1,0,1,0],[0,1,1,0]],
+                      [[1,0,1,1],[0,1,1,0]],
+                      [[1,1,0,0],[1,0,0,0]],
+                      [[1,1,0,1],[1,1,1,1]],
+                      [[1,1,1,0],[0,0,0,0]],
+                      [[1,1,1,1],[1,1,0,1]]])
+
+    
+    
+    newrows = list()
+    print(tgtcolumns)
+    for i in outputidxs:
+        print(outputidxs)
+        oldrow = np.zeros(shape=(self.truthtable.graycode.shape[1]), dtype=np.int)
+        newrow = np.zeros(shape=(self.truthtable.graycode.shape[1]), dtype=np.int)
+
+        for s in range(self.truthtable.graycode.shape[1]):
+            oldrow[s] = self.truthtable.graycode[i,s]
+        print('old', oldrow)
+        for s in range(oldrow.shape[0]):
+            newrow[s] = oldrow[s]
+        for j in range(map.shape[0]):
+            if np.array_equal(map[j,0],oldrow[tgtcolumns]):
+                newrow[tgtcolumns] = map[j,1]
+                newrows.append(newrow)
+                print('new', newrow)
+                input()
+
+    for i in range(len(newrows)):
         for k in range(len(self.truthtable.outputs)):
-            if np.array_equal(staysame, self.truthtable.graycode[k,othercolumns]) and not k == row:
+            if np.array_equal(newrows[i], self.truthtable.graycode[k]):
                 self.truthtable.outputs[k] = 1
    
 
