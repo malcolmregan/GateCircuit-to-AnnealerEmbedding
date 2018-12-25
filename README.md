@@ -494,7 +494,7 @@ Notes:
                   ,-----------------------------------------------------------,
                  |                         JO4 = ?                             ',
                  |  ,------------------------------------------,                 ',
-        Ancilla  |.'       J01 = 844.4        **Ancilla**           '.     **Ancilla**     ',
+        Ancilla  |.'       J01 = 844.4        Ancilla           '.     Ancilla     ',
       w0 = 433.3 O------------------------O, w1 = 112.8     ,----,O, w4 = -729.9     ',
                  |'.    J03 =           .'|\',            ,'   ,' | '.                |
                  |  ''. -767.5       .''  | \ '----------'    /   |   ',              | J05 = ?
@@ -518,8 +518,9 @@ Notes:
 	          for investigation of how/if this could work
 	
 	Solving the system of inequalities corresponding to an XNOR with three ancilla bits 
-	for the unknown ground state and coupler weights between the 2 subencodings (using 
-	the values for variables from XOR and NOT encodings) is not possible as the values
+	(2 intermediate inputs/outputs recast as ancillas + the 1 XOR ancilla that was already
+	there) for the unknown ground state and coupler weights between the 2 subencodings 
+	(using the values for variables from XOR and NOT encodings) is not possible as the values
 	of known variables immediately pose contradicting constraints on the ground state:
 	
 	False 	- 0 > G
