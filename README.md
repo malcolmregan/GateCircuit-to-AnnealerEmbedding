@@ -514,8 +514,13 @@ Notes:
                   This connectivity is setup to run on a Dwave simulator in 
 	          Lump-Annealer-Encoding-From-Gate-Circuit/composite/XNORfromXORandXtest.py
 	          for investigation of how/if this could work
-                
- 
+		  
+		  --> Try passing the inequalities for a 6 bit XNOR truthtable to the solver
+                      and initializing the known variables with the values above. 
+		      If this works, try with other combination of gates whose truth table
+                      is known. Maybe a pattern of how two gates are joined will become
+		      apparent.
+		      
   Want to do this with bloch sphere qubit encodings of gates
   
  
