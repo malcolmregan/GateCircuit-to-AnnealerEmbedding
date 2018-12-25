@@ -366,7 +366,7 @@ Notes:
     as phi. That is, theta is in the interval (0=2*pi, 2*pi/(2**num_of_theta_bits)).
     The reason is: Even though any position on the bloch sphere can be described
     by theta on the continous interval (0, pi), if theta is descritized by 
-    a power of two, there will be no point corresponding to the point
+    a power of two, there will be nothing corresponding to the point
     theta = pi/2. 
 
     The size of the truth table can expand as finer resolution is needed.
