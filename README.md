@@ -401,8 +401,7 @@ Notes:
                              |,'             '''-,,,|,,,-'''
                              '--                    |
                             x                      \|/ theta = [1 0] OR [1 0] OR [1 0] OR [1 0]
-                                                    '  phi   = [0 0]    [0 1]    [1 0]    [1 1]                                                                                                                                                                                                                                                         
-		       
+                                                    '  phi   = [0 0]    [0 1]    [1 0]    [1 1]
     Annealer encodings for single gates using bloch sphere truth table qubit representation:
   
 	Hadamard:
