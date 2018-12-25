@@ -337,24 +337,23 @@ Notes:
     
    	                   theta bits <---,-,     ,-,---> phi bits  
    	                                   \ \   / / 
-   	theta = 0,      phi = 0          [[ 0 0 0 0 ]    0
-	theta = 0,      phi = pi/2        [ 0 0 0 1 ]    0 
-	theta = 0,      phi = pi          [ 0 0 1 0 ]    0
-	theta = 0,	phi = 3*pi/2      [ 0 0 1 1 ]    0
-	theta = pi/2,	phi = 0	          [ 0 1 0 0 ]    1 <------ output vector = 1 to
-	theta = pi/2,	phi = pi/2        [ 0 1 0 1 ]    0         indicate where a given 
-	theta = pi/2,	phi = pi          [ 0 1 1 0 ]    0         bit is
-	theta = pi/2,	phi = 3*pi/2      [ 0 1 1 1 ]    0         
-	theta = pi,	phi = 0	          [ 1 0 0 0 ]    0              ,---------
-	theta = pi,	phi = pi/2        [ 1 0 0 1 ]    0             | Can these be
-	theta = pi,	phi = pi          [ 1 0 1 0 ]    0             | considered don't-cares	    
-	theta = pi,	phi = 3*pi/2      [ 1 0 1 1 ]    0             | b/c theta = 3*pi/2 
-	theta = 3*pi/2,	phi = 0	          [ 1 1 0 0 ]    0 <-----,---- | is same as         
-	theta = 3*pi/2,	phi = pi/2        [ 1 1 0 1 ]    0 <----,      | theta = pi/2 ?        
-        theta = 3*pi/2, phi = pi          [ 1 1 1 0 ]    0 <---,       | Would this still
-	theta =	3*pi/2, phi = 3*pi/2      [ 1 1 1 1 ]]   0 <--'        | be a valid encoding?
-		                                                        '---------
- 
+   	theta = 0,      phi = 0          [[ 0 0 0 0 ]    1 <------ output vector = 1 to
+	theta = 0,      phi = pi/2        [ 0 0 0 1 ]    0 <-,      indicate where a given bit is
+	theta = 0,      phi = pi          [ 0 0 1 0 ]    0 <--,         
+	theta = 0,	phi = 3*pi/2      [ 0 0 1 1 ]    0 <---,
+	theta = pi/2,	phi = 0	          [ 0 1 0 0 ]    0      ,
+	theta = pi/2,	phi = pi/2        [ 0 1 0 1 ]    0       ,       ,--------------
+	theta = pi/2,	phi = pi          [ 0 1 1 0 ]    0        ,     | These rows don't
+	theta = pi/2,	phi = 3*pi/2      [ 0 1 1 1 ]    0         ,    | correspond to 
+	theta = pi,	phi = 0	          [ 1 0 0 0 ]    0          :---| anything so   
+	theta = pi,	phi = pi/2        [ 1 0 0 1 ]    0 <-------'    | they will always
+	theta = pi,	phi = pi          [ 1 0 1 0 ]    0 <------'     | be 0.         
+	theta = pi,	phi = 3*pi/2      [ 1 0 1 1 ]    0 <-----'      | I guess that means 
+	theta = 3*pi/2,	phi = 0	          [ 1 1 0 0 ]    0 <----'       | the truth table  
+	theta = 3*pi/2,	phi = pi/2        [ 1 1 0 1 ]    0 <---'        | can be reduced to  
+        theta = 3*pi/2, phi = pi          [ 1 1 1 0 ]    0 <--'         | 3 bits.      
+	theta =	3*pi/2, phi = 3*pi/2      [ 1 1 1 1 ]]   0 <-'           '--------------
+		                                                        
     Rows in truth table represent discrete points on the Bloch sphere and 
     the output vector indicates the position of a qubit
     
@@ -374,34 +373,34 @@ Notes:
     									
                                                     z
                                                     .
-                                                   /|\ theta = [0 0] OR [0 0] OR [0 0] OR [0 0]
-                                                    |  phi   = [0 0]    [0 1]    [1 0]    [1 1]
+                                                   /|\ theta = [0 0]
+                                                    |  phi   = [0 0]    
                                              ,,,-'''|'''-,,,            __,
                                          ,,''       |       '',,        ,'|
                                      ,,''           |           '',,  ,'
                                   ,''               |               '',
                                 ,'                  |             ,'   ',
                                '                    |           ,'       '
-                              /                     |         ,' <--------\------ theta = [0 1] OR [1 1]
-                             ,                  ,,,,|----''';'''-.,        ,      phi =   [1 0]    [0 0]
+                              /                     |         ,' <--------\------ theta = [0 1] 
+                             ,                  ,,,,|----''';'''-.,        ,      phi =   [1 0] 
                             ,         ,,,,-'''''    |     ,'       ''.,     ,
                             ,    ..'''              |   ,'             '.,  ,
                       ,    , ,,''                   | ,'                  ', ,   ,
                     ,'_____,'_______________________|'______________________',____', y
                      ',    ,,                     ,'|                       ,,   ,'
-  theta = [0 1] OR [1 1]    ,'-                 ,'  |                   ,,'',  theta = [0 1] OR [1 1]
-  phi   = [1 1]    [0 1]    ,  '.             ,'    |              ,,,''    ,  phi   = [0 1]    [1 1]
+             theta = [0 1]  ,'-                 ,'  |                   ,,'',  theta = [0 1] 
+             phi   = [1 1]  ,  '.             ,'    |              ,,,''    ,  phi   = [0 1]  
                              ,   '',,       ,'      |    ,,,,,-''''         ,
                               \      ''-,,,;,,,,----|''''                  /
-  theta = [0 1] OR [1 1] ------',-----> ,'          |                    ,'
-  phi   = [0 0]    [1 0]         ',   ,'            |                  ,'
+           theta = [0 1] ------',-----> ,'          |                    ,'
+           phi   = [0 0]         ',   ,'            |                  ,'
                                    ','              |               ,,'
                                   ,' '',,           |           ,,''
                                 ,'       '',,       |       ,,''
                              |,'             '''-,,,|,,,-'''
                              '--                    |
-                            x                      \|/ theta = [1 0] OR [1 0] OR [1 0] OR [1 0]
-                                                    '  phi   = [0 0]    [0 1]    [1 0]    [1 1]
+                            x                      \|/ theta = [1 0]
+                                                    '  phi   = [0 0] 
     
     Annealer encodings for single gates using crude 4-bit bloch sphere truth table representation 
     of qubit:
@@ -417,22 +416,12 @@ Notes:
 	        
                             t1 t0 p1 p0    H     t1 t0 p1 p0
                             0  0  0  0   ====>   0  1  0  0  
-                            0  0  0  1   ====>   0  1  0  0 <-, 
-                            0  0  1  0   ====>   0  1  0  0 <--,
-                            0  0  1  1   ====>   0  1  0  0 <---,
-                            0  1  0  0   ====>   0  0  0  0      ',
-                            0  1  0  1   ====>   0  1  1  1        ',       These rows
-                            0  1  1  0   ====>   1  0  0  0          ',     don't matter.
-                            0  1  1  1   ====>   0  1  0  1            :--> Find better  
-                            1  0  0  0   ====>   0  1  1  0          .'     way to represent
-                            1  0  0  1   ====>   0  1  1  0 <-------'       qubit on Bloch  
-                            1  0  1  0   ====>   0  1  1  0 <------'        sphere.
-                            1  0  1  1   ====>   0  1  1  0 <-----'
-                            1  1  0  0   ====>   1  0  0  0 <----'
-                            1  1  0  1   ====>   1  1  1  1 <---'
-                            1  1  1  0   ====>   0  0  0  0 <--'
-                            1  1  1  1   ====>   1  1  0  1 <-'
-		
+                            0  1  0  0   ====>   0  0  0  0        
+                            0  1  0  1   ====>   0  1  1  1                               
+                            0  1  1  0   ====>   1  0  0  0                               
+                            0  1  1  1   ====>   0  1  0  1                              
+                            1  0  0  0   ====>   0  1  1  0                                 
+                                                                                               
 		I will change this once a better way to represent a qubit is implemented 
               
  	   	
