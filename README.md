@@ -424,12 +424,50 @@ Notes:
                                                                                                
 		I will change this once a better way to represent a qubit is implemented 
 		
-		The script examples/Hadamard.py is setup to solve for an annealer encoding
-		of th Hadamard gate. However, the solver is not yet able to solve the 
-		system of 256 inequalities generated from the Hadamard truth table, 
-		even though it only has six ground state rows. I believe I will be able to 
-		get the solver to the point where it can accomplish this, though.
- 	   	
+		Running the script examples/Hadamard.py is setup to solve for an annealer 
+		encoding of the Hadamard gate.
+		
+		Coupler and qubit weights for an annealer Hadamard gate using a 4 bit 
+		discretization of the bloch sphere is (assuming full connectivity: 		
+		
+J67 	 -47.3                                          
+J16 	 115.0					 ,,''''O'''',,
+w7 	 546.6                              ,,,''             '',,,
+J01 	 -246.7                         ,,''                       '',,
+J25 	 342.3			      O'-------------------------------'O
+J02 	 -108.4
+w0 	 320.2
+J26 	 978.9
+J12 	 96.9
+J56 	 -514.3			O						O
+J36 	 -201.9
+J06 	 53.6
+J34 	 667.0
+J24 	 -499.6
+J35 	 -821.9
+w2 	 -747.1				O				O
+w3 	 627.7
+J17 	 -564.1
+w1 	 38.1						O
+J07 	 880.6
+J03 	 938.0
+w5 	 910.4
+J57 	 837.0
+w6 	 -747.1
+J14 	 -240.1
+w4 	 984.6
+J04 	 -48.2
+J05 	 -595.6
+J45 	 -379.6
+G 	 -747.1
+J47 	 708.5
+J15 	 547.5
+J46 	 -697.2
+J37 	 -312.2
+J13 	 651.5
+J27 	 -117.5
+J23 	 -548.1
+ 	   					
 	Z:
 	
 	Y:
@@ -561,8 +599,12 @@ Notes:
 	encodings representing logic functions cannot be trivially combined into one encoding 
 	representing a composite function.
 	
-	--> try and add a coupling embedding inbetween the circuits.
-		
+	--> try and add a coupling embedding inbetween the circuits
+		doesn't work
+	--> using global offset in the inequalities
+		doesn't work
+  
+  
   Want to do this with bloch sphere qubit encodings of gates
   
  
