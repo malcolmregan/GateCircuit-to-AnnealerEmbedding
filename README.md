@@ -602,10 +602,20 @@ Notes:
 	encodings representing logic functions cannot be trivially combined into one encoding 
 	representing a composite function.
 	
-	--> try and add a coupling embedding inbetween the circuits
+	--> try and add a coupling qubit inbetween the circuits
 		doesn't seem to work
-	--> using global offset in the inequalities
+	--> try using global offset in the inequalities
 		doesn't seem to work
+		
+	System of inequalities for 6 and 7 qubit XNOR that use values of variables in XOR
+	and NOT encodings above are setup to run in the main() block of
+	composite/solve_sys_multivar_ineq.py.
+	This file can be run with the appropriate system of inequalities uncommented 
+	to see if unknown coupler and qubit weights, ground state, and global offset can be
+	solved for. 
+	There is a line which adds the global offset variable to all inequalities that can be
+	commented or uncommented depending on whether or not you want to include the global
+	offset variable.
 		
   Comparison of 4-bit XOR and 4-bit XNOR encodings:
   
