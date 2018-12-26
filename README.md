@@ -550,10 +550,6 @@ Notes:
            |	  '-------------------------------------------------------------'     |
             '-------------------------------------------------------------------------'
                                        Ground state = ?
-				       
-                  This connectivity is setup to run on a Dwave simulator in 
-	          Lump-Annealer-Encoding-From-Gate-Circuit/composite/XNORfromXORandXtest.py
-	          for investigation of how/if this could work
 	
 	Solving the system of inequalities corresponding to an XNOR with three ancilla bits 
 	(2 intermediate inputs/outputs recast as ancillas + the 1 XOR ancilla that was already
@@ -603,7 +599,6 @@ Notes:
 		doesn't work
 	--> using global offset in the inequalities
 		doesn't work
-  
   
   Want to do this with bloch sphere qubit encodings of gates
   
