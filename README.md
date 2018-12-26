@@ -35,8 +35,8 @@ CONTENTS
 
 This approach will be unable to scale to any practical circuit, as practical circuits often 
 require upwards of 100 qubits. Clearly, solving a system of 2**100 inequalities is infeasible.
-However, the classes and functions used to implement this approach will hopefully be useful
-in the later part of this project, discussed in sections II and III.
+However, the classes and functions used to implement this approach are useful in the later parts
+of this project, discussed in sections II and III.
 
 The following describes how this approach generates a lump annealer encoding from a multi-gate 
 circuit through an example of the XNOR function. 
@@ -60,7 +60,7 @@ File locations are described assuming the base directory is
 	qc = QuantumCircuit(qr0,qr1,cr0,cr1) ----.
 	   .-------------------------------------'				  
 	   |					 
-	   '-->	In this case, when QuantumRegister is called its truthtable
+	   '-->	In this case, when QuantumCircuit is called its truthtable
 		attribute is initialized as follows:
 			qc.truthtable.numinputs = 4 (2 for qr0 and 2 for qr1)			
 			qc.truthtable.inputnames = ['q1_0','q0_0','q1_0_out','q0_0_out']
@@ -489,7 +489,7 @@ Notes:
 	
 	Fredkin:
 
-    Need 6 bit truth table for single qubit to represent a T gate
+    Need 6 bit truth table representation of single qubit to do T gate
     
     	
 
@@ -603,9 +603,9 @@ Notes:
 	representing a composite function.
 	
 	--> try and add a coupling embedding inbetween the circuits
-		doesn't work
+		doesn't seem to work
 	--> using global offset in the inequalities
-		doesn't work
+		doesn't seem to work
 		
   Comparison of 4-bit XOR and 4-bit XNOR encodings:
   
