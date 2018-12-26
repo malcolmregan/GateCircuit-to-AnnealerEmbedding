@@ -416,7 +416,7 @@ Notes:
 		Right now it just changes the truthtable.outputs vector by mapping 
 		a 1 on a given row to a different row as follows:
 		        
-	            'Circ_Input' 'Circ_Output'       'Circ_Input' 'Citc_Output'
+	            'Circ_Input' 'Circ_Output'       'Circ_Input' 'Circ_Output'
 			'q0_0'	  'q0_0_out'             'q0_0'    'q0_0_out'
                      t1 t0 p1 p0 t1 t0 p1 p0    H     t1 t0 p1 p0 t1 t0 p1 p0
                          	 0  0  0  0   ====>                0  1  0  0  
@@ -644,23 +644,23 @@ Notes:
 		      Ground state = 0                       Ground state = -729.9
 		      
 
-       	                                4-bit XNOR gate encoding                
-		                       --------------------------                       
+       	                          4-bit XNOR gate encoding                
+		                 --------------------------                       
                
-                               Ancilla          J01 = -517.9        Output                  
-                             w0 = 831.3 O------------------------O w1 = -43.3           
-                                        |'.    J03 =           .'|                       
-		                        |  ''. -426.6       .''  |                      
-                                 	|     ''.        .''     |                      
-                        		|        ''.  .''        |                       
-                            J02 =-364.5 |          .''.          | J13 = 302.2          
-                             		|       .''    ''.       |                      
-                         		|    .''J12 =     ''.    |                      
-                         		|,.''   120.3        ''.,|                      
-                             w2 = -43.3 O------------------------O w3 = -43.3           
-                                Input		 J23 = 141.8         Input
+                        Ancilla          J01 = -517.9        Output                  
+                      w0 = 831.3 O------------------------O w1 = -43.3           
+                                 |'.    J03 =           .'|                       
+		                 |  ''. -426.6       .''  |                      
+                                 |     ''.        .''     |                      
+                         	 |        ''.  .''        |                       
+                     J02 =-364.5 |          .''.          | J13 = 302.2          
+                                 |       .''    ''.       |                      
+                         	 |    .''J12 =     ''.    |                      
+                         	 |,.''   120.3        ''.,|                      
+                      w2 = -43.3 O------------------------O w3 = -43.3           
+                         Input	        J23 = 141.8          Input
 		                                           
-		                              Ground state = -43.3                       
+		                     Ground state = -43.3                       
 
 TODO:
 
