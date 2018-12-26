@@ -409,46 +409,49 @@ Notes:
 	
 		Hadamard gate is very inelegantly implemented in
 		converter/qiskit/extensions/standard/h.py for the 4-bit Bloch sphere qubit
-		representation shown above.
+		representation shown above. I will change this once a better way to represent 
+		a qubit is implemented.
 		
-		Right now it pretty much just maps a 1 on a given row to a different row 
-		as follows:
-	        
-                            t1 t0 p1 p0    H     t1 t0 p1 p0
-                            0  0  0  0   ====>   0  1  0  0  
-                            0  1  0  0   ====>   0  0  0  0        
-                            0  1  0  1   ====>   0  1  1  1                               
-                            0  1  1  0   ====>   1  0  0  0                               
-                            0  1  1  1   ====>   0  1  0  1                              
-                            1  0  0  0   ====>   0  1  1  0                                 
+		Right now it pretty much just changing the truthtable.outputs vector by mapping 
+		a 1 on a given row to a different row as follows:
+		        
+	            'Circ_Input' 'Circ_Output'       'Circ_Input' 'Citc_Output'
+			'q0_0'	  'q0_0_out'             'q0_0'    'q0_0_out'
+                     t1 t0 p1 p0 t1 t0 p1 p0    H     t1 t0 p1 p0 t1 t0 p1 p0
+                         	 0  0  0  0   ====>                0  1  0  0  
+                       		 0  1  0  0   ====>                0  0  0  0        
+                                 0  1  0  1   ====>                0  1  1  1                               
+                                 0  1  1  0   ====>                1  0  0  0                               
+                                 0  1  1  1   ====>                0  1  0  1                              
+                                 1  0  0  0   ====>                0  1  1  0 
+			
+			
+		 	Input columns are blank because they can be anything and 
+			the Hadamard operation does not affect them.
                                                                                                
-		I will change this once a better way to represent a qubit is implemented 
-		
-		Running the script examples/Hadamard.py is setup to solve for an annealer 
-		encoding of the Hadamard gate.
-		
-		Coupler and qubit weights for an annealer Hadamard gate using a 4 bit 
-		discretization of the bloch sphere is (assuming full connectivity: 		
+		Running examples/Hadamrd.py returns coupler and qubit weights for an annealer 
+		Hadamard gate using a 4 bit discretization of the bloch sphere (assuming full 
+		connectivity): 		
 		
 			J67 	 -47.3                                          
-			J16 	 115.0					 ,,''''O'''',,
-			w7 	 546.6                              ,,,''             '',,,
-			J01 	 -246.7                         ,,''                       '',,
-			J25 	 342.3			      O'-------------------------------'O
+			J16 	 115.0			                
+			w7 	 546.6                                                      
+			J01 	 -246.7                                                           
+			J25 	 342.3			                                           
 			J02 	 -108.4
 			w0 	 320.2
 			J26 	 978.9
 			J12 	 96.9
-			J56 	 -514.3			O						O
+			J56 	 -514.3                 
 			J36 	 -201.9
 			J06 	 53.6
 			J34 	 667.0
 			J24 	 -499.6
 			J35 	 -821.9
-			w2 	 -747.1				O				O
+			w2 	 -747.1		        
 			w3 	 627.7
 			J17 	 -564.1
-			w1 	 38.1						O
+			w1 	 38.1	      
 			J07 	 880.6
 			J03 	 938.0
 			w5 	 910.4
@@ -467,6 +470,9 @@ Notes:
 			J13 	 651.5
 			J27 	 -117.5
 			J23 	 -548.1
+			
+		The above encoding is setup to run on a Dwave simulator in 
+		examples/Hadamard_dwave.py
  	   					
 	Z:
 	
@@ -599,10 +605,50 @@ Notes:
 		doesn't work
 	--> using global offset in the inequalities
 		doesn't work
+		
+  Comparison of 4-bit XOR and 4-bit XNOR encodings:
   
-  Want to do this with bloch sphere qubit encodings of gates
-  
- 
+  	Maybe by staring at the XOR and XNOR encodings, the properties of the NOT 
+	encoding which contribute to transforming an XOR into an XNOR encoding
+	will become apparent:
+	
+  	       	     XOR gate encoding                         NOT gate encoding
+                    -------------------                       -------------------
+               
+        Ancilla          J01 = 844.4	     Output                  Input
+      w0 = 433.3 O------------------------O w1 = 112.8           O w4 = -729.9 
+                 |'.    J03 =           .'|                      |
+		 |  ''. -767.5       .''  |                      |
+		 |     ''.        .''     |                      |
+		 |        ''.  .''        |                      | 
+     J02 =-471.2 |          .''.          | J13 = -606           | J45 = 823.7
+		 |       .''    ''.       |                      |
+		 |    .''J12 =     ''.    |                      |
+		 |,.''  -185.2        ''.,|                      |
+       w2 = 72.4 O------------------------O w3 = 493.2           O w5 = -729.9
+         Input		 J23 = 239.8         Input                   Output                      
+		                                           
+		      Ground state = 0                       Ground state = -729.9
+		      
+
+       	                                4-bit XNOR gate encoding                
+		                       --------------------------                       
+               
+                               Ancilla          J01 = -517.9        Output                  
+                             w0 = 831.3 O------------------------O w1 = -43.3           
+                                        |'.    J03 =           .'|                       
+		                        |  ''. -426.6       .''  |                      
+                                 	|     ''.        .''     |                      
+                        		|        ''.  .''        |                       
+                            J02 =-364.5 |          .''.          | J13 = 302.2          
+                             		|       .''    ''.       |                      
+                         		|    .''J12 =     ''.    |                      
+                         		|,.''   120.3        ''.,|                      
+                             w2 = -43.3 O------------------------O w3 = -43.3           
+                                Input		 J23 = 141.8         Input                                        
+		                                           
+		                              Ground state = -43.3                       
+
 TODO:
 
     Everything
