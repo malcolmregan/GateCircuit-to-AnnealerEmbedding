@@ -413,7 +413,7 @@ Notes:
 		representation shown above. I will change this once a better way to represent 
 		a qubit is implemented.
 		
-		Right now it pretty much just changing the truthtable.outputs vector by mapping 
+		Right now it just changes the truthtable.outputs vector by mapping 
 		a 1 on a given row to a different row as follows:
 		        
 	            'Circ_Input' 'Circ_Output'       'Circ_Input' 'Citc_Output'
@@ -431,7 +431,7 @@ Notes:
 			the Hadamard operation does not affect them.
                                                                                                
 		Running examples/Hadamard.py returns coupler and qubit weights for an annealer 
-		Hadamard gate using a 4 bit discretization of the bloch sphere (assuming full 
+		Hadamard gate using a 4-bit discretization of the bloch sphere (assuming full 
 		connectivity): 		
 		
 			J67 	 -47.3                                          
