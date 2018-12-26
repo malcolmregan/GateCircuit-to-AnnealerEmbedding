@@ -275,5 +275,8 @@ def main():
         print(correct[i]['valid'], "\t-\t", eqns[i])
     print("\nAncillas added: {}".format(trutab.ancillasadded))
 
+
+    print(eqns)
+
 if __name__=="__main__":
     main()

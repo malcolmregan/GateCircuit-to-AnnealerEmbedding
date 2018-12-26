@@ -3,7 +3,7 @@
 from copy import deepcopy
 import uuid
 import logging
-
+from random import shuffle
 
 #from converter.qiskit import transpiler
 #from converter.qiskit.transpiler._passmanager import PassManager
@@ -107,6 +107,7 @@ def execute(circuit, backend=None,
     reportsteps = 100
 
     while stop == False:
+        shuffle(eqns)
         symbols = solve(eqns)
         correct = evaluate_sys(eqns, symbols)
         truecount = 0

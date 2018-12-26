@@ -1,7 +1,7 @@
 import numpy as np
 from random  import randint, uniform, shuffle
 
-boundmax = 1000
+boundmax = 10000
 num = '0123456789'
 alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 oper = '+-*/'
@@ -183,18 +183,35 @@ def update_bounds(syms):
                             if RHS[i-1] == '+':
                                 RHSbound[0] = RHSbound[0] + Rsym.bounds[0]
                                 RHSbound[1] = RHSbound[1] + Rsym.bounds[1]
+                    
+                    # change this block
+                    # determine if RHS[i] is a number
+                    # negative, postive, long, short, whatever
+                    if len(RHS[i])>1:
+                        if RHS[i][0] not in alpha and RHS[i][1] in num:
+                            if i == 0:
+                                RHSbound[0] = RHSbound[0] + float(RHS[i])
+                                RHSbound[1] = RHSbound[1] + float(RHS[i])
+                            else:
+                                if RHS[i-1] == '-':
+                                    RHSbound[0] = RHSbound[0] - float(RHS[i])
+                                    RHSbound[1] = RHSbound[1] - float(RHS[i])
+                                if RHS[i-1] == '+':
+                                    RHSbound[0] = RHSbound[0] + float(RHS[i])
+                                    RHSbound[1] = RHSbound[1] + float(RHS[i])
 
+                    #change this too
                     if RHS[i] in num:
                         if i == 0:
-                            RHSbound[0] = RHSbound[0] + int(RHS[i])
-                            RHSbound[1] = RHSbound[1] + int(RHS[i])
+                            RHSbound[0] = RHSbound[0] + float(RHS[i])
+                            RHSbound[1] = RHSbound[1] + float(RHS[i])
                         else:
                             if RHS[i-1] == '-':
-                                RHSbound[0] = RHSbound[0] - int(RHS[i])
-                                RHSbound[1] = RHSbound[1] - int(RHS[i])
+                                RHSbound[0] = RHSbound[0] - float(RHS[i])
+                                RHSbound[1] = RHSbound[1] - float(RHS[i])
                             if RHS[i-1] == '+':
-                                RHSbound[0] = RHSbound[0] + int(RHS[i])
-                                RHSbound[1] = RHSbound[1] + int(RHS[i])
+                                RHSbound[0] = RHSbound[0] + float(RHS[i])
+                                RHSbound[1] = RHSbound[1] + float(RHS[i])
                
 
 
@@ -351,13 +368,20 @@ def evaluate_sys(sys_ineq, syms):
             for sym in syms:
                 if elem == sym.name:
                     Lval = Lval + sym.value
+                if len(elem)>1:
+                    if elem[0] not in alpha and elem[1] in num:
+                        Lval = Lval + float(elem)
+
+
 
         Rval = 0
         for elem in Rlist:
             for sym in syms:
                 if elem == sym.name:
                     Rval = Rval + sym.value
-
+                if len(elem)>1:
+                    if elem[0] not in alpha and elem[1] in num:
+                        Rval = Rval + float(elem)
         if relation == '=':
             iscorrect.append({'inequality': ineq, 'valid': round(float(Lval),1) == round(float(Rval),1)})
         if relation == '>':
@@ -403,6 +427,7 @@ def main():
                            'w3 + J23 + J03 + w2 + J02 + w0 = G',
                            'w3 + J23 + J13 + w2 + J12 + w1 > G',
                            'w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G']
+    '''
     '''
     # XNOR 6-bit encoding (everything except the ground state value and coupler weights btwn q0,q1,q2,q3 and q4,q5 are known)
     system_inequalities = ['0 > G',
@@ -505,52 +530,317 @@ def main():
                 l[j] = '-729.9'
             if l[j] == 'J45':
                 l[j] = '823.7'
-            '''
-            # couplers to output bit of not == 0?
-            if l[j] == 'J05':
-                l[j] = '0'
-            if l[j] == 'J15':
-                l[j] = '0'
-            if l[j] == 'J25':
-                l[j] = '0'
-            if l[j] == 'J35':
-                l[j] = '0'
-            '''
+            
         newstring = ''
         for j in range(len(l)):
             newstring = newstring + l[j]
             if j < len(l)-1:
-                newstring = newstring + ' + ' 
+                newstring = newstring + ' + '
+        newstring = newstring + ' + ' + 'offset'
         newstring = newstring + rel
         newstring = newstring + 'G'
 
         system_inequalities[i] = newstring
-        print(system_inequalities[i])
+        #print(system_inequalities[i])
 
-    input()
+    ''' 
+    
+     
+    # XNOR with coupler qubit inbtwn XOR and NOT
+    system_inequalities = ['0 > G', 
+            'w0 > G', 'w1 > G', 
+            'w1 + J01 + w0 > G', 
+            'w2 > G', 
+            'w2 + J02 + w0 > G', 
+            'w2 + J12 + w1 > G', 
+            'w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w3 > G', 
+            'w3 + J03 + w0 > G', 
+            'w3 + J13 + w1 > G', 
+            'w3 + J13 + J03 + w1 + J01 + w0 > G', 
+            'w3 + J23 + w2 > G', 
+            'w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w3 + J23 + J13 + w2 + J12 + w1 > G', 
+            'w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w4 > G', 
+            'w4 + J04 + w0 > G', 
+            'w4 + J14 + w1 > G', 
+            'w4 + J14 + J04 + w1 + J01 + w0 > G', 
+            'w4 + J24 + w2 > G', 
+            'w4 + J24 + J04 + w2 + J02 + w0 > G', 
+            'w4 + J24 + J14 + w2 + J12 + w1 > G', 
+            'w4 + J24 + J14 + J04 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w4 + J34 + w3 > G', 
+            'w4 + J34 + J04 + w3 + J03 + w0 > G', 
+            'w4 + J34 + J14 + w3 + J13 + w1 > G', 
+            'w4 + J34 + J14 + J04 + w3 + J13 + J03 + w1 + J01 + w0 > G', 
+            'w4 + J34 + J24 + w3 + J23 + w2 > G', 
+            'w4 + J34 + J24 + J04 + w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w4 + J34 + J24 + J14 + w3 + J23 + J13 + w2 + J12 + w1 > G', 
+            'w4 + J34 + J24 + J14 + J04 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w5 > G', 
+            'w5 + J05 + w0 > G', 
+            'w5 + J15 + w1 > G', 
+            'w5 + J15 + J05 + w1 + J01 + w0 > G', 
+            'w5 + J25 + w2 > G', 
+            'w5 + J25 + J05 + w2 + J02 + w0 > G', 
+            'w5 + J25 + J15 + w2 + J12 + w1 > G', 
+            'w5 + J25 + J15 + J05 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w5 + J35 + w3 > G', 
+            'w5 + J35 + J05 + w3 + J03 + w0 > G', 
+            'w5 + J35 + J15 + w3 + J13 + w1 > G', 
+            'w5 + J35 + J15 + J05 + w3 + J13 + J03 + w1 + J01 + w0 > G', 
+            'w5 + J35 + J25 + w3 + J23 + w2 > G', 
+            'w5 + J35 + J25 + J05 + w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w5 + J35 + J25 + J15 + w3 + J23 + J13 + w2 + J12 + w1 > G', 
+            'w5 + J35 + J25 + J15 + J05 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w5 + J45 + w4 > G', 
+            'w5 + J45 + J05 + w4 + J04 + w0 > G', 
+            'w5 + J45 + J15 + w4 + J14 + w1 > G', 
+            'w5 + J45 + J15 + J05 + w4 + J14 + J04 + w1 + J01 + w0 > G', 
+            'w5 + J45 + J25 + w4 + J24 + w2 > G', 
+            'w5 + J45 + J25 + J05 + w4 + J24 + J04 + w2 + J02 + w0 > G', 
+            'w5 + J45 + J25 + J15 + w4 + J24 + J14 + w2 + J12 + w1 > G', 
+            'w5 + J45 + J25 + J15 + J05 + w4 + J24 + J14 + J04 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w5 + J45 + J35 + w4 + J34 + w3 > G', 'w5 + J45 + J35 + J05 + w4 + J34 + J04 + w3 + J03 + w0 > G', 
+            'w5 + J45 + J35 + J15 + w4 + J34 + J14 + w3 + J13 + w1 > G', 
+            'w5 + J45 + J35 + J15 + J05 + w4 + J34 + J14 + J04 + w3 + J13 + J03 + w1 + J01 + w0 > G', 
+            'w5 + J45 + J35 + J25 + w4 + J34 + J24 + w3 + J23 + w2 > G', 
+            'w5 + J45 + J35 + J25 + J05 + w4 + J34 + J24 + J04 + w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w5 + J45 + J35 + J25 + J15 + w4 + J34 + J24 + J14 + w3 + J23 + J13 + w2 + J12 + w1 > G', 
+            'w5 + J45 + J35 + J25 + J15 + J05 + w4 + J34 + J24 + J14 + J04 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w6 > G', 
+            'w6 + J06 + w0 > G', 
+            'w6 + J16 + w1 > G', 
+            'w6 + J16 + J06 + w1 + J01 + w0 > G', 
+            'w6 + J26 + w2 > G', 
+            'w6 + J26 + J06 + w2 + J02 + w0 > G', 
+            'w6 + J26 + J16 + w2 + J12 + w1 > G', 
+            'w6 + J26 + J16 + J06 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w6 + J36 + w3 > G', 
+            'w6 + J36 + J06 + w3 + J03 + w0 > G', 
+            'w6 + J36 + J16 + w3 + J13 + w1 = G', 
+            'w6 + J36 + J16 + J06 + w3 + J13 + J03 + w1 + J01 + w0 > G', 
+            'w6 + J36 + J26 + w3 + J23 + w2 > G', 
+            'w6 + J36 + J26 + J06 + w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w6 + J36 + J26 + J16 + w3 + J23 + J13 + w2 + J12 + w1 > G', 
+            'w6 + J36 + J26 + J16 + J06 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w6 + J46 + w4 > G', 
+            'w6 + J46 + J06 + w4 + J04 + w0 > G', 
+            'w6 + J46 + J16 + w4 + J14 + w1 > G', 
+            'w6 + J46 + J16 + J06 + w4 + J14 + J04 + w1 + J01 + w0 > G', 
+            'w6 + J46 + J26 + w4 + J24 + w2 = G', 
+            'w6 + J46 + J26 + J06 + w4 + J24 + J04 + w2 + J02 + w0 > G', 
+            'w6 + J46 + J26 + J16 + w4 + J24 + J14 + w2 + J12 + w1 > G', 
+            'w6 + J46 + J26 + J16 + J06 + w4 + J24 + J14 + J04 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w6 + J46 + J36 + w4 + J34 + w3 > G', 
+            'w6 + J46 + J36 + J06 + w4 + J34 + J04 + w3 + J03 + w0 > G', 
+            'w6 + J46 + J36 + J16 + w4 + J34 + J14 + w3 + J13 + w1 > G', 
+            'w6 + J46 + J36 + J16 + J06 + w4 + J34 + J14 + J04 + w3 + J13 + J03 + w1 + J01 + w0 > G', 
+            'w6 + J46 + J36 + J26 + w4 + J34 + J24 + w3 + J23 + w2 > G', 
+            'w6 + J46 + J36 + J26 + J06 + w4 + J34 + J24 + J04 + w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w6 + J46 + J36 + J26 + J16 + w4 + J34 + J24 + J14 + w3 + J23 + J13 + w2 + J12 + w1 > G', 
+            'w6 + J46 + J36 + J26 + J16 + J06 + w4 + J34 + J24 + J14 + J04 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w6 + J56 + w5 = G', 
+            'w6 + J56 + J06 + w5 + J05 + w0 > G', 
+            'w6 + J56 + J16 + w5 + J15 + w1 > G', 
+            'w6 + J56 + J16 + J06 + w5 + J15 + J05 + w1 + J01 + w0 > G', 
+            'w6 + J56 + J26 + w5 + J25 + w2 > G', 
+            'w6 + J56 + J26 + J06 + w5 + J25 + J05 + w2 + J02 + w0 > G', 
+            'w6 + J56 + J26 + J16 + w5 + J25 + J15 + w2 + J12 + w1 > G', 
+            'w6 + J56 + J26 + J16 + J06 + w5 + J25 + J15 + J05 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w6 + J56 + J36 + w5 + J35 + w3 > G', 
+            'w6 + J56 + J36 + J06 + w5 + J35 + J05 + w3 + J03 + w0 > G', 
+            'w6 + J56 + J36 + J16 + w5 + J35 + J15 + w3 + J13 + w1 > G', 
+            'w6 + J56 + J36 + J16 + J06 + w5 + J35 + J15 + J05 + w3 + J13 + J03 + w1 + J01 + w0 = G', 
+            'w6 + J56 + J36 + J26 + w5 + J35 + J25 + w3 + J23 + w2 > G', 
+            'w6 + J56 + J36 + J26 + J06 + w5 + J35 + J25 + J05 + w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w6 + J56 + J36 + J26 + J16 + w5 + J35 + J25 + J15 + w3 + J23 + J13 + w2 + J12 + w1 > G', 
+            'w6 + J56 + J36 + J26 + J16 + J06 + w5 + J35 + J25 + J15 + J05 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w6 + J56 + J46 + w5 + J45 + w4 > G', 
+            'w6 + J56 + J46 + J06 + w5 + J45 + J05 + w4 + J04 + w0 > G', 
+            'w6 + J56 + J46 + J16 + w5 + J45 + J15 + w4 + J14 + w1 > G', 
+            'w6 + J56 + J46 + J16 + J06 + w5 + J45 + J15 + J05 + w4 + J14 + J04 + w1 + J01 + w0 > G', 
+            'w6 + J56 + J46 + J26 + w5 + J45 + J25 + w4 + J24 + w2 > G', 
+            'w6 + J56 + J46 + J26 + J06 + w5 + J45 + J25 + J05 + w4 + J24 + J04 + w2 + J02 + w0 > G', 
+            'w6 + J56 + J46 + J26 + J16 + w5 + J45 + J25 + J15 + w4 + J24 + J14 + w2 + J12 + w1 > G', 
+            'w6 + J56 + J46 + J26 + J16 + J06 + w5 + J45 + J25 + J15 + J05 + w4 + J24 + J14 + J04 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
+            'w6 + J56 + J46 + J36 + w5 + J45 + J35 + w4 + J34 + w3 > G', 'w6 + J56 + J46 + J36 + J06 + w5 + J45 + J35 + J05 + w4 + J34 + J04 + w3 + J03 + w0 > G', 
+            'w6 + J56 + J46 + J36 + J16 + w5 + J45 + J35 + J15 + w4 + J34 + J14 + w3 + J13 + w1 > G', 
+            'w6 + J56 + J46 + J36 + J16 + J06 + w5 + J45 + J35 + J15 + J05 + w4 + J34 + J14 + J04 + w3 + J13 + J03 + w1 + J01 + w0 > G', 
+            'w6 + J56 + J46 + J36 + J26 + w5 + J45 + J35 + J25 + w4 + J34 + J24 + w3 + J23 + w2 > G', 
+            'w6 + J56 + J46 + J36 + J26 + J06 + w5 + J45 + J35 + J25 + J05 + w4 + J34 + J24 + J04 + w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w6 + J56 + J46 + J36 + J26 + J16 + w5 + J45 + J35 + J25 + J15 + w4 + J34 + J24 + J14 + w3 + J23 + J13 + w2 + J12 + w1 > G', 
+            'w6 + J56 + J46 + J36 + J26 + J16 + J06 + w5 + J45 + J35 + J25 + J15 + J05 + w4 + J34 + J24 + J14 + J04 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G']
 
 
+    for i in range(len(system_inequalities)):
+        if '=' in system_inequalities[i]:
+            rel = ' = '
+        if '>' in system_inequalities[i]:
+            rel = ' > '
+        s = str.split(system_inequalities[i], rel)[0]
 
-    stop=False
+        l = str.split(s, ' + ')
+        
+        for j in range(len(l)):
+            if l[j] == 'w0':
+                l[j] = '433.3'
+            if l[j] == 'w1':
+                l[j] = '112.8'
+            if l[j] == 'w2':
+                l[j] = '72.4'
+            if l[j] == 'w3':
+                l[j] = '493.2'
+            if l[j] == 'J01':
+                l[j] = '844.4'
+            if l[j] == 'J02':
+                l[j] = '-471.2'
+            if l[j] == 'J03':
+                l[j] = '-767.5'
+            if l[j] == 'J12':
+                l[j] = '-185.2'
+            if l[j] == 'J13':
+                l[j] = '-606'
+            if l[j] == 'J23':
+                l[j] = '239.8'
+            if l[j] == 'w4':
+                l[j] = '-729.9'
+            if l[j] == 'w5':
+                l[j] = '-729.9'
+            if l[j] == 'J45':
+                l[j] = '823.7'
+
+            # couplers between XOR and NOT = 0
+            #if l[j] == 'J04':
+            #    l[j] = '0'
+            #if l[j] == 'J05':
+            #    l[j] = '0'
+            #if l[j] == 'J14':
+            #    l[j] = '0'
+            #if l[j] == 'J15':
+            #    l[j] = '0'
+            #if l[j] == 'J24':
+            #    l[j] = '0'
+            #if l[j] == 'J25':
+            #    l[j] = '0'
+            #if l[j] == 'J34':
+            #    l[j] = '0'
+            #if l[j] == 'J35':
+            #    l[j] = '0'
+
+        newstring = ''
+        for j in range(len(l)):
+            newstring = newstring + l[j] 
+            if j < len(l)-1:
+                newstring = newstring + ' + '
+        newstring = newstring + ' + ' + 'offset'
+        newstring = newstring + rel
+        newstring = newstring + 'G'
+
+        system_inequalities[i] = newstring
+        #print(system_inequalities[i])
+        
+    
+    besttruecount = 0
+
+    stop = False
     count = 0
     while stop == False:
+        shuffle(system_inequalities)      
         symbols = solve(system_inequalities)
+        
         correct = evaluate_sys(system_inequalities, symbols)
         truecount = 0
+        falses = list()
         for elem in correct:
-            print(elem['valid'], "\t-", elem['inequality'])
+            #print(elem['valid'], "\t-", elem['inequality'])
             if elem['valid']==True:
                 truecount = truecount + 1
-        print("\n")
+            else:
+                falses.append(elem['inequality'])
+        #print("\n")
+
+        if truecount >= besttruecount:
+            best = list()
+            for sym in symbols:
+                a = [sym.name, sym.value]
+                best.append(a)    
+            besttruecount = truecount
+            print('best: ', besttruecount)
+            bestfalse = falses
         if truecount == len(correct): 
             stop = True
-        count = count + 1    
-    
-    print(count)
+        
+        count = count + 1
 
+        if count % 200 == 0:
+            s = input('Tried {} times. Stop? (y/n) '.format(count))
+            if s == 'y':
+                stop = True
+            elif s == 'n':
+                stop = False
+            else:
+                stop = False
+        print(count)
+    
     print("\nSymbol Values: ")
-    for symbol in symbols:
-        print("\t",symbol.name,"\t",symbol.value)
+    for entry in best:
+        print("\t",entry[0],"\t",entry[1])
+
+    print('{} were true, {} were false:'.format(besttruecount,len(system_inequalities)-besttruecount))
+    for i in range(len(bestfalse)):
+        print('False: ', bestfalse[i])
+
+    import dimod
+
+    qubit=list()
+    qubitweight =list()
+    coupler=list()
+    couplerweight=list()
+    offset = 0
+  
+    for sym in symbols:
+        if 'w' in sym.name:
+            qubit.append(sym.name)
+            qubitweight.append(sym.value)
+        if  'J' in sym.name:
+            numbers = sym.name[1:]
+            coupler.append(('w{}'.format(numbers[0]), 'w{}'.format(numbers[1])))
+            couplerweight.append(sym.value)
+        if sym.name == 'offset':
+            offset = sym.value
+
+    qubit.extend(['w0','w1','w2','w3','w4','w5'])
+    qubitweight.extend([433.3,112.8,72.4,493.2,-729.2,-729.9])
+    coupler.extend([('w0','w1'),('w0','w2'),('w0','w3'),('w1','w2'),('w1','w3'),('w2','w3'),('w4','w5')])
+    couplerweight.extend([844.4,-471.2,-767.5,-185.2,-606,239.8,823.7])        
+
+    qubit_weights = {q:w for q,w in zip(qubit, qubitweight)}
+    coupler_weights = {c:w for c,w in zip(coupler,couplerweight)}
+
+    print(qubit_weights,coupler_weights)
+
+    bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, offset, dimod.BINARY)
+    sampler = dimod.ExactSolver()
+    response = sampler.sample(bqm)
+
+    groundstate = 1000000
+    for sample, energy in response.data(['sample','energy']):
+        if energy<groundstate:
+            groundstate = round(energy,1)
+
+    function = list()
+    for sample, energy in response.data(['sample', 'energy']):
+        if round(energy,1) == groundstate:
+            print(sample['w2'], sample['w3'], sample['w5'], round(energy,1))
+            function.append([sample['w2'], sample['w3'], sample['w5']])
+    print('\n')
+
+    function.sort()
+    for i in range(len(function)):
+        print(function[i])
+
 
 
 if __name__ == "__main__":
