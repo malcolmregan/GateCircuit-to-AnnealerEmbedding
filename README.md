@@ -616,6 +616,8 @@ Notes:
 	There is a line which adds the global offset variable to all inequalities that can be
 	commented or uncommented depending on whether or not you want to include the global
 	offset variable.
+	The best encoding found is run on a Dwave simulator after solving is complete. This
+	is to validate that the encoding works if/when one is found.
 		
   Comparison of 4-bit XOR and 4-bit XNOR encodings:
   
