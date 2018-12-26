@@ -651,6 +651,7 @@ Notes:
 
 TODO:
 
-    Everything
+    1) Figure out how to do this
+    2) Figure out scheme to simplify annealer encoding graphs
 
 ```
