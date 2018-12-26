@@ -234,7 +234,7 @@ File locations are described assuming the base directory is
 	         [[ 0 0 0 ]    0           system_inequalities = ['0 > G',
                   [ 0 0 1 ]    1                                  'w0 = G',
                   [ 0 1 0 ]    1                                  'w1 = G',
-                  [ 0 1 1 ]    0                                  'wo + w1 > G',
+                  [ 0 1 1 ]    0                                  'w0 + w1 > G',
                   [ 1 0 0 ]    1                                  'w2 = G',
                   [ 1 0 1 ]    0                                  'w1 + w2 + J12 > G',
                   [ 1 1 0 ]    0                                  'w1 + w2 + J12 > G',
