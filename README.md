@@ -429,7 +429,7 @@ Notes:
 		 	Input columns are blank because they can be anything and 
 			the Hadamard operation does not affect them.
                                                                                                
-		Running examples/Hadamrd.py returns coupler and qubit weights for an annealer 
+		Running examples/Hadamard.py returns coupler and qubit weights for an annealer 
 		Hadamard gate using a 4 bit discretization of the bloch sphere (assuming full 
 		connectivity): 		
 		
