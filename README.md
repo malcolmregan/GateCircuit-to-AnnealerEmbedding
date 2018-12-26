@@ -251,10 +251,11 @@ File locations are described assuming the base directory is
    symbols have values.
 
    If a valid solution cannot be found, as in the case of the 3-bit XNOR truthtable above, an ancilla is 
-   added. All 1's in the output are place on ancilla 0's except for the last 1 in the output which is placed 
-   on an ancilla 1. If the system still cannot be solved another ancilla is added, this time all 1's in the 
-   output are placed on ancilla 0's except for the second-to-last output 1 which is placed on an ancilla 1. 
-   This can be continued until all output ones are on rows corresponding to 1's of different ancillas.
+   added. All 1's in the output are placed on ancilla 0's except for the last 1 in the output which is 
+   placed on an ancilla 1. If the system still cannot be solved another ancilla is added, this time all 
+   1's in the output are placed on ancilla 0's except for the second-to-last output 1 which is placed on 
+   an ancilla 1. This can be continued until all output ones are on rows corresponding to 1's of different 
+   ancillas.
 
    This works well for smaller systems of inequalities or simpler large systems of inequalities but does not 
    work on larger, more complicated systems yet. The solver still needs alot of work.
