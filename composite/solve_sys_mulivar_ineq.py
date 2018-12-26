@@ -429,7 +429,7 @@ def main():
                            'w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G']
     '''
     '''
-    # XNOR 6-bit encoding (everything except the ground state value and coupler weights btwn q0,q1,q2,q3 and q4,q5 are known)
+    # XNOR 6-bit encoding (everything except the ground state value, offset and coupler weights btwn q0,q1,q2,q3 and q4,q5 are known)
     system_inequalities = ['0 > G',
                            'w0 > G',
                            'w1 > G',
