@@ -175,7 +175,8 @@ File locations are described assuming the base directory is
         qc = QuantumCircuit(qr0,qr1,cr0,cr1)
 
         qc.cx(qr0[0],qr1[0])
-                                                 
+        qc.x(qr1[0])
+	
 	qc.measure(qr1,cr1)  ---------------->  in converter/qiskit/_measure.py the only
                                                 significant thing that happens is: 
                                                     
@@ -197,7 +198,8 @@ File locations are described assuming the base directory is
         qc = QuantumCircuit(qr0,qr1,cr0,cr1)
 
         qc.cx(qr0[0],qr1[0])
-
+        qc.x(qr1[0])
+	
         qc.measure(qr1,cr1)
 
 	execute(qc)
