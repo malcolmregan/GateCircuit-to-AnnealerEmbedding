@@ -428,7 +428,7 @@ def main():
                            'w3 + J23 + J13 + w2 + J12 + w1 > G',
                            'w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G']
     '''
-    '''
+    '''    
     # XNOR 6-bit encoding (everything except the ground state value, offset and coupler weights btwn q0,q1,q2,q3 and q4,q5 are known)
     system_inequalities = ['0 > G',
                            'w0 > G',
@@ -542,8 +542,8 @@ def main():
 
         system_inequalities[i] = newstring
         #print(system_inequalities[i])
-
-    ''' 
+    '''
+     
     
      
     # XNOR with coupler qubit inbtwn XOR and NOT
@@ -652,9 +652,9 @@ def main():
             'w6 + J56 + J36 + w5 + J35 + w3 > G', 
             'w6 + J56 + J36 + J06 + w5 + J35 + J05 + w3 + J03 + w0 > G', 
             'w6 + J56 + J36 + J16 + w5 + J35 + J15 + w3 + J13 + w1 > G', 
-            'w6 + J56 + J36 + J16 + J06 + w5 + J35 + J15 + J05 + w3 + J13 + J03 + w1 + J01 + w0 = G', 
+            'w6 + J56 + J36 + J16 + J06 + w5 + J35 + J15 + J05 + w3 + J13 + J03 + w1 + J01 + w0 > G', 
             'w6 + J56 + J36 + J26 + w5 + J35 + J25 + w3 + J23 + w2 > G', 
-            'w6 + J56 + J36 + J26 + J06 + w5 + J35 + J25 + J05 + w3 + J23 + J03 + w2 + J02 + w0 > G', 
+            'w6 + J56 + J36 + J26 + J06 + w5 + J35 + J25 + J05 + w3 + J23 + J03 + w2 + J02 + w0 = G', 
             'w6 + J56 + J36 + J26 + J16 + w5 + J35 + J25 + J15 + w3 + J23 + J13 + w2 + J12 + w1 > G', 
             'w6 + J56 + J36 + J26 + J16 + J06 + w5 + J35 + J25 + J15 + J05 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G', 
             'w6 + J56 + J46 + w5 + J45 + w4 > G', 
@@ -740,8 +740,7 @@ def main():
 
         system_inequalities[i] = newstring
         #print(system_inequalities[i])
-        
-    
+             
     besttruecount = 0
 
     stop = False
