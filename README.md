@@ -512,7 +512,7 @@ Notes:
 
    If possible, it would probably be much more efficient to algorithmically determine a lump 
    adiabatic encoding of a circuit from its component single gate encodings than to determine
-   a lump adiabatic from a tuthtable as described above.
+   a lump adiabatic from a truth table as described above.
    
    	Consider a logical XOR and a NOT encoding (assuming full connectivity) 
 	and try to compose a logical XNOR encoding from these
