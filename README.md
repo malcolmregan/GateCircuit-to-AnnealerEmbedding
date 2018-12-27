@@ -534,8 +534,11 @@ Notes:
          Input		 J23 = 239.8         Input                   Output                      
 		                                           
 		      Ground state = 0                       Ground state = -729.9
-		 
-		 
+	
+	Note: Running the above XNOR and NOT embeddings with no couplers inbetween them as
+	a single embedding results in a gray code of the inputs and outputs. What can be derived from
+	two embeddings that would remove the unwanted rows from the ground state?
+	
                                       XNOR gate embedding ?
 				     ---------------------- 
                   ,-----------------------------------------------------------,
