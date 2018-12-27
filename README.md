@@ -21,7 +21,7 @@ CONTENTS
    II) Bloch sphere truth table representation of qubit
    	  - Notes and ideas on this approach
 	  	- General Notes
-		- Annealer Encodings for single gates using Bloch sphere
+		- Annealer embeddings for single gates using Bloch sphere
 		  truth table representation of qubit
 	  - TODO list for implementation of this approach
 	  
@@ -33,7 +33,7 @@ CONTENTS
 (I) GATE CIRCUIT-TO-ANNEALER EMBEDDING BY WAY OF INTERMEDIATE LOGICAL TRUTH TABLE REPRESENTATION
 -----------------------------------------------------------------------------------------------------
 
-This approach will be unable to scale to any practical circuit, as practical circuits often 
+This approach will be unable to scale to any practical circuit as practical circuits often 
 require upwards of 100 qubits. Clearly, solving a system of 2**100 inequalities is infeasible.
 However, the classes and functions used to implement this approach are useful in the later parts
 of this project, discussed in sections II and III.
@@ -335,7 +335,7 @@ Notes:
     Truth table could be used to represent position of qubit on Bloch sphere instead of representing
     a bits logical value which would allow implementation of Hadamard and phase gates. This would 
     result in massive truth tables and as such, the best approach would be to determine annealer 
-    embeddings of single gates and from those, find a way to create a lump annealer encoding as a 
+    embeddings of single gates and from those, find a way to create a lump annealer embeddingas a 
     composite of these.
     
    	                   theta bits <---,-,     ,-,---> phi bits  
@@ -517,7 +517,7 @@ Notes:
    	Consider a logical XOR and a NOT embedding (assuming full connectivity) 
 	and try to compose a logical XNOR embedding from these
 	
-       		     XOR gate embedding                         NOT gate encoding
+       		     XOR gate embedding                         NOT gate embedding
                     -------------------                       -------------------
                
         Ancilla          J01 = 844.4	     Output                  Input
@@ -601,7 +601,7 @@ Notes:
         .... etc. ....
 		
 	This indicates the fact (which probably should have been obvious to me) that two arbitrary
-	embeddings representing logic functions cannot be trivially combined into one encoding 
+	embeddings representing logic functions cannot be trivially combined into one embedding
 	representing a composite function.
 	
 	--> try and add a coupling qubit inbetween the circuits
@@ -624,10 +624,10 @@ Notes:
   Comparison of 4-bit XOR and 4-bit XNOR embeddings:
   
   	Maybe by staring at the XOR and XNOR embeddings, the properties of the NOT 
-	embedding which contribute to transforming an XOR into an XNOR encoding
+	embedding which contribute to transforming an XOR into an XNOR embedding
 	will become apparent:
 	
-  	       	     XOR gate embedding                         NOT gate encoding
+  	       	     XOR gate embedding                         NOT gate embedding
                     -------------------                       -------------------
                
         Ancilla          J01 = 844.4	     Output                  Input
