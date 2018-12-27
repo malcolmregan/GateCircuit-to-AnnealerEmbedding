@@ -13,7 +13,7 @@ GENERAL NOTES
 CONTENTS
 -----------------------------------------------------------------------------------------------------
 
-   I) Gate circuit-to-lump annealer encoding by way of intermediate logical truth table 
+   I) Gate circuit-to-lump annealer embedding by way of intermediate logical truth table 
       representation
    	  - Covers implementation through an example of an XNOR function
 	  - TODO list
@@ -25,12 +25,12 @@ CONTENTS
 		  truth table representation of qubit
 	  - TODO list for implementation of this approach
 	  
-   III) Lump annealer encoding as composite of single gate annealer encodings 
+   III) Lump annealer embedding as composite of single gate annealer embeddings 
    	  - Notes and ideas on this approach
 	  - TODO list for implementation of this approach
 
 -----------------------------------------------------------------------------------------------------
-(I) GATE CIRCUIT-TO-ANNEALER ENCODING BY WAY OF INTERMEDIATE LOGICAL TRUTH TABLE REPRESENTATION
+(I) GATE CIRCUIT-TO-ANNEALER EMBEDDING BY WAY OF INTERMEDIATE LOGICAL TRUTH TABLE REPRESENTATION
 -----------------------------------------------------------------------------------------------------
 
 This approach will be unable to scale to any practical circuit, as practical circuits often 
@@ -38,7 +38,7 @@ require upwards of 100 qubits. Clearly, solving a system of 2**100 inequalities 
 However, the classes and functions used to implement this approach are useful in the later parts
 of this project, discussed in sections II and III.
 
-The following describes how this approach generates a lump annealer encoding from a multi-gate 
+The following describes how this approach generates a lump annealer embedding from a multi-gate 
 circuit through an example of the XNOR function. 
 
 File locations are described assuming the base directory is 
@@ -299,10 +299,10 @@ File locations are described assuming the base directory is
 
    Solver functions and classes are implemented in converter/qiskit/solve_sys_multivar_ineq.py
 
-8) *Not yet implemented* After this general encoding is found, it will be adjusted to correspond to 
+8) *Not yet implemented* After this general embedding is found, it will be adjusted to correspond to 
    actual Dwave connectivity 
  
-9) *Not yet implemented* Last, a script which runs the found encoding on an annealer will be written by 
+9) *Not yet implemented* Last, a script which runs the found embedding on an annealer will be written by 
    execute().
    
 TODO:
@@ -317,9 +317,9 @@ TODO:
 	  gate operations take a long time on large truthtables
 	- Find way to encode output bits position on bloch sphere
 
-3) After system of inequalities are solved, adjust found encoding to represent actual Dwave connectivity 
+3) After system of inequalities are solved, adjust found embedding to represent actual Dwave connectivity 
 	  
-4) Write script in execute() that creates dwave script with the encoding that was found
+4) Write script in execute() that creates dwave script with the embedding that was found
 
 5) Implement Fredkin and swap gates.
 
@@ -335,7 +335,7 @@ Notes:
     Truth table could be used to represent position of qubit on Bloch sphere instead of representing
     a bits logical value which would allow implementation of Hadamard and phase gates. This would 
     result in massive truth tables and as such, the best approach would be to determine annealer 
-    encodings of single gates and from those, find a way to create a lump annealer encoding as a 
+    embeddings of single gates and from those, find a way to create a lump annealer encoding as a 
     composite of these.
     
    	                   theta bits <---,-,     ,-,---> phi bits  
@@ -405,7 +405,7 @@ Notes:
                             x                      \|/ theta = [1 0]
                                                     '  phi   = [0 0] 
     
-    Annealer encodings for single gates using crude 4-bit bloch sphere truth table representation 
+    Annealer embeddings for single gates using crude 4-bit bloch sphere truth table representation 
     of qubit:
     
 	Hadamard: 
@@ -474,7 +474,7 @@ Notes:
 			J27 	 -117.5
 			J23 	 -548.1
 			
-		The above encoding is setup to run on a Dwave simulator in 
+		The above embedding is setup to run on a Dwave simulator in 
 		examples/Hadamard_dwave.py
  	   					
 	Z:
@@ -505,19 +505,19 @@ TODO:
     3) Implement gate operations for bloch sphere truth table representation of qubit
 
 -----------------------------------------------------------------------------------------------------
-(III) LUMP ANNEALER ENCODING AS COMPOSITE OF SINGLE GATE ANNEALER ENCODINGS
+(III) LUMP ANNEALER EMBEDDING AS COMPOSITE OF SINGLE GATE ANNEALER EMBEDDINGS
 -----------------------------------------------------------------------------------------------------
 
 Notes:
 
    If possible, it would probably be much more efficient to algorithmically determine a lump 
-   adiabatic encoding of a circuit from its component single gate encodings than to determine
+   adiabatic embedding of a circuit from its component single gate embeddings than to determine
    a lump adiabatic from a truth table as described above.
    
-   	Consider a logical XOR and a NOT encoding (assuming full connectivity) 
-	and try to compose a logical XNOR encoding from these
+   	Consider a logical XOR and a NOT embedding (assuming full connectivity) 
+	and try to compose a logical XNOR embedding from these
 	
-       		     XOR gate encoding                         NOT gate encoding
+       		     XOR gate embedding                         NOT gate encoding
                     -------------------                       -------------------
                
         Ancilla          J01 = 844.4	     Output                  Input
@@ -536,7 +536,7 @@ Notes:
 		      Ground state = 0                       Ground state = -729.9
 		 
 		 
-                                      XNOR gate encoding ?
+                                      XNOR gate embedding ?
 				     ---------------------- 
                   ,-----------------------------------------------------------,
                  |                         JO4 = ?                             ',
@@ -562,8 +562,8 @@ Notes:
 	
 	Solving the system of inequalities corresponding to an XNOR with three ancilla bits 
 	(2 intermediate inputs/outputs recast as ancillas + the 1 XOR ancilla that was already
-	there) for the unknown ground state and coupler weights between the 2 subencodings 
-	(using the values for variables from XOR and NOT encodings) is not possible as the values
+	there) for the unknown ground state and coupler weights between the 2 subembeddings 
+	(using the values for variables from XOR and NOT embeddings) is not possible as the values
 	of known variables immediately pose contradicting constraints on the ground state:
 	
 	False 	- 0 > G
@@ -601,7 +601,7 @@ Notes:
         .... etc. ....
 		
 	This indicates the fact (which probably should have been obvious to me) that two arbitrary
-	encodings representing logic functions cannot be trivially combined into one encoding 
+	embeddings representing logic functions cannot be trivially combined into one encoding 
 	representing a composite function.
 	
 	--> try and add a coupling qubit inbetween the circuits
@@ -610,7 +610,7 @@ Notes:
 		doesn't seem to work
 		
 	System of inequalities for 6 and 7 qubit XNOR that use values of variables in XOR
-	and NOT encodings above are setup to run in the main() block of
+	and NOT embeddings above are setup to run in the main() block of
 	composite/solve_sys_multivar_ineq.py.
 	This file can be run with the appropriate system of inequalities uncommented 
 	to see if unknown coupler and qubit weights, ground state, and global offset can be
@@ -618,16 +618,16 @@ Notes:
 	There is a line which adds the global offset variable to all inequalities that can be
 	commented or uncommented depending on whether or not you want to include the global
 	offset variable.
-	The best encoding found is run on a Dwave simulator after solving is complete. This
-	is to validate that the encoding works if/when one is found.
+	The best embedding found is run on a Dwave simulator after solving is complete. This
+	is to validate that the embedding works if/when one is found.
 		
-  Comparison of 4-bit XOR and 4-bit XNOR encodings:
+  Comparison of 4-bit XOR and 4-bit XNOR embeddings:
   
-  	Maybe by staring at the XOR and XNOR encodings, the properties of the NOT 
-	encoding which contribute to transforming an XOR into an XNOR encoding
+  	Maybe by staring at the XOR and XNOR embeddings, the properties of the NOT 
+	embedding which contribute to transforming an XOR into an XNOR encoding
 	will become apparent:
 	
-  	       	     XOR gate encoding                         NOT gate encoding
+  	       	     XOR gate embedding                         NOT gate encoding
                     -------------------                       -------------------
                
         Ancilla          J01 = 844.4	     Output                  Input
@@ -646,7 +646,7 @@ Notes:
 		      Ground state = 0                       Ground state = -729.9
 		      
 
-       	                          4-bit XNOR gate encoding                
+       	                          4-bit XNOR gate embedding                
 		                 --------------------------                       
                
                         Ancilla          J01 = -517.9        Output                  
@@ -667,6 +667,6 @@ Notes:
 TODO:
 
     1) Figure out how to do this
-    2) Figure out scheme to simplify annealer encoding graphs
+    2) Figure out scheme to simplify annealer embedding graphs
 
 ```
