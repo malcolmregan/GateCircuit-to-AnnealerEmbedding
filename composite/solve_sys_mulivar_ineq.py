@@ -397,8 +397,7 @@ def evaluate_constraints(syms):
 
 
 def main():
-    '''
-    # make sure numbers work in solver
+    
     # XOR encoding (4 bit)
     system_inequalities = ['0 = G',
                            'w0 > G',
@@ -437,25 +436,25 @@ def main():
 
         for j in range(len(l)):
             if l[j] == 'w0':
-                l[j] = '433.3'; qubitdict.append('w0'); qubitweightdict.append(433.3)
+                l[j] = '433.3 + -729.9'; qubitdict.append('w0'); qubitweightdict.append(433.3-729.9)
             if l[j] == 'w1':
-                l[j] = '112.8'; qubitdict.append('w1'); qubitweightdict.append(112.8)
+                l[j] = '112.8 + -729.9'; qubitdict.append('w1'); qubitweightdict.append(112.8-729.9)
             if l[j] == 'w2':
-                l[j] = '72.4'; qubitdict.append('w2'); qubitweightdict.append(72.4)
+                l[j] = '72.4 + -729.9'; qubitdict.append('w2'); qubitweightdict.append(72.4-729.9)
             if l[j] == 'w3':
-                l[j] = '493.2'; qubitdict.append('w3'); qubitweightdict.append(493.2)
+                l[j] = '493.2 + -729.9'; qubitdict.append('w3'); qubitweightdict.append(493.2-729.9)
             if l[j] == 'J01':
                 l[j] = '844.4'; couplerdict.append(('w0','w1')); couplerweightdict.append(844.4)
             if l[j] == 'J02':
-                l[j] = '-471.2'; couplerdict.append(('w0','w2')); couplerweightdict.append(-471.2)
+                l[j] = '-471.2 + -823.7'; couplerdict.append(('w0','w2')); couplerweightdict.append(-471.2-823.7)
             if l[j] == 'J03':
-                l[j] = '-767.5'; couplerdict.append(('w0','w3')); couplerweightdict.append(-767.5)
+                l[j] = '-767.5 + 823.7'; couplerdict.append(('w0','w3')); couplerweightdict.append(-767.5+823.7)
             if l[j] == 'J12':
-                l[j] = '-185.2'; couplerdict.append(('w1','w2')); couplerweightdict.append(-185.2)
+                l[j] = '-185.2 + 823.7'; couplerdict.append(('w1','w2')); couplerweightdict.append(-185.2+823.7)
             if l[j] == 'J13':
-                l[j] = '-606'; couplerdict.append(('w1','w3')); couplerweightdict.append(-606)
+                l[j] = '-606 + 823.7'; couplerdict.append(('w1','w3')); couplerweightdict.append(-606+823.7)
             if l[j] == 'J23':
-                l[j] = '239.8'; couplerdict.append(('w2','w3')); couplerweightdict.append(239.8)
+                l[j] = '239.8 + -823.7'; couplerdict.append(('w2','w3')); couplerweightdict.append(239.8-823.7)
 
         newstring = ''
         for j in range(len(l)):
@@ -467,8 +466,8 @@ def main():
         newstring = newstring + 'G'
         system_inequalities[i] = newstring
     
-    '''
-        
+    
+    '''    
     # XNOR 6-bit encoding (everything except the ground state value, offset and coupler weights btwn q0,q1,q2,q3 and q4,q5 are known)
     system_inequalities = ['0 > G',
                            'w0 > G',
@@ -613,7 +612,7 @@ def main():
         #print(system_inequalities[i])
     
      
-    
+    '''
     '''
     # XNOR with coupler qubit inbtwn XOR and NOT
     system_inequalities = ['0 > G', 
@@ -802,7 +801,7 @@ def main():
         system_inequalities[i] = newstring
         #print(system_inequalities[i])         
     '''
-    '''
+    '''    
     #5-bit XNOR encoding output of XOR and input of NOT combined into same qubit
     # its value nd the couplers connected to it are unknown
     system_inequalities = ['0 > G', 
@@ -871,7 +870,6 @@ def main():
                 l[j] = '239.8'; couplerdict.append(('w2','w3')); couplerweightdict.append(239.8)
             if l[j] == 'w4':
                 l[j] = '-729.9'; qubitdict.append('w4'); qubitweightdict.append(-729.9)
-            
 
             # connections to q4 = 0 except J14?
             if l[j] == 'J04':
@@ -886,13 +884,157 @@ def main():
             newstring = newstring + l[j]
             if j < len(l)-1:
                 newstring = newstring + ' + '
-        newstring = newstring + ' + ' + 'offset'
+        #newstring = newstring + ' + ' + 'offset'
         newstring = newstring + rel
         newstring = newstring + 'G'
         system_inequalities[i] = newstring
-
+    '''
 
     '''
+    # XNOR 6-bit encoding (NOTs attached to XOR out and XOR ancilla)
+    system_inequalities = ['0 > G',
+                           'w0 > G',
+                           'w1 > G',
+                           'w1 + J01 + w0 > G',
+                           'w2 = G',
+                           'w2 + J02 + w0 > G',
+                           'w2 + J12 + w1 > G',
+                           'w2 + J12 + J02 + w1 + J01 + w0 > G',
+                           'w3 > G',
+                           'w3 + J03 + w0 = G',
+                           'w3 + J13 + w1 > G',
+                           'w3 + J13 + J03 + w1 + J01 + w0 > G',
+                           'w3 + J23 + w2 > G',
+                           'w3 + J23 + J03 + w2 + J02 + w0 > G',
+                           'w3 + J23 + J13 + w2 + J12 + w1 > G',
+                           'w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G',
+                           'w4 > G',
+                           'w4 + J04 + w0 > G',
+                           'w4 + J14 + w1 > G',
+                           'w4 + J14 + J04 + w1 + J01 + w0 > G',
+                           'w4 + J24 + w2 > G',
+                           'w4 + J24 + J04 + w2 + J02 + w0 > G',
+                           'w4 + J24 + J14 + w2 + J12 + w1 > G',
+                           'w4 + J24 + J14 + J04 + w2 + J12 + J02 + w1 + J01 + w0 > G',
+                           'w4 + J34 + w3 > G',
+                           'w4 + J34 + J04 + w3 + J03 + w0 > G',
+                           'w4 + J34 + J14 + w3 + J13 + w1 > G',
+                           'w4 + J34 + J14 + J04 + w3 + J13 + J03 + w1 + J01 + w0 > G',
+                           'w4 + J34 + J24 + w3 + J23 + w2 > G',
+                           'w4 + J34 + J24 + J04 + w3 + J23 + J03 + w2 + J02 + w0 > G',
+                           'w4 + J34 + J24 + J14 + w3 + J23 + J13 + w2 + J12 + w1 > G',
+                           'w4 + J34 + J24 + J14 + J04 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G',
+                           'w5 > G',
+                           'w5 + J05 + w0 > G',
+                           'w5 + J15 + w1 = G',
+                           'w5 + J15 + J05 + w1 + J01 + w0 > G',
+                           'w5 + J25 + w2 > G',
+                           'w5 + J25 + J05 + w2 + J02 + w0 > G',
+                           'w5 + J25 + J15 + w2 + J12 + w1 > G',
+                           'w5 + J25 + J15 + J05 + w2 + J12 + J02 + w1 + J01 + w0 > G',
+                           'w5 + J35 + w3 > G',
+                           'w5 + J35 + J05 + w3 + J03 + w0 > G',
+                           'w5 + J35 + J15 + w3 + J13 + w1 > G',
+                           'w5 + J35 + J15 + J05 + w3 + J13 + J03 + w1 + J01 + w0 > G',
+                           'w5 + J35 + J25 + w3 + J23 + w2 > G',
+                           'w5 + J35 + J25 + J05 + w3 + J23 + J03 + w2 + J02 + w0 > G',
+                           'w5 + J35 + J25 + J15 + w3 + J23 + J13 + w2 + J12 + w1 > G',
+                           'w5 + J35 + J25 + J15 + J05 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G',
+                           'w5 + J45 + w4 > G',
+                           'w5 + J45 + J05 + w4 + J04 + w0 > G',
+                           'w5 + J45 + J15 + w4 + J14 + w1 > G',
+                           'w5 + J45 + J15 + J05 + w4 + J14 + J04 + w1 + J01 + w0 > G',
+                           'w5 + J45 + J25 + w4 + J24 + w2 > G',
+                           'w5 + J45 + J25 + J05 + w4 + J24 + J04 + w2 + J02 + w0 > G',
+                           'w5 + J45 + J25 + J15 + w4 + J24 + J14 + w2 + J12 + w1 > G',
+                           'w5 + J45 + J25 + J15 + J05 + w4 + J24 + J14 + J04 + w2 + J12 + J02 + w1 + J01 + w0 > G',
+                           'w5 + J45 + J35 + w4 + J34 + w3 > G',
+                           'w5 + J45 + J35 + J05 + w4 + J34 + J04 + w3 + J03 + w0 > G',
+                           'w5 + J45 + J35 + J15 + w4 + J34 + J14 + w3 + J13 + w1 > G',
+                           'w5 + J45 + J35 + J15 + J05 + w4 + J34 + J14 + J04 + w3 + J13 + J03 + w1 + J01 + w0 > G',
+                           'w5 + J45 + J35 + J25 + w4 + J34 + J24 + w3 + J23 + w2 = G',
+                           'w5 + J45 + J35 + J25 + J05 + w4 + J34 + J24 + J04 + w3 + J23 + J03 + w2 + J02 + w0 > G',
+                           'w5 + J45 + J35 + J25 + J15 + w4 + J34 + J24 + J14 + w3 + J23 + J13 + w2 + J12 + w1 > G',
+                           'w5 + J45 + J35 + J25 + J15 + J05 + w4 + J34 + J24 + J14 + J04 + w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G']
+    
+    qubitdict = list()
+    qubitweightdict = list()
+    couplerdict = list()
+    couplerweightdict = list()
+
+    input1 = 'w2'
+    input2 = 'w3'
+    output = 'w5'
+
+    for i in range(len(system_inequalities)):
+        if '=' in system_inequalities[i]:
+            rel = ' = '
+        if '>' in system_inequalities[i]:
+            rel = ' > '
+        s = str.split(system_inequalities[i], rel)[0]
+
+        l = str.split(s, ' + ')
+
+        for j in range(len(l)):
+            if l[j] == 'w0':
+                l[j] = '433.3 + -729.9'; qubitdict.append('w0'); qubitweightdict.append(433.3-729.9)
+            if l[j] == 'w1':
+                l[j] = '112.8 + -729.9'; qubitdict.append('w1'); qubitweightdict.append(112.8-729.9)
+            if l[j] == 'w2':
+                l[j] = '72.4'; qubitdict.append('w2'); qubitweightdict.append(72.4)
+            if l[j] == 'w3':
+                l[j] = '493.2'; qubitdict.append('w3'); qubitweightdict.append(493.2)
+            if l[j] == 'J01':
+                l[j] = '844.4'; couplerdict.append(('w0','w1')); couplerweightdict.append(844.4)
+            if l[j] == 'J02':
+                l[j] = '-471.2'; couplerdict.append(('w0','w2')); couplerweightdict.append(-471.2)
+            if l[j] == 'J03':
+                l[j] = '-767.5'; couplerdict.append(('w0','w3')); couplerweightdict.append(-767.5)
+            if l[j] == 'J12':
+                l[j] = '-185.2'; couplerdict.append(('w1','w2')); couplerweightdict.append(-185.2)
+            if l[j] == 'J13':
+                l[j] = '-606'; couplerdict.append(('w1','w3')); couplerweightdict.append(-606)
+            if l[j] == 'J23':
+                l[j] = '239.8'; couplerdict.append(('w2','w3')); couplerweightdict.append(239.8)
+            if l[j] == 'w4':
+                l[j] = '-729.9 + 433.3'; qubitdict.append('w4'); qubitweightdict.append(-729.9+433.3)
+            if l[j] == 'w5':
+                l[j] = '-729.9 + 112.8'; qubitdict.append('w5'); qubitweightdict.append(-729.9+112.8)
+            if l[j] == 'J45':
+                l[j] = '0'; couplerdict.append(('w4','w5')); couplerweightdict.append(0)
+            if l[j] == 'J04':
+                l[j] = '0'; couplerdict.append(('w0','w4')); couplerweightdict.append(0)
+            if l[j] == 'J05':
+                l[j] = '823.7'; couplerdict.append(('w0','w5')); couplerweightdict.append(823.7)
+            if l[j] == 'J14':
+                l[j] = '823.7'; couplerdict.append(('w1','w4')); couplerweightdict.append(823.7)
+            if l[j] == 'J15':
+                l[j] = '0'; couplerdict.append(('w1','w5')); couplerweightdict.append(0)
+            if l[j] == 'J24':
+                l[j] = '0'; couplerdict.append(('w2','w4')); couplerweightdict.append(0)
+            if l[j] == 'J25':
+                l[j] = '0'; couplerdict.append(('w2','w5')); couplerweightdict.append(0)
+            if l[j] == 'J34':   
+                l[j] = '0'; couplerdict.append(('w3','w4')); couplerweightdict.append(0)
+            if l[j] == 'J35':
+                l[j] = '0'; couplerdict.append(('w3','w5')); couplerweightdict.append(0)
+
+        newstring = ''
+        for j in range(len(l)):
+            newstring = newstring + l[j]
+            if j < len(l)-1:
+                newstring = newstring + ' + '
+        #newstring = newstring + ' + ' + 'offset'
+        newstring = newstring + rel
+        newstring = newstring + 'G'
+
+        system_inequalities[i] = newstring
+        #print(system_inequalities[i])
+    
+     
+        '''
+
+    
 ############################################
 ############################################
 
