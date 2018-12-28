@@ -524,7 +524,7 @@ Notes:
             #     c -------x-- out    1 1 0|0
             #                         1 1 1|1
             #                                 
-            # General XOR embedding:
+            # XOR embedding:
             # 
             #             Ancilla         J01 = 3263.6        Output
             #           w0 = 500.0 O------------------------O w1 = 50.0            
@@ -596,7 +596,7 @@ Notes:
 TODO:
 
     1) Figure out how to do for embeddings with different ground states
-    2) Try compbining embeddings whose connected bits have different weights
+    2) Try combining embeddings whose connected bits have different weights
     2) Figure out scheme to simplify annealer embedding graphs
 
 ```
