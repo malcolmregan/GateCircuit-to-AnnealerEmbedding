@@ -510,166 +510,82 @@ TODO:
 
 Notes:
 
-   If possible, it would probably be much more efficient to algorithmically determine a lump 
-   adiabatic embedding of a circuit from its component single gate embeddings than to determine
-   a lump adiabatic from a truth table as described above.
-   
-   	Consider a logical XOR and a NOT embedding (assuming full connectivity) 
-	and try to compose a logical XNOR embedding from these
-	
-       		     XOR gate embedding                         NOT gate embedding
-                    -------------------                       -------------------
-               
-        Ancilla          J01 = 844.4	     Output                  Input
-      w0 = 433.3 O------------------------O w1 = 112.8           O w4 = -729.9 
-                 |'.    J03 =           .'|                      |
-		 |  ''. -767.5       .''  |                      |
-		 |     ''.        .''     |                      |
-		 |        ''.  .''        |                      | 
-     J02 =-471.2 |          .''.          | J13 = -606           | J45 = 823.7
-		 |       .''    ''.       |                      |
-		 |    .''J12 =     ''.    |                      |
-		 |,.''  -185.2        ''.,|                      |
-       w2 = 72.4 O------------------------O w3 = 493.2           O w5 = -729.9
-         Input		 J23 = 239.8         Input                   Output                      
-		                                           
-		      Ground state = 0                       Ground state = -729.9
-	
-	Note: Running the above XNOR and NOT embeddings with no couplers inbetween them as
-	a single embedding results in a gray code of the inputs and outputs. What can be derived from
-	two embeddings that would remove the unwanted rows from the ground state?
-	
-                                      XNOR gate embedding ?
-				     ---------------------- 
-                  ,-----------------------------------------------------------,
-                 |                         JO4 = ?                             ',
-                 |  ,------------------------------------------,                 ',
-        Ancilla  |.'       J01 = 844.4        Ancilla           '.     Ancilla     ',
-      w0 = 433.3 O------------------------O, w1 = 112.8     ,----,O, w4 = -729.9     ',
-                 |'.    J03 =           .'|\',            ,'   ,' | '.                |
-                 |  ''. -767.5       .''  | \ '----------'    /   |   ',              | J05 = ?
-                 |     ''.        .''     |  \  J14 = ?      /    |     '-------,     |
-                 |        ''.  .''        |   ',  J15 = ?   /     |              ',,,''
-     J02 =-471.2 |          .''.          | J13 '----------/-,    | J45 = 823.7,,'|
-                 |       .''    ''.       | = -606        /   \   |        ,,''   | 
-                 |    .''J12 =     ''.    |   ,----------'     \  |    ,,''       |
-                 |,.''  -185.2        ''.,| ,'    J34 = ?       \ |,,''           | J24 = ?
-       w2 = 72.4 O------------------------O' w3 = 493.2           O w5 = -729.9   |
-         Input ,'|       J23 = 239.8      |   Input             ,' ',   Output    |               
-             ,'  |                        '--------------------'     ',           |
-           ,'    |                                J35 = ?              '----------|---,
-	   |     |                        J25 = ?                                ,'   | J25 = ? 
-           |	  '-------------------------------------------------------------'     |
-            '-------------------------------------------------------------------------'
-                                       Ground state = ?
-	
-	Solving the system of inequalities corresponding to an XNOR with three ancilla bits 
-	(2 intermediate inputs/outputs recast as ancillas + the 1 XOR ancilla that was already
-	there) for the unknown ground state and coupler weights between the 2 subembeddings 
-	(using the values for variables from XOR and NOT embeddings) is not possible as the values
-	of known variables immediately pose contradicting constraints on the ground state:
-	
-	False 	- 0 > G
-	False 	- 433.3 > G
-	False 	- 112.8 > G
-	False 	- 112.8 + 844.4 + 433.3 > G
-	True 	- 72.4 = G
-	False 	- 72.4 + -471.2 + 433.3 > G
-	False 	- 72.4 + -185.2 + 112.8 > G
-	False 	- 72.4 + -185.2 + -471.2 + 112.8 + 844.4 + 433.3 > G
-	False 	- 493.2 > G
-	True 	- 493.2 + -767.5 + 433.3 = G
-	False 	- 493.2 + -606 + 112.8 > G
-	False 	- 493.2 + -606 + -767.5 + 112.8 + 844.4 + 433.3 > G
-	False 	- 493.2 + 239.8 + 72.4 > G
-	False 	- 493.2 + 239.8 + -767.5 + 72.4 + -471.2 + 433.3 > G
-	False 	- 493.2 + 239.8 + -606 + 72.4 + -185.2 + 112.8 > G
-	False 	- 493.2 + 239.8 + -606 + -767.5 + 72.4 + -185.2 + -471.2 + 112.8 + 844.4 + 433.3 > G
-	False 	- -729.9 > G
-	True 	- -729.9 + J04 + 433.3 > G
-	True 	- -729.9 + J14 + 112.8 > G
-	True 	- -729.9 + J14 + J04 + 112.8 + 844.4 + 433.3 > G
-	False 	- -729.9 + J24 + 72.4 > G
-	True 	- -729.9 + J24 + J04 + 72.4 + -471.2 + 433.3 > G
-	True 	- -729.9 + J24 + J14 + 72.4 + -185.2 + 112.8 > G
-	True 	- -729.9 + J24 + J14 + J04 + 72.4 + -185.2 + -471.2 + 112.8 + 844.4 + 433.3 > G
-	False 	- -729.9 + J34 + 493.2 > G
-	True 	- -729.9 + J34 + J04 + 493.2 + -767.5 + 433.3 > G
-	True 	- -729.9 + J34 + J14 + 493.2 + -606 + 112.8 > G
-	True 	- -729.9 + J34 + J14 + J04 + 493.2 + -606 + -767.5 + 112.8 + 844.4 + 433.3 > G
-	False 	- -729.9 + J34 + J24 + 493.2 + 239.8 + 72.4 > G
-	True 	- -729.9 + J34 + J24 + J04 + 493.2 + 239.8 + -767.5 + 72.4 + -471.2 + 433.3 > G
-	True 	- -729.9 + J34 + J24 + J14 + 493.2 + 239.8 + -606 + 72.4 + -185.2 + 112.8 > G
-        .... etc. ....
-        .... etc. ....
-		
-	This indicates the fact (which probably should have been obvious to me) that two arbitrary
-	embeddings representing logic functions cannot be trivially combined into one embedding
-	representing a composite function.
-	
-	--> try and add a coupling qubit inbetween the circuits
-		doesn't seem to work
-	--> try using global offset in the inequalities
-		doesn't seem to work
-		
-	System of inequalities for 6 and 7 qubit XNOR that use values of variables in XOR
-	and NOT embeddings above are setup to run in the main() block of
-	composite/solve_sys_multivar_ineq.py.
-	This file can be run with the appropriate system of inequalities uncommented 
-	to see if unknown coupler and qubit weights, ground state, and global offset can be
-	solved for. 
-	There is a line which adds the global offset variable to all inequalities that can be
-	commented or uncommented depending on whether or not you want to include the global
-	offset variable.
-	The best embedding found is run on a Dwave simulator after solving is complete. This
-	is to validate that the embedding works if/when one is found.
-		
-  Comparison of 4-bit XOR and 4-bit XNOR embeddings:
-  
-  	Maybe by staring at the XOR and XNOR embeddings, the properties of the NOT 
-	embedding which contribute to transforming an XOR into an XNOR embedding
-	will become apparent:
-	
-  	       	     XOR gate embedding                         NOT gate embedding
-                    -------------------                       -------------------
-               
-        Ancilla          J01 = 844.4	     Output                  Input
-      w0 = 433.3 O------------------------O w1 = 112.8           O w4 = -729.9 
-                 |'.    J03 =           .'|                      |
-		 |  ''. -767.5       .''  |                      |
-		 |     ''.        .''     |                      |
-		 |        ''.  .''        |                      | 
-     J02 =-471.2 |          .''.          | J13 = -606           | J45 = 823.7
-		 |       .''    ''.       |                      |
-		 |    .''J12 =     ''.    |                      |
-		 |,.''  -185.2        ''.,|                      |
-       w2 = 72.4 O------------------------O w3 = 493.2           O w5 = -729.9
-         Input		 J23 = 239.8         Input                   Output                      
-		                                           
-		      Ground state = 0                       Ground state = -729.9
-		      
+	Composing embeddings with the same ground state and the same weights on connected qubits:
+	    Example: composing two XORs into an embedding corresponding to the below circuit
+	    
+                                     a b c out
+	           XOR1  XOR2        0 0 0|0
+	         a --o------- a      0 0 1|1
+                     |               0 1 0|1
+                     |out1           0 1 1|0
+                 b --x----o-- b      1 0 0|1
+                          |          1 0 1|0
+                 c -------x-- out    1 1 0|0
+                                     1 1 1|1
+                                             
+            General XOR embedding:
+     
+                        Ancilla         J01 = 3263.6        Output
+                       w0 = 500.0 O------------------------O w1 = 50.0            
+                                  |'.    J03 =           .'|                     
+                                  |  ''. -380.0       .''  |                     
+                                  |     ''.        .''     |                      
+                                  |        ''.  .''        |                       
+                      J02 =-300.0 |          .''.          | J13 = -100.0          
+                                  |       .''    ''.       |                      
+                                  |    .''J12 =     ''.    |                      
+                                  |,.''  -100.0        ''.,|                      
+                        w2 = 50.0 O------------------------O w3 = 50.0   
+                          Input          J23 = 80.0          Input    
+     
+            Combined embedding:
+     
+                                                             'out1' 
+                         Ancilla         J01 = 3263.6        Output
+                       w0 = 500.0 O------------------------O w1 = 100               
+                                  |'.    J03 =           .'|',                   
+                                  |  ''. -380.0       .''  |  '--------------.   
+                                  |     ''.        .''     |                 |    
+                                  |        ''.  .''        |                 |      
+                      J02 =-300.0 |          .''.          | J13 = -100.0    |      
+                                  |       .''    ''.       |                 |     
+                                  |    .''J12 =     ''.    |                 |         
+                        'a'       |,.''  -100.0        ''.,| 'b'             |     
+                        w2 = 50.0 O------------------------O w3 = 50.0       |
+                        Input            J23 = 80.0          Input           |
+                                                                             |
+                                                                             | 
+                                                                             |
+                                                                             |
+                                                                             |
+                                                            'out'            | J16 = -100
+                        Ancilla         J45 = 3263.6        Output           |
+                      w4 = 500.0 O------------------------O w5 = 50.0        |   
+                                 |'.    J47 =           .'|                  |  
+                                 |  ''. -380.0       .''  |                  |  
+                                 |     ''.        .''     |                  |   
+                                 |        ''.  .''        |                  |    
+                     J46 =-300.0 |          .''.          | J57 = -100.0     |    
+                                 |       .''    ''.       |                  |   
+                                 |    .''J56 =     ''.    |                  |   
+                       'out1'    |,.''  -100.0        ''.,| 'c'              |   
+                       w6 = 100  O------------------------O w7 = 50.0        |
+                         Input   |      J67 = 80.0          Input            |
+                                 ',                                          |
+                                   '-----------------------------------------'
 
-       	                          4-bit XNOR gate embedding                
-		                 --------------------------                       
-               
-                        Ancilla          J01 = -517.9        Output                  
-                      w0 = 831.3 O------------------------O w1 = -43.3           
-                                 |'.    J03 =           .'|                       
-		                 |  ''. -426.6       .''  |                      
-                                 |     ''.        .''     |                      
-                         	 |        ''.  .''        |                       
-                     J02 =-364.5 |          .''.          | J13 = 302.2          
-                                 |       .''    ''.       |                      
-                         	 |    .''J12 =     ''.    |                      
-                         	 |,.''   120.3        ''.,|                      
-                      w2 = -43.3 O------------------------O w3 = -43.3           
-                         Input	        J23 = 141.8          Input
-		                                           
-		                     Ground state = -43.3                       
-
+	   			      Ground State = 0
+				      
+		q1 in the upper XOR and q6 in the lower XOR are the same qubit.
+		I would have expected the ground state of the composite system
+		to be acheived when J16 was equal to -150 so the combined weight
+		of q1 and q6 would be 50 as it was in the original XOR embedding.
+		I need to think more about why this is.
+	
 TODO:
 
-    1) Figure out how to do this
+    1) Figure out how to do for embeddings with different ground states
+    2) Figure out how to do for 
     2) Figure out scheme to simplify annealer embedding graphs
 
 ```
