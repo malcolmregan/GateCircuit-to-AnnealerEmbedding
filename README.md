@@ -510,82 +510,93 @@ TODO:
 
 Notes:
 
-	Composing embeddings with the same ground state and the same weights on connected qubits:
-	    Example: composing two XORs into an embedding corresponding to the below circuit
+    Composing embeddings with the same ground state and the same weights on connected qubits:
 	    
-                                     a b c out
-	           XOR1  XOR2        0 0 0|0
-	         a --o------- a      0 0 1|1
-                     |               0 1 0|1
-                     |out1           0 1 1|0
-                 b --x----o-- b      1 0 0|1
-                          |          1 0 1|0
-                 c -------x-- out    1 1 0|0
-                                     1 1 1|1
-                                             
-            General XOR embedding:
-     
-                        Ancilla         J01 = 3263.6        Output
-                       w0 = 500.0 O------------------------O w1 = 50.0            
-                                  |'.    J03 =           .'|                     
-                                  |  ''. -380.0       .''  |                     
-                                  |     ''.        .''     |                      
-                                  |        ''.  .''        |                       
-                      J02 =-300.0 |          .''.          | J13 = -100.0          
-                                  |       .''    ''.       |                      
-                                  |    .''J12 =     ''.    |                      
-                                  |,.''  -100.0        ''.,|                      
-                        w2 = 50.0 O------------------------O w3 = 50.0   
-                          Input          J23 = 80.0          Input    
-     
-            Combined embedding:
-     
-                                                             'out1' 
-                         Ancilla         J01 = 3263.6        Output
-                       w0 = 500.0 O------------------------O w1 = 100               
-                                  |'.    J03 =           .'|',                   
-                                  |  ''. -380.0       .''  |  '--------------.   
-                                  |     ''.        .''     |                 |    
-                                  |        ''.  .''        |                 |      
-                      J02 =-300.0 |          .''.          | J13 = -100.0    |      
-                                  |       .''    ''.       |                 |     
-                                  |    .''J12 =     ''.    |                 |         
-                        'a'       |,.''  -100.0        ''.,| 'b'             |     
-                        w2 = 50.0 O------------------------O w3 = 50.0       |
-                        Input            J23 = 80.0          Input           |
-                                                                             |
-                                                                             | 
-                                                                             |
-                                                                             |
-                                                                             |
-                                                            'out'            | J16 = -100
-                        Ancilla         J45 = 3263.6        Output           |
-                      w4 = 500.0 O------------------------O w5 = 50.0        |   
-                                 |'.    J47 =           .'|                  |  
-                                 |  ''. -380.0       .''  |                  |  
-                                 |     ''.        .''     |                  |   
-                                 |        ''.  .''        |                  |    
-                     J46 =-300.0 |          .''.          | J57 = -100.0     |    
-                                 |       .''    ''.       |                  |   
-                                 |    .''J56 =     ''.    |                  |   
-                       'out1'    |,.''  -100.0        ''.,| 'c'              |   
-                       w6 = 100  O------------------------O w7 = 50.0        |
-                         Input   |      J67 = 80.0          Input            |
-                                 ',                                          |
-                                   '-----------------------------------------'
-
-	   			      Ground State = 0
-				      
-		q1 in the upper XOR and q6 in the lower XOR are the same qubit.
-		I would have expected the ground state of the composite system
-		to be acheived when J16 was equal to -150 so the combined weight
-		of q1 and q6 would be 50 as it was in the original XOR embedding.
-		I need to think more about why this is.
-	
+        Composing the below circuit from 2 XORS
+	    #
+            #                         a b c out
+	    #       XOR1  XOR2        0 0 0|0
+	    #     a --o------- a      0 0 1|1
+            #         |               0 1 0|1
+            #         |out1           0 1 1|0
+            #     b --x----o-- b      1 0 0|1
+            #              |          1 0 1|0
+            #     c -------x-- out    1 1 0|0
+            #                         1 1 1|1
+            #                                 
+            # General XOR embedding:
+            # 
+            #             Ancilla         J01 = 3263.6        Output
+            #           w0 = 500.0 O------------------------O w1 = 50.0            
+            #                      |'.    J03 =           .'|                     
+            #                      |  ''. -380.0       .''  |                     
+            #                      |     ''.        .''     |                      
+            #                      |        ''.  .''        |                       
+            #          J02 =-300.0 |          .''.          | J13 = -100.0          
+            #                      |       .''    ''.       |                      
+            #                      |    .''J12 =     ''.    |                      
+            #                      |,.''  -100.0        ''.,|                      
+            #            w2 = 50.0 O------------------------O w3 = 50.0   
+            #              Input          J23 = 80.0          Input    
+	    #		  
+	    #		              Ground State = 0
+            # 
+            # Combined embedding:
+            # 
+            #                                                 'out1' 
+            #             Ancilla         J01 = 3263.6        Output
+            #           w0 = 500.0 O------------------------O w1 = 100               
+            #                      |'.    J03 =           .'|',                   
+            #                      |  ''. -380.0       .''  |  '--------------.   
+            #                      |     ''.        .''     |                 |    
+            #                      |        ''.  .''        |                 |      
+            #          J02 =-300.0 |          .''.          | J13 = -100.0    |      
+            #                      |       .''    ''.       |                 |     
+            #                      |    .''J12 =     ''.    |                 |         
+            #            'a'       |,.''  -100.0        ''.,| 'b'             |     
+            #            w2 = 50.0 O------------------------O w3 = 50.0       |
+            #              Input           J23 = 80.0          Input          |
+            #                                                                 |
+            #                                                                 | 
+            #                                                                 |
+            #                                                                 |
+            #                                                                 |
+            #                                                'out'            | J16 = -100
+            #            Ancilla         J45 = 3263.6        Output           |
+            #          w4 = 500.0 O------------------------O w5 = 50.0        |   
+            #                     |'.    J47 =           .'|                  |  
+            #                     |  ''. -380.0       .''  |                  |  
+            #                     |     ''.        .''     |                  |   
+            #                     |        ''.  .''        |                  |    
+            #         J46 =-300.0 |          .''.          | J57 = -100.0     |    
+            #                     |       .''    ''.       |                  |   
+            #                     |    .''J56 =     ''.    |                  |   
+            #           'out1'    |,.''  -100.0        ''.,| 'c'              |   
+            #           w6 = 100  O------------------------O w7 = 50.0        |
+            #             Input   |      J67 = 80.0          Input            |
+            #                     ',                                          |
+            #                       '-----------------------------------------'
+            #
+	    # 			      Ground State = 0
+	    #			      
+	    #	q1 in the upper XOR and q6 in the lower XOR are the same qubit.
+	    #	I would have expected the ground state of the composite system
+	    #	to be acheived when J16 was equal to -150 so the combined weight
+	    #	of q1 and q6 would be 50 as it was in the original XOR embedding.
+	    #	I need to think more about why this is.
+	    #
+	    #-----------------------------------------------------------------------------
+	   
+        Composing an adder sum function from XORS
+	    #
+	    # 
+	    
+	    
+	    
 TODO:
 
     1) Figure out how to do for embeddings with different ground states
-    2) Figure out how to do for 
+    2) Try compbining embeddings whose connected bits have different weights
     2) Figure out scheme to simplify annealer embedding graphs
 
 ```
