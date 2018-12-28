@@ -368,9 +368,9 @@ def evaluate_sys(sys_ineq, syms):
             for sym in syms:
                 if elem == sym.name:
                     Lval = Lval + sym.value
-                if len(elem)>1:
-                    if elem[0] not in alpha and elem[1] in num:
-                        Lval = Lval + float(elem)
+            if len(elem)>1:
+                if elem[0] not in alpha and elem[1] in num:
+                    Lval = Lval + float(elem)
 
 
 
@@ -379,9 +379,11 @@ def evaluate_sys(sys_ineq, syms):
             for sym in syms:
                 if elem == sym.name:
                     Rval = Rval + sym.value
-                if len(elem)>1:
-                    if elem[0] not in alpha and elem[1] in num:
-                        Rval = Rval + float(elem)
+            if len(elem)>1:
+                if elem[0] not in alpha and elem[1] in num:
+                    Rval = Rval + float(elem)
+    
+
         if relation == '=':
             iscorrect.append({'inequality': ineq, 'valid': round(float(Lval),1) == round(float(Rval),1)})
         if relation == '>':
@@ -398,76 +400,8 @@ def evaluate_constraints(syms):
 
 def main():
     
-    # XOR encoding (4 bit)
-    system_inequalities = ['0 = G',
-                           'w0 > G',
-                           'w1 > G',
-                           'w1 + J01 + w0 > G',
-                           'w2 > G',
-                           'w2 + J02 + w0 > G',
-                           'w2 + J12 + w1 = G',
-                           'w2 + J12 + J02 + w1 + J01 + w0 > G',
-                           'w3 > G',
-                           'w3 + J03 + w0 > G',
-                           'w3 + J13 + w1 = G',
-                           'w3 + J13 + J03 + w1 + J01 + w0 > G',
-                           'w3 + J23 + w2 > G',
-                           'w3 + J23 + J03 + w2 + J02 + w0 = G',
-                           'w3 + J23 + J13 + w2 + J12 + w1 > G',
-                           'w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G']
-
-    qubitdict = list()
-    qubitweightdict = list()
-    couplerdict = list()
-    couplerweightdict = list()
-
-    input1 = 'w2'
-    input2 = 'w3'
-    output = 'w1'
-
-    for i in range(len(system_inequalities)):
-        if '=' in system_inequalities[i]:
-            rel = ' = '
-        if '>' in system_inequalities[i]:
-            rel = ' > '
-        s = str.split(system_inequalities[i], rel)[0]
-
-        l = str.split(s, ' + ')
-
-        for j in range(len(l)):
-            if l[j] == 'w0':
-                l[j] = '433.3 + -729.9'; qubitdict.append('w0'); qubitweightdict.append(433.3-729.9)
-            if l[j] == 'w1':
-                l[j] = '112.8 + -729.9'; qubitdict.append('w1'); qubitweightdict.append(112.8-729.9)
-            if l[j] == 'w2':
-                l[j] = '72.4 + -729.9'; qubitdict.append('w2'); qubitweightdict.append(72.4-729.9)
-            if l[j] == 'w3':
-                l[j] = '493.2 + -729.9'; qubitdict.append('w3'); qubitweightdict.append(493.2-729.9)
-            if l[j] == 'J01':
-                l[j] = '844.4'; couplerdict.append(('w0','w1')); couplerweightdict.append(844.4)
-            if l[j] == 'J02':
-                l[j] = '-471.2 + -823.7'; couplerdict.append(('w0','w2')); couplerweightdict.append(-471.2-823.7)
-            if l[j] == 'J03':
-                l[j] = '-767.5 + 823.7'; couplerdict.append(('w0','w3')); couplerweightdict.append(-767.5+823.7)
-            if l[j] == 'J12':
-                l[j] = '-185.2 + 823.7'; couplerdict.append(('w1','w2')); couplerweightdict.append(-185.2+823.7)
-            if l[j] == 'J13':
-                l[j] = '-606 + 823.7'; couplerdict.append(('w1','w3')); couplerweightdict.append(-606+823.7)
-            if l[j] == 'J23':
-                l[j] = '239.8 + -823.7'; couplerdict.append(('w2','w3')); couplerweightdict.append(239.8-823.7)
-
-        newstring = ''
-        for j in range(len(l)):
-            newstring = newstring + l[j]
-            if j < len(l)-1:
-                newstring = newstring + ' + '
-        #newstring = newstring + ' + ' + 'offset'
-        newstring = newstring + rel
-        newstring = newstring + 'G'
-        system_inequalities[i] = newstring
     
-    
-    '''    
+    '''     
     # XNOR 6-bit encoding (everything except the ground state value, offset and coupler weights btwn q0,q1,q2,q3 and q4,q5 are known)
     system_inequalities = ['0 > G',
                            'w0 > G',
@@ -611,9 +545,8 @@ def main():
         system_inequalities[i] = newstring
         #print(system_inequalities[i])
     
-     
     '''
-    '''
+
     # XNOR with coupler qubit inbtwn XOR and NOT
     system_inequalities = ['0 > G', 
             'w0 > G', 'w1 > G', 
@@ -800,7 +733,7 @@ def main():
 
         system_inequalities[i] = newstring
         #print(system_inequalities[i])         
-    '''
+    
     '''    
     #5-bit XNOR encoding output of XOR and input of NOT combined into same qubit
     # its value nd the couplers connected to it are unknown
