@@ -384,7 +384,8 @@ def main():
                            'w1 + w0 + J01 > G', 
                            'w2 + w1 + w0 + J12 + J01 + J02 = G']
     
-    ''' 
+    '''
+    
     # XOR encoding (4 bit)
     system_inequalities = ['0 = G',
                            'w0 > G',
@@ -402,7 +403,7 @@ def main():
                            'w3 + J23 + J03 + w2 + J02 + w0 = G',
                            'w3 + J23 + J13 + w2 + J12 + w1 > G',
                            'w3 + J23 + J13 + J03 + w2 + J12 + J02 + w1 + J01 + w0 > G']
-     
+    
     stop=False
     count = 0
     while stop == False:
