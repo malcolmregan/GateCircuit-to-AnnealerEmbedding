@@ -509,10 +509,8 @@ TODO:
 -----------------------------------------------------------------------------------------------------
 
 Notes:
-
-    Composing embeddings with the same ground state and the same weights on connected qubits:
 	    
-        Composing the below circuit from 2 XORS
+        Composing the below circuit from 2 identical XORS
 	    #
             #                         a b c out
 	    #       XOR1  XOR2        0 0 0|0
@@ -524,7 +522,7 @@ Notes:
             #     c -------x-- out    1 1 0|0
             #                         1 1 1|1
             #                                 
-            # General XOR embedding:
+            # XOR embedding:
             # 
             #             Ancilla         J01 = 3263.6        Output
             #           w0 = 500.0 O------------------------O w1 = 50.0            
@@ -583,10 +581,30 @@ Notes:
 	    #	I would have expected the ground state of the composite system
 	    #	to be acheived when J16 was equal to -150 so the combined weight
 	    #	of q1 and q6 would be 50 as it was in the original XOR embedding.
-	    #	I need to think more about why this is.
 	    #
 	    #-----------------------------------------------------------------------------
 	   
+        Composing XNOR from XOR and NOT	
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    #
+	    
         Composing an adder sum function from XORS
 	    #
 	    # 
@@ -595,8 +613,6 @@ Notes:
 	    
 TODO:
 
-    1) Figure out how to do for embeddings with different ground states
-    2) Try compbining embeddings whose connected bits have different weights
-    2) Figure out scheme to simplify annealer embedding graphs
+   1) Figure out scheme to simplify annealer embedding graphs
 
 ```
