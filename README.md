@@ -27,6 +27,8 @@ CONTENTS
 	  
    III) Lump annealer embedding as composite of single gate annealer embeddings 
    	  - Notes and ideas on this approach
+	  	- Manually composed embeddings from which general composition rules 
+		  will be discerned
 	  - TODO list for implementation of this approach
 
 -----------------------------------------------------------------------------------------------------
@@ -509,7 +511,9 @@ TODO:
 -----------------------------------------------------------------------------------------------------
 
 Notes:
-	    
+    Below are a number of different manually composed embeddings. From these, general rules for
+    embedding composition will be discerned.
+    
         Composing the below circuit from 2 identical XORS
 	    #
             #                         a b c out
@@ -583,7 +587,95 @@ Notes:
 	    #	of q1 and q6 would be 50 as it was in the original XOR embedding.
 	    #
 	    #-----------------------------------------------------------------------------------
-	   
+
+	Composing the below circuit from 2 different XORS
+	    #
+            #                         a b c out
+	    #       XOR1  XOR2        0 0 0|0
+	    #     a --o------- a      0 0 1|1
+            #         |               0 1 0|1
+            #         |out1           0 1 1|0
+            #     b --x----o-- b      1 0 0|1
+            #              |          1 0 1|0
+            #     c -------x-- out    1 1 0|0
+            #                         1 1 1|1
+            #                                 
+            # XOR embedding 1:
+            #
+            #                                                  'out1'
+            #              Ancilla         J01 = 6141.6        Output
+            #           w0 = 9534.0 O------------------------O w1 = 65.4        
+            #                       |'.    J03 =           .'|                     
+            #                       |  ''. -6708.1      .''  |                     
+            #                       |     ''.        .''     |                      
+            #                       |        ''.  .''        |                        
+            #         J02 = -8974.5 |          .''.          | J13 = -2222.2          
+            #                       |       .''    ''.       |                       
+            #                       |    .''J12 =     ''.    |                           
+            #            'a'        |,.''  -3474.2       ''.,| 'b'                    
+            #           w2 = 3408.8 O------------------------O w3 = 2156.8      
+            #             Input            J23 = 583.0         Input            
+            #                                                                   
+            #                          Ground State = 0                          
+            #                                                                   
+            #                                                                    
+            # XOR embedding 2:                                                                  
+            #                                                 'out'                      
+            #             Ancilla         J45 = 3263.6        Output            
+            #           w4 = 500.0 O------------------------O w5 = 50.0            
+            #                      |'.    J47 =           .'|                     
+            #                      |  ''. -380.0       .''  |                     
+            #                      |     ''.        .''     |                      
+            #                      |        ''.  .''        |                       
+            #          J46 =-300.0 |          .''.          | J57 = -100.0          
+            #                      |       .''    ''.       |                      
+            #                      |    .''J56 =     ''.    |                      
+            #            'out1'    |,.''  -100.0        ''.,| 'c'                  
+            #            w6 = 50.0 O------------------------O w7 = 50.0         
+            #              Input          J67 = 80.0          Input             
+            #                                                                   
+            #                            Ground State = 0                                                           
+            #
+	    #
+            # Combined embedding:           
+            #                                                  'out1'
+            #              Ancilla         J01 = 6141.6        Output
+            #           w0 = 9534.0 O------------------------O w1 = ?           
+            #                       |'.    J03 =           .'|',                   
+            #                       |  ''. -6708.1      .''  |  '--------------.   
+            #                       |     ''.        .''     |                 |     
+            #                       |        ''.  .''        |                 |      
+            #         J02 = -8974.5 |          .''.          | J13 = -2222.2   |      
+            #                       |       .''    ''.       |                 |     
+            #                       |    .''J12 =     ''.    |                 |         
+            #           'a'         |,.''  -3474.2       ''.,| 'b'             |     
+            #           w2 = 3408.8 O------------------------O w3 = 2156.8     |
+            #             Input            J23 = 583.0         Input           |
+            #                                                                  |
+            #                                                                  | 
+            #                                                                  |
+            #                                                                  |
+            #                                                                  |
+            #                                                 'out'            | J16 = ?
+            #             Ancilla         J45 = 3263.6        Output           |
+            #           w4 = 500.0 O------------------------O w5 = 50.0        |   
+            #                      |'.    J47 =           .'|                  |  
+            #                      |  ''. -380.0       .''  |                  |  
+            #                      |     ''.        .''     |                  |   
+            #                      |        ''.  .''        |                  |     
+            #          J46 =-300.0 |          .''.          | J57 = -100.0     |    
+            #                      |       .''    ''.       |                  |   
+            #                      |    .''J56 =     ''.    |                  |   
+            #            'out1'    |,.''  -100.0        ''.,| 'c'              |   
+            #            w6 = ?    O------------------------O w7 = 50.0        |
+            #              Input   |      J67 = 80.0          Input            |
+            #                      ',                                          |
+            #                        '-----------------------------------------'
+            #                             
+	    #                            Ground State = ?
+	    #
+            #---------------------------------------------------------------------------------
+
         Composing XNOR from XOR and NOT	
 	    #
             #                             XOR Embedding                         NOT Embedding
