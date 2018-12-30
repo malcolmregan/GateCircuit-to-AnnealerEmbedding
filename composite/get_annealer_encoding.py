@@ -1,6 +1,6 @@
 import numpy as np
-from random import randint
-from converter.qiskit.solve_sys_multivar_ineq import *
+from random import randint, shuffle
+from solve_sys_multivar_ineq import *
 from math import sqrt
 
 class truth_table:
@@ -183,6 +183,36 @@ class truth_table:
             self.inputtypes.pop()
             self.generategraycode(self.numinputs)
 
+    def randomly_permute_columns(self):
+        perm = [i for i in range(self.numinputs)]
+        shuffle(perm)      
+  
+        newnames = ['']*self.numinputs
+        newtypes = ['']*self.numinputs
+        
+        for i in range(self.numinputs):
+            newnames[i] = self.inputnames[perm[i]]
+            newtypes[i] = self.inputtypes[perm[i]]
+        
+        rowswithones = np.where(self.outputs == 1)[0]
+        
+
+        newtruerows = []*len(rowswithones)
+        for i in rowswithones:
+            newtruerow = np.zeros(shape = (self.numinputs), dtype = np.int)
+            for j in range(len(newtruerow)):    
+                newtruerow[j] = self.graycode[i,perm[j]]
+            newtruerows.append(newtruerow)
+
+        newoutputs = np.zeros(shape = (2 ** self.numinputs), dtype=np.int)
+        for row in newtruerows:
+            for i in range(2**self.numinputs):         
+                if np.array_equal(row, self.graycode[i]):
+                    newoutputs[i] = 1
+
+        self.outputs = newoutputs
+        self.inputnames = newnames
+        self.inputtyoes = newtypes
 
 def get_ineq_from_truthtable(truthtable):
     numinputs = truthtable.numinputs
@@ -237,26 +267,28 @@ def get_ineq_from_truthtable(truthtable):
     return eqns
 
 def main():
-    outs = np.zeros(shape = (2 ** 8), dtype = np.int)
+    outs = np.zeros(shape = (2 ** 4), dtype = np.int)
     lines = [0,
-             85,
-             53,
              3,
-             224,
-             94,
-             62,
-             227]
+             4,
+             7,
+             8,
+             11,
+             13,
+             14]
 
     for line in lines:
         outs[line] = 1
 
-    trutab = truth_table(numinputs = 8, outputs = outs)
-    eqns = get_ineq_from_truthtable(trutab)
-    print(eqns)
+    trutab = truth_table(numinputs = 4, outputs = outs, inputnames = ['ctl1','ctl2','targ','out'], inputtypes = ['input','input','input','output'])
 
+    #trutab = truth_table()
+    
     stop = False
     count = 0
     while stop == False:
+        eqns = get_ineq_from_truthtable(trutab)
+        shuffle(eqns)
         symbols = solve(eqns)
         correct = evaluate_sys(eqns, symbols)
         truecount = 0
@@ -267,8 +299,8 @@ def main():
         if truecount == len(correct):
             stop = True
         count = count + 1
-        print("{}/1000 attempts made to solve".format(count))
-        if count == 1000:
+        print("{}/10000 attempts made to solve".format(count))
+        if count == 10000:
             yn = 'x'
             while yn is not 'y' and yn is not 'n':
                 yn = input("Couldn't find solution. Add Ancilla? (y/n) ")
@@ -278,7 +310,9 @@ def main():
                     count = 0
                 if yn is 'n':
                     stop = True
-
+        if stop == False:
+            #trutab.randomly_permute_columns()
+            print(trutab.inputnames)
     print("Count = {}".format(count))
 
     print("\nAnnealer Encoding:")
@@ -288,6 +322,10 @@ def main():
     for i in range(len(eqns)):
         print(correct[i]['valid'], "\t-\t", eqns[i])
     print("\nAncillas added: {}".format(trutab.ancillasadded))
+
+    ("\nOrder of bits")
+    for i in range(trutab.numinputs):
+        print("q{} = {}".format(trutab.numinputs-i-1, trutab.inputnames[i]))
 
 
     print(eqns)

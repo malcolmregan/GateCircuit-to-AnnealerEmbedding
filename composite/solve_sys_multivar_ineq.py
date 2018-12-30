@@ -407,7 +407,7 @@ def evaluate_constraints(syms):
 
 
 def main():
-     
+    ''' 
     # XOR encoding (4 bit)
     system_inequalities = ['0 = G',
                            'w0 > G',
@@ -428,7 +428,7 @@ def main():
 
     inputs = ['w2','w3']
     outputs = ['w1'] 
-
+    '''
     
     '''
     # XNOR encoding (4 bit)
@@ -460,6 +460,28 @@ def main():
     inputs = ['w2','w3']
     outputs = ['w1']
     '''
+    
+    #Test toffoli
+
+    system_inequalities = ['w2 = 6313.9',
+                           'w1 = 1930.2',
+                           'J14 = -1926.5', 
+                           'J03 = -1503.0', 
+                           'J01 = 8625.9',
+                           'J23 = 14.3',
+                           'J04 = -5659.2',
+                           'J24 = 1926.5',
+                           'J12 = -8244.1',
+                           'w4 = 0.0',
+                           'J02 = -9566.3',
+                           'w0 = 8463.2',
+                           'J34 = 10.6',
+                           'w3 = 0.0', 
+                           'J13 = -14.3']
+
+    inputs = ['w4','w3','w2']
+    outputs = ['w1']
+    
 ############################################
 ############################################
 
