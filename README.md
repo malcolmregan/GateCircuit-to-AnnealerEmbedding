@@ -29,6 +29,7 @@ CONTENTS
    	  - Notes and ideas on this approach
 	  	- Manually composed embeddings from which general composition rules 
 		  will be discerned
+		- Rules for composing an embedding from smaller ones
 	  - TODO list for implementation of this approach
 
 -----------------------------------------------------------------------------------------------------
@@ -518,7 +519,7 @@ Notes:
     Below are a number of different manually composed embeddings. From these, general rules for
     embedding composition will be discerned.
     
-        Composing the below circuit from 2 identical XORS
+       i) Composing the below circuit from 2 identical XORS
 	    #                                              
 	    #                           a b c | out         
 	    #     a --o------- a        0 0 0 | 0           
@@ -588,7 +589,7 @@ Notes:
 	    #
 	    #-----------------------------------------------------------------------------------
 
-	Composing the below circuit from 2 different XORS
+      ii) Composing the below circuit from 2 different XORS
 	    #                                              
 	    #                           a b c | out         
 	    #     a --o------- a        0 0 0 | 0           
@@ -677,7 +678,7 @@ Notes:
 	    #
             #---------------------------------------------------------------------------------
 
-        Composing XNOR from XOR and NOT	
+     iii) Composing XNOR from XOR and NOT	
 	    #
             #                             XOR Embedding                         NOT Embedding
 	    #                            ---------------                       --------------- 
@@ -721,7 +722,7 @@ Notes:
 	    #
 	    #-------------------------------------------------------------------------------------
 	    
-        Composing an adder sum function from identical XORs
+      iv) Composing an adder sum function from identical XORs
 	    #
 	    # a --o-------------- a        a b c | S       
 	    #     |                       -------|---     
@@ -802,7 +803,7 @@ Notes:
 	    #
 	    #--------------------------------------------------------------------------
 	    
-        Composing an adder carry function from identical Toffoli embeddings
+       v) Composing an adder carry function from identical Toffoli embeddings
 	    #                                               
             # x --o-----------o----- x      x y z | C       
 	    #     |           |            -------|---      
@@ -908,6 +909,57 @@ Notes:
             #   composite/adder_carry.py
 	    #
 	    #-------------------------------------------------------------------------------------------
+
+
+      vi) Composing an identity function from 2 NOTS
+            #
+	    # NOT embedding: 
+	    #
+            #          Input
+            #        O w0 = -50.0            
+            #        |
+            #        |
+            #        | 
+            #        |  
+            #        | J01 = 500
+            #        | 
+            #        | 
+            #        | Output
+            #        O w1 = -50.0
+            #                                                          
+	    #    Ground State = -50.0
+	    #
+            #
+	    # Identity embedding: 
+	    #
+            #          Input                              Input
+            #        O w0 = -25.0                      ,O w2 = -20.0
+            #        |                             ,,'' |
+            #        |                         ,,''     |
+            #        | J01 = 500           ,,''         |
+            #        |                 ,,''             |
+            #        |             ,,'' J12 = -10.0     | J23 = 500
+            #        |         ,,''                     |
+            #        |     ,,''                         |
+            #        | ,,''                             |       
+            #        O'w1 = -20.0                       O w3 = -25.0
+            #          Output                             Output
+	    #
+	    #                   Ground State = -50.0
+	    #
+	    #   composite/identity.py
+	    #
+	    #------------------------------------------------------------------------------------
+
+Rules for composing embeddings:
+	1) If the two qubits being joined have positive weights (say, w1 and w2) and their respective
+	   embeddings have the same ground state, the embeddings can be joined by changing the 
+	   weight of w1 to w1*2 and w2 to w2*2 and the coupling J1,2 between them is equal to -w1-w2
+	   (above in i, ii, and iv --- make example where more than one qubit per embedding is joined to
+	   a qubit of another embedding and see if this still holds, because i, ii, and iv only have 
+	   one qubit per embedding being joined. Also, try come up with an example for embeddings 
+	   with different ground states and see if this works.
+
 TODO:
 
    1) Figure out scheme to simplify annealer embedding graphs
