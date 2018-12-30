@@ -583,11 +583,6 @@ Notes:
             #                       '-----------------------------------------'
             #
 	    # 			      Ground State = 0
-	    #			      
-	    #	q1 in the upper XOR and q6 in the lower XOR are the same qubit.
-	    #	I would have expected the ground state of the composite system
-	    #	to be acheived when J16 was equal to -150 so the combined weight
-	    #	of q1 and q6 would be 50 as it was in the original XOR embedding.
 	    #
 	    #   composite/two_identical_XORs.py
 	    #
@@ -644,7 +639,7 @@ Notes:
             # Combined embedding:           
             #                                                  'out1'
             #              Ancilla         J01 = 6141.6        Output
-            #           w0 = 9534.0 O------------------------O w1 = ?           
+            #           w0 = 9534.0 O------------------------O w1 = 130.8 (= 65.4*2)
             #                       |'.    J03 =           .'|',                   
             #                       |  ''. -6708.1      .''  |  '--------------.   
             #                       |     ''.        .''     |                 |     
@@ -660,8 +655,8 @@ Notes:
             #                                                                  |
             #                                                                  |
             #                                                                  |
-            #                                                 'out'            | J16 = ?
-            #             Ancilla         J45 = 3263.6        Output           |
+            #                                                 'out'            | J16 = -115.4
+            #             Ancilla         J45 = 3263.6        Output           |    (= -65.4-50)
             #           w4 = 500.0 O------------------------O w5 = 50.0        |   
             #                      |'.    J47 =           .'|                  |  
             #                      |  ''. -380.0       .''  |                  |  
@@ -671,12 +666,12 @@ Notes:
             #                      |       .''    ''.       |                  |   
             #                      |    .''J56 =     ''.    |                  |   
             #            'out1'    |,.''  -100.0        ''.,| 'c'              |   
-            #            w6 = ?    O------------------------O w7 = 50.0        |
-            #              Input   |      J67 = 80.0          Input            |
-            #                      ',                                          |
+            #            w6 = 100  O------------------------O w7 = 50.0        |
+            #             (= 50*2) |    J67 = 80.0          Input              |
+            #              Input   ',                                          |
             #                        '-----------------------------------------'
             #                             
-	    #                            Ground State = ?
+	    #                            Ground State = 0
 	    #
 	    #   composite/two_different_XORs.py
 	    #
@@ -844,7 +839,7 @@ Notes:
             # 
 	    #   
 	    # Combined embedding:
-	    #                                                  J0,7 = ?
+	    #                                                  J1,7 = ?
 	    #                   ,-----------------------------------------------------------------,
 	    #                  |                     Ancilla                                      |
 	    #                  |                    w0 = 8463.2                                   |
@@ -908,9 +903,9 @@ Notes:
             # |                     'x'    |    J13,14 = 10.6       |   'z'                      | 
             #  '--------------------------'                          '--------------------------'     
             #
-            #
+            #   composite/adder_carry.py
 	    #
-	    #
+	    #-------------------------------------------------------------------------------------------
 TODO:
 
    1) Figure out scheme to simplify annealer embedding graphs
