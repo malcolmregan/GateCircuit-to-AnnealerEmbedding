@@ -79,18 +79,18 @@ system_inequalities = ['0 > G',
                        # NOT
                        'w5 = -50',
                        'J45 = 500', 
-                       # all cplers btwn XOR and NOT 0
+                       # most cplers btwn XOR and NOT 0
                        'J04 = 0',
                        'J05 = 0',
-                       'J15 = 0'#500', # bc q1 and q4 are synched and there is a coupler between q4 and q5, there must also be
-                       'J24 = 0',   # one between q1 and q5 
+                       'J15 = 0',
+                       'J24 = 0',   
                        'J25 = 0',
                        'J34 = 0',
                        'J35 = 0',
                        #########
-                       'w1 = 150',
-                       'w4 = 50',
-                       'J14 = -100'] 
+                       'w1 = 75',
+                       'w4 = -25',
+                       'J14 = -50'] 
 
 
 #            .-----J14-----------.
