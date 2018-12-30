@@ -996,10 +996,6 @@ Notes:
 	   the sum of the negatives of the offsets (J1,2 = -d1 - d2).
 	       ==> The offsets which can be added may be bounded by the rest of the embedding
 	           but I haven't ran into this yet.
-	    
-	2) If a qubit is joined with one that has already been joined with another, I think only the 
-	   most recently joined one needs an offset added and the weight of the coupler should be 
-	   equal to the negative of this offset. I still need to confirm this but it seems right.
 	   
 
 TODO:
