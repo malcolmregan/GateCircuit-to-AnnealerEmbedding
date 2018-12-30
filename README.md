@@ -639,7 +639,7 @@ Notes:
             #            w6 = 50.0 O------------------------O w7 = 50.0         
             #              Input          J67 = 80.0          Input             
             #                                                                   
-            #                            Ground State = 0                                                           
+            #                            Ground State = 0  
             #
 	    #
             # Combined embedding:           
