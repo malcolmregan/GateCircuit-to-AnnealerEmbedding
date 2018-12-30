@@ -515,6 +515,9 @@ TODO:
 (III) LUMP ANNEALER EMBEDDING AS COMPOSITE OF SINGLE GATE ANNEALER EMBEDDINGS
 -----------------------------------------------------------------------------------------------------
 
+File locations are described assuming the base directory is 
+~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/composite/
+
 Notes:
     Below are a number of different manually composed embeddings. From these, general rules for
     embedding composition will be discerned.
