@@ -728,17 +728,17 @@ Notes:
 	    
         Composing an adder sum function from identical XORs
 	    #
-	    # a --o-------------- a        a b c | S
-	    #     |                       -------|--- 
-	    #     |                        0 0 0 | 0
-	    # b --|-----o-------- b        0 0 1 | 1
-	    #     |     |                  0 1 0 | 1
-	    #     |     |                  0 1 1 | 0
+	    # a --o-------------- a        a b c | S       
+	    #     |                       -------|---     
+	    #     |                        0 0 0 | 0        
+	    # b --|-----o-------- b        0 0 1 | 1               
+	    #     |     |                  0 1 0 | 1               
+	    #     |     |                  0 1 1 | 0             
 	    # c --|-----|-----o-- c        1 0 0 | 1
 	    #     |     |     |            1 0 1 | 0
 	    #     |out1 |out2 |            1 1 0 | 0
 	    # i --x-----x-----x-- S        1 1 1 | 1
-	    #
+	    #                             (for i = 0)
 	    #  XOR embedding:
 	    # 
             #             Ancilla        J0,1 = 3263.6        Output
@@ -816,7 +816,7 @@ Notes:
 	    #     |     |     |             1 0 1 | 1       
 	    #     |out1 |out2 |             1 1 0 | 1    
 	    # i --x-----x-----x----- C      1 1 1 | 1                
-	    #
+	    #                              (for i = 0)
 	    # Toffoli embedding:
 	    #
 	    #                                Ancilla
@@ -914,5 +914,5 @@ TODO:
    2) Implement to work in Qiskit class structure:
    	- graph composition
 	- graph simplification/reduction
-	- graph refactorization so it will work on Dwave hardware
+	- qubit splitting so it will work on Dwave hardware
 ```
