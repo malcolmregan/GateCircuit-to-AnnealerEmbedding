@@ -325,6 +325,10 @@ TODO:
 
 5) Implement Fredkin and swap gates.
 
+6) Add truthtable class method: randomly_permute_columns() because the column order needed for 
+   reduce_truthtable() isn't necessarily the best one in when it comes to solving the 
+   system of inequalities the truth table generates. 
+
 -----------------------------------------------------------------------------------------------------
 (II) BLOCH SPHERE TRUTH TABLE REPRESENTATION OF QUBIT
 -----------------------------------------------------------------------------------------------------
@@ -515,17 +519,16 @@ Notes:
     embedding composition will be discerned.
     
         Composing the below circuit from 2 identical XORS
-	    #
-            #                         a b c out
-	    #       XOR1  XOR2        0 0 0|0
-	    #     a --o------- a      0 0 1|1
-            #         |               0 1 0|1
-            #         |out1           0 1 1|0
-            #     b --x----o-- b      1 0 0|1
-            #              |          1 0 1|0
-            #     c -------x-- out    1 1 0|0
-            #                         1 1 1|1
-            #                                 
+	    #                                              
+	    #                           a b c | out         
+	    #     a --o------- a        0 0 0 | 0           
+            #         |                 0 0 1 | 1           
+            #         |out1             0 1 0 | 1           
+            #     b --x----o-- b        0 1 1 | 0           
+            #              |            1 0 0 | 1           
+            #              |            1 0 1 | 0             
+            #     c -------x-- out      1 1 0 | 0            
+            #                           1 1 1 | 1 
             # XOR embedding:
             # 
             #             Ancilla         J01 = 3263.6        Output
@@ -585,6 +588,8 @@ Notes:
 	    #	I would have expected the ground state of the composite system
 	    #	to be acheived when J16 was equal to -150 so the combined weight
 	    #	of q1 and q6 would be 50 as it was in the original XOR embedding.
+	    #
+	    #   composite/two_identical_XORs.py
 	    #
 	    #-----------------------------------------------------------------------------------
 
@@ -674,6 +679,8 @@ Notes:
             #                             
 	    #                            Ground State = ?
 	    #
+	    #   composite/two_different_XORs.py
+	    #
             #---------------------------------------------------------------------------------
 
         Composing XNOR from XOR and NOT	
@@ -716,14 +723,123 @@ Notes:
 	    #		  
 	    #		                               Ground State = -150
 	    #
+	    #   composite/XORandNOT.py
 	    #
 	    #-------------------------------------------------------------------------------------
 	    
-        Composing an adder sum function from XORS
+        Composing an adder sum function from identical XORs
 	    #
+	    # a --o-------------- a        a b c | S
+	    #     |                       -------|--- 
+	    #     |                        0 0 0 | 0
+	    # b --|-----o-------- b        0 0 1 | 1
+	    #     |     |                  0 1 0 | 1
+	    #     |     |                  0 1 1 | 0
+	    # c --|-----|-----o-- c        1 0 0 | 1
+	    #     |     |     |            1 0 1 | 0
+	    #     |out1 |out2 |            1 1 0 | 0
+	    # i --x-----x-----x-- S        1 1 1 | 1
+	    #
+	    #  XOR embedding:
 	    # 
+            #             Ancilla         J01 = 3263.6        Output
+            #           w0 = 500.0 O------------------------O w1 = 50.0            
+            #                      |'.    J03 =           .'|                     
+            #                      |  ''. -380.0       .''  |                     
+            #                      |     ''.        .''     |                      
+            #                      |        ''.  .''        |                       
+            #          J02 =-300.0 |          .''.          | J13 = -100.0          
+            #                      |       .''    ''.       |                      
+            #                      |    .''J12 =     ''.    |                      
+            #                      |,.''  -100.0        ''.,|                      
+            #            w2 = 50.0 O------------------------O w3 = 50.0   
+            #              Input          J23 = 80.0          Input    
+	    #		  
+	    #		              Ground State = 0
+	    #
+	    # Combined embedding:
+	    #                                                 'out1'
+	    #             Ancilla         J01 = 3263.6        Output
+            #           w0 = 500.0 O------------------------O,w1 = ?            
+            #                      |'.    J03 =           .'| '',,            
+            #                      |  ''. -380.0       .''  |     '',,            
+            #                      |     ''.        .''     |         '',,         
+            #                      |        ''.  .''        |             '',       
+            #          J02 =-300.0 |          .''.          | J13 = -100.0   |      
+            #                      |       .''    ''.       |                |     
+            #                      |    .''J12 =     ''.    |                |     
+            #            'a'       |,.''  -100.0        ''.,| 'i'            |     
+            #            w2 = 50.0 O------------------------O w3 = 50.0      |
+            #              Input          J23 = 80.0          Input          |
+	    #                                                                |
+	    #                                                 'out2'         | J17 = ?
+	    #             Ancilla         J45= 3263.6         Output         |
+            #           w4 = 500.0 O------------------------O,w5 = ?         |     
+            #                      |'.    J47 =           .'| ',             |    
+            #                      |  ''. -380.0       .''  |   ',           |    
+            #                      |     ''.        .''     |     ',         |     
+            #                      |        ''.  .''        |       ',       |      
+            #          J46 =-300.0 |          .''.          | J57 =   ',  ,,'       
+            #                      |       .''    ''.       | -100.0  ,,';         
+            #                      |    .''J56 =     ''.    |     ,,''    ',                
+            #            'b'       |,.''  -100.0        ''.,| ,,''          ',      
+            #            w6 = 50.0 O------------------------O' 'out1'        |
+            #              Input          J67 = 80.0          w7 = ?         |
+	    #                                                 Input          |
+	    #                                                                |
+	    #                                                 'S'            |
+	    #             Ancilla         J89 = 3263.6        Output         | J511 = ?
+            #           w8 = 500.0 O------------------------O w9 = 50.0      |      
+            #                      |'.    J811 =          .'|                |     
+            #                      |  ''. -380.0       .''  |                |     
+            #                      |     ''.        .''     |                |      
+            #                      |        ''.  .''        |                |       
+            #          J810=-300.0 |          .''.          | J911 =      ,,'    
+            #                      |       .''    ''.       | -100.0  ,,''             
+            #                      |    .''J910 =    ''.    |     ,,''                 
+            #            'c'       |,.''  -100.0        ''.,| ,,''              
+            #            w10= 50.0 O------------------------O' 'out2'   
+            #              Input          J1011 = 80.0          w11 = ?    
+	    #		                                        Input
+            #
+	    #                           Ground State = ?
+	    #
 	    
-	    
+        Composing an adder carry function from identical Toffoli embeddings
+	    #                                               
+            # x --o-----------o----- x      x y z | C       
+	    #     |           |            -------|---      
+	    #     |           |             0 0 0 | 0       
+	    # y --o-----o-----|----- y      0 0 1 | 0       
+	    #     |     |     |             0 1 0 | 0       
+	    #     |     |     |             0 1 1 | 1       
+	    # z --|-----o-----o----- z      1 0 0 | 0       
+	    #     |     |     |             1 0 1 | 1       
+	    #     |out1 |out2 |             1 1 0 | 1    
+	    # i --x-----x-----x----- C      1 1 1 | 1                
+	    #
+	    # Toffoli embedding:
+	    #
+	    #                                Ancilla
+	    #                               w0 = 8463.2 
+	    #    ,-----------------------------,o,----------------------------,
+	    #    |          J01 = 8625.9 ,,,'''   ''',,,J02 = -9566.3         |
+	    #    |                    ,'                ',                    |
+            #    |        Output    ,'    J12 = -8244.1   ',  Input (target)  |
+            #    |     w1 = 1930.2 O------------------------O w2 = 6313.9     |    
+            #    |                 |'. J14 =              .'|                 |   
+            #    |J03 =            |  ''. -1926.5      .''  |                 |J04 =   
+            #    | -1503.0         |     ''.        .''     |                 | -5659.2   
+            #    |                 |        ''.  .''        |                 |     
+            #    |     J13 = -14.3 |          .''.          | J24 = 1926.5    |     
+            #    '---,             |       .''    ''.       |             ,---'
+            #         ''',,,       |    .''J23 =     ''.    |       ,,,'''         
+            #               ''',,, |,.''   14.3         ''.,| ,,,'''           
+            #            w3 = 0   'O------------------------O'w4 = 0      
+            #         Input (control)     J34 = 10.6      Input (control)
+	    #		  
+	    #		              Ground State = 0
+            # 
 	    
 TODO:
 
