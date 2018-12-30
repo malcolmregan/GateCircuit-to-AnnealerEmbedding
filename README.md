@@ -640,7 +640,7 @@ Notes:
             # Combined embedding:           
             #                                                  'out1'
             #              Ancilla         J01 = 6141.6        Output
-            #           w0 = 9534.0 O------------------------O w1 = 130.8 (= 65.4*2)
+            #           w0 = 9534.0 O------------------------O w1 = 130.8            
             #                       |'.    J03 =           .'|',                   
             #                       |  ''. -6708.1      .''  |  '--------------.   
             #                       |     ''.        .''     |                 |     
@@ -657,7 +657,7 @@ Notes:
             #                                                                  |
             #                                                                  |
             #                                                 'out'            | J16 = -115.4
-            #             Ancilla         J45 = 3263.6        Output           |    (= -65.4-50)
+            #             Ancilla         J45 = 3263.6        Output           |                
             #           w4 = 500.0 O------------------------O w5 = 50.0        |   
             #                      |'.    J47 =           .'|                  |  
             #                      |  ''. -380.0       .''  |                  |  
@@ -668,8 +668,8 @@ Notes:
             #                      |    .''J56 =     ''.    |                  |   
             #            'out1'    |,.''  -100.0        ''.,| 'c'              |   
             #            w6 = 100  O------------------------O w7 = 50.0        |
-            #             (= 50*2) |    J67 = 80.0          Input              |
-            #              Input   ',                                          |
+            #              Input   |    J67 = 80.0          Input              |
+            #                      ',                                          |
             #                        '-----------------------------------------'
             #                             
 	    #                            Ground State = 0
@@ -988,13 +988,11 @@ Notes:
 	    #------------------------------------------------------------------------------------
 
 Rules for composing embeddings:
-	1) If the two qubits being joined have positive weights (say, w1 and w2) and their respective
-	   embeddings have the same ground state, the embeddings can be joined by changing the 
-	   weight of w1 to w1*2 and w2 to w2*2 and the coupling J1,2 between them is equal to -w1-w2
-	   (above in i, ii, and iv --- make example where more than one qubit per embedding is joined to
-	   a qubit of another embedding and see if this still holds, because i, ii, and iv only have 
-	   one qubit per embedding being joined. Also, try come up with an example for embeddings 
-	   with different ground states and see if this works.
+	1) To join two qubits together (say, q1 and q2), add a positive offset to each of their weights 
+	(w1_new = w1_old + d1, w2_new = w2_old + d2) and set the coupler weight between them equal to the sum of 
+	the negatives of the offsets (J1,2 = -d1 - d2).
+	
+	   
 
 TODO:
 
