@@ -46,77 +46,79 @@ class SYM:
                 Llist = str.split(LHS, ' ')[:-1]
                 Rlist = str.split(RHS, ' ')[1:]
                 
-                if self.name in Rlist:
-                    temp = Rlist
-                    Rlist = Llist
-                    Llist = temp
-                    if relation != '=':
-                        if relation == '<':
-                            rela = '>'
-                        if relation == '>':
-                            rela = '<'
-                        relation = rela
+                if self.name in Llist or self.name in Rlist:
+
+                    if self.name in Rlist:
+                        temp = Rlist
+                        Rlist = Llist
+                        Llist = temp
+                        if relation != '=':
+                            if relation == '<':
+                                rela = '>'
+                            if relation == '>':
+                                rela = '<'
+                            relation = rela
                     
-                delidxs = list()
-                for i in range(len(Llist)):
-                    if len(Llist[i]) > 1:
-                        elem = Llist[i][0]
-                    else:
-                        elem = Llist[i]
-                    if elem in alpha and Llist[i] != self.name:
-                        if i==0:
-                            Rlist.append('-')
-                            Rlist.append(Llist[i])
-                            delidxs.append(i)
-
+                    delidxs = list()
+                    for i in range(len(Llist)):
+                        if len(Llist[i]) > 1:
+                            elem = Llist[i][0]
                         else:
-                            if Llist[i-1] == '+':
+                            elem = Llist[i]
+                        if elem in alpha and Llist[i] != self.name:
+                            if i==0:
                                 Rlist.append('-')
+                                Rlist.append(Llist[i])
+                                delidxs.append(i)
+
                             else:
-                                Rlist.append('+')
-                            Rlist.append(Llist[i])
-                            delidxs.append(i)
+                                if Llist[i-1] == '+':
+                                    Rlist.append('-')
+                                else:
+                                    Rlist.append('+')
+                                Rlist.append(Llist[i])
+                                delidxs.append(i)
+                                delidxs.append(i-1)
+                        if Llist[i] == self.name and i > 0:
                             delidxs.append(i-1)
-                    if Llist[i] == self.name and i > 0:
-                        delidxs.append(i-1)
 
 
-                delidxs.sort()
-                count = 0
-                for i in delidxs:
-                    Llist.pop(i-count)
-                    count = count + 1
+                    delidxs.sort()
+                    count = 0
+                    for i in delidxs:
+                        Llist.pop(i-count)
+                        count = count + 1
 
-                RHS = ''
-                for i in range(len(Rlist)):
-                    RHS = RHS + Rlist[i]
-                    if i < len(Rlist)-1:
-                        RHS = RHS + ' '
+                    RHS = ''
+                    for i in range(len(Rlist)):
+                        RHS = RHS + Rlist[i]
+                        if i < len(Rlist)-1:
+                            RHS = RHS + ' '
                 
                 
-                ## This is probably unnecesary. #####################
+                    ## This is probably unnecesary. #####################
                 
-                if RHS in num:
-                    if relation == '=':
-                        self.updatebounds(round(float(RHS),1),round(float(RHS),1))
-                    if relation == '>':
-                        self.updatebounds(round(float(RHS),1),boundmax)
-                    if relation == '<':
-                        self.updatebounds(-boundmax,round(float(RHS),1))
-                if len(RHS)>1:
-                    if RHS[0] not in alpha and RHS[1] in num:
+                    if RHS in num:
                         if relation == '=':
                             self.updatebounds(round(float(RHS),1),round(float(RHS),1))
                         if relation == '>':
                             self.updatebounds(round(float(RHS),1),boundmax)
                         if relation == '<':
                             self.updatebounds(-boundmax,round(float(RHS),1))
+                    if len(RHS)>1:
+                        if RHS[0] not in alpha and RHS[1] in num:
+                            if relation == '=':
+                                self.updatebounds(round(float(RHS),1),round(float(RHS),1))
+                            if relation == '>':
+                                self.updatebounds(round(float(RHS),1),boundmax)
+                            if relation == '<':
+                                self.updatebounds(-boundmax,round(float(RHS),1))
 
-                #####################################################
+                    #####################################################
                 
 
-                constraint = {'relation': relation, 'expression': RHS}
-                constraints.append(constraint)
+                    constraint = {'relation': relation, 'expression': RHS}
+                    constraints.append(constraint)
 
         return constraints
 
@@ -407,7 +409,7 @@ def evaluate_constraints(syms):
 
 
 def main():
-    ''' 
+     
     # XOR encoding (4 bit)
     system_inequalities = ['0 = G',
                            'w0 > G',
@@ -428,7 +430,7 @@ def main():
 
     inputs = ['w2','w3']
     outputs = ['w1'] 
-    '''
+    
     
     '''
     # XNOR encoding (4 bit)
@@ -460,9 +462,8 @@ def main():
     inputs = ['w2','w3']
     outputs = ['w1']
     '''
-    
+    '''
     #Test toffoli
-
     system_inequalities = ['w2 = 6313.9',
                            'w1 = 1930.2',
                            'J14 = -1926.5', 
@@ -481,7 +482,7 @@ def main():
 
     inputs = ['w4','w3','w2']
     outputs = ['w1']
-    
+    '''
 ############################################
 ############################################
 
