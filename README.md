@@ -10,9 +10,9 @@ GENERAL NOTES
    
    e.g., ~/path/to/Lump-Annealer-Encoding-From-Gate-Circuit/logical$ export PYTHONPATH=$(pwd)
 
-- To run examples in Lump-Annealer-Encoding-From-Gate-Circuit/composite, change token
-  variable in the execute() function in /composite/converter/qiskit/tools/_compiler.py
-  to your Dwave Leap API token
+ - To run examples in Lump-Annealer-Encoding-From-Gate-Circuit/composite, change token
+   variable in the execute() function in /composite/converter/qiskit/tools/_compiler.py
+   to your Dwave Leap API token
   
 -----------------------------------------------------------------------------------------------------
 CONTENTS
