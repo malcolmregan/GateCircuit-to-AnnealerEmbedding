@@ -992,13 +992,18 @@ Notes:
 	    #------------------------------------------------------------------------------------
 
     Rules for composing embeddings:
-	1) To join two qubits together (say, q1 and q2), add a positive offset to each of their weights 
-	   (w1_new = w1_old + d1, w2_new = w2_old + d2) and set the coupler weight between them equal to 
-	   the sum of the negatives of the offsets (J1,2 = -d1 - d2).
-	       ==> The offsets which can be added may be bounded by the rest of the embedding
-	           but I haven't ran into this yet.
+	To join two qubits together (say, q1 and q2), add a positive offset to each of their weights 
+	(w1_new = w1_old + d1, w2_new = w2_old + d2) and set the coupler weight between them equal to 
+	the sum of the negatives of the offsets (J1,2 = -d1 - d2).
+	    ==> The offsets which can be added may be bounded by the rest of the embedding
+	        but I haven't ran into this yet.
 		
     Composing embeddings on a Dwave-compatible graph:
+    	Once the embedding is for the gate circuit is found as above, the qubits can be mapped
+	to qubits having identical connectivity on the dwave graph.
+	If identical connectivity is not available for a given qubit, its connectivity can be 
+	extended by joining the annealer qubit with another in the same way qubits are joined 
+	when composing embeddings
     	
     
     
