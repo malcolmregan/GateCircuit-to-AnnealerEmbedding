@@ -30,6 +30,7 @@ CONTENTS
 	  	- Manually composed embeddings from which general composition rules 
 		  will be discerned
 		- Rules for composing an embedding from smaller ones
+		- Composing emeddings onto a Dwave-compatible graph
 	  - TODO list for implementation of this approach
 
 -----------------------------------------------------------------------------------------------------
@@ -996,8 +997,11 @@ Notes:
 	   the sum of the negatives of the offsets (J1,2 = -d1 - d2).
 	       ==> The offsets which can be added may be bounded by the rest of the embedding
 	           but I haven't ran into this yet.
-	   
-
+		
+    Composing embeddings on a Dwave-compatible graph:
+    	
+    
+    
 TODO:
 
    1) Figure out scheme to simplify annealer embedding graphs
