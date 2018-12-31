@@ -41,6 +41,9 @@ def x(self, q):
             self.x((q, j))
         return None
 
+    tgtname = q[0].name + "_" + str(q[1])
+    self.annealergraph.add_X(tgtname)
+    '''
     ############################## Write Dwave NOT ##################################
     import os
     import sys
@@ -71,5 +74,5 @@ def x(self, q):
         f.write("print()\n")
     ##################################################################################
     return None
-
+    '''
 QuantumCircuit.x = x

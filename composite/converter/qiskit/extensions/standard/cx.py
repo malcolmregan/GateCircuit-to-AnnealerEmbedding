@@ -50,6 +50,11 @@ def cx(self, ctl, tgt):
             self.cx(ctl, (tgt, j))
         return None
 
+    ctlname = ctl[0].name + '_' + str(ctl[1])
+    tgtname = tgt[0].name + '_' + str(tgt[1])
+    self.annealergraph.add_CNOT(ctlname,tgtname)
+
+    '''
     ############################## Write Dwave CNOT ##################################
 
     import os
@@ -88,6 +93,6 @@ def cx(self, ctl, tgt):
     ##################################################################################
 
     return None
-
+    '''
 
 QuantumCircuit.cx = cx

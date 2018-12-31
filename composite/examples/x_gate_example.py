@@ -1,9 +1,12 @@
-from converter.qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
+from converter.qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister, execute
 
-qr = QuantumRegister(1)
-cr = ClassicalRegister(1)
-qc = QuantumCircuit(qr, cr)
+qr1 = QuantumRegister(1)
+cr1 = ClassicalRegister(1)
 
-qc.x(qr)
+qc = QuantumCircuit(qr1, cr1)
 
-qc.measure(qr, cr)
+qc.x(qr1)
+qc.x(qr1)
+qc.measure(qr1, cr1)
+
+execute(qc)

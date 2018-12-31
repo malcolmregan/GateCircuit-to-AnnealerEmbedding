@@ -20,7 +20,7 @@ from converter.qiskit._qiskiterror import QISKitError
 from converter.qiskit._quantumregister import QuantumRegister
 from converter.qiskit._classicalregister import ClassicalRegister
 from qiskit.tools import visualization
-
+from converter.qiskit.annealergraph import *
 
 def _circuit_from_qasm(qasm, basis=None):
     default_basis = ["id", "u0", "u1", "u2", "u3", "x", "y", "z", "h", "s",
@@ -110,6 +110,8 @@ class QuantumCircuit(object):
         self.qregs = OrderedDict()
         self.cregs = OrderedDict()
         self.add(*regs)
+
+        self.annealergraph = annealer_graph(self.qregs)
 
     @classmethod
     def _increment_instances(cls):

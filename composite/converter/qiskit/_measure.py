@@ -52,6 +52,11 @@ def measure(self, qubit, cbit):
             self.measure((qubit, i), (cbit, i))
         return None
 
+    
+    tgtname = qubit[0].name + '_' + str(qubit[1])
+    self.annealergraph.qubits[tgtname]['measured'] = True
+    
+    '''
     ############################## Dwave 'Measure' ##################################
     import os
     import sys
@@ -65,6 +70,6 @@ def measure(self, qubit, cbit):
     ###############################################################################
 
     return self._attach(Measure(qubit, cbit, self))
-
+    '''
 
 QuantumCircuit.measure = measure
