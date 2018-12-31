@@ -179,4 +179,18 @@ class annealer_graph():
         pass
 
     def add_Fredkin(self, ctl, targ1, targ2):
-        pass    
+        pass  
+
+    def map_to_Dwave_graph(self, solvernodes, solveredges):
+        for qubitname in self.qubitweights.keys():
+            for couplername in self.couplerweights.keys():
+                if qubitname in couplername:
+                    print(qubitname, couplername)
+
+        for edge in solveredges:
+            if 0 in edge or 1 in edge:
+                print(edge)
+        input()
+
+        return dwave_qubit_weights, dwave_coupler_weights
+
