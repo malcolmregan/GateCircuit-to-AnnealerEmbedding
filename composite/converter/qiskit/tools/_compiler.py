@@ -11,7 +11,9 @@ import logging
 #from converter.qiskit.unroll import DagUnroller, JsonBackend
 #from converter.qiskit.transpiler._parallel import parallel_map
 import dimod
-
+from dwave.system.samplers import DWaveSampler
+from dwave.cloud.exceptions import SolverOfflineError
+import minorminer
 
 def compile(circuits, backend,
             config=None, basis_gates=None, coupling_map=None, initial_layout=None,
@@ -74,9 +76,29 @@ def execute(circuit, backend = None,
     coupler_weights = circuit.annealergraph.couplerweights
 
     bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
+    sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
+    
+    #_, target_edgelist, target_adjacency = sampler.structure
+    #embedding = minorminer.find_embedding(bqm.quadratic, target_edgelist)
+    #bqm_embedded = dimod.embed_bqm(bqm, embedding, target_adjacency, 3.0)
+    
+    kwargs = {}
+    if 'num_reads' in sampler.parameters:
+        kwargs['num_reads'] = 5000
+    if 'answer_mode' in sampler.parameters:
+        kwargs['answer_mode'] = 'histogram'
+    response = sampler.sample(bqm, **kwargs)
+    #response = dimod.unembed_response(response, embedding, source_bqm=bqm)
+    
+    sampler.client.close()
+    print(response.data)
+    input()
+    
+    ''' 
+    # ExactSolver simulation
     sampler = dimod.ExactSolver()
     response = sampler.sample(bqm)
-
+    
     groundstate = 1000000
     for sample, energy in response.data(['sample','energy']):
         if energy<groundstate:
@@ -97,3 +119,4 @@ def execute(circuit, backend = None,
     function.sort()
     for i in range(len(function)):
         print(function[i])
+    '''

@@ -20,7 +20,8 @@ class annealer_graph():
     def add_X(self, targ):
         weightnames = []
         for i in range(2):
-            weightnames.append('w{}'.format(i+self.numannealerqubits))
+            #weightnames.append('w{}'.format(i+self.numannealerqubits))
+            weightnames.append(i+self.numannealerqubits)
         self.numannealerqubits = self.numannealerqubits + 2
 
         # Xqubitvals[0] = in; Xqubitvals[1] = out        
