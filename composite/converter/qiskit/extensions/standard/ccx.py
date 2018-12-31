@@ -48,7 +48,10 @@ def ccx(self, ctl1, ctl2, tgt):
     ctl1name = ctl1[0].name + '_' + str(ctl1[1])
     ctl2name = ctl2[0].name + '_' + str(ctl2[1])
     tgtname = tgt[0].name + '_' + str(tgt[1])
+    
+    self.annealergraph.add_Toffoli(ctl1name, ctl2name, tgtname)
 
+    '''
     filename = main.__file__.split(".")[0] + "_dwave.py"
     with open(filename, "a") as f:
         f.write("#" * 80 + "\n")
@@ -80,5 +83,5 @@ def ccx(self, ctl1, ctl2, tgt):
         f.write("print()\n")
     ############################################################################
     return None
-
+    '''
 QuantumCircuit.ccx = ccx
