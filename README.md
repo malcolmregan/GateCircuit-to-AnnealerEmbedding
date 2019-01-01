@@ -567,6 +567,12 @@ Implementation description:
 	    only works for smaller test problems. Once the number of qubits in the
 	    embedding being run is greater than ~16 it becomes infeasible for
 	    ExactSolver() to do.
+	    
+   Map directly to DWave graph:
+      in Lump-Annealer-Encoding-From-Gate-Circuit/composite_map_directly_to_Dwave_graph
+      
+      Each gate can be embedded into a unit cell of the Dwave graph.
+      
     
 TODO:
 
