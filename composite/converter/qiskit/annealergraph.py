@@ -182,6 +182,7 @@ class annealer_graph():
         pass  
 
     def map_to_Dwave_graph(self, solvernodes, solveredges):
+        print("Mapping to Dwave graph")
         qubits = []
         dwavemap = {}
         dwave_qubit_weights = {}
@@ -191,6 +192,7 @@ class annealer_graph():
             qubits.append(qubitname)
 
         for qubitname in qubits:
+            print(dwavemap)
             if qubitname not in dwavemap:
                 dwavemap[qubitname] = [solvernodes[0]]
                 dwave_qubit_weights[solvernodes[0]] = self.qubitweights[qubitname]
@@ -233,16 +235,18 @@ class annealer_graph():
                         
                         if availedges == 1:
                             if edge[0] in solvernodes:
+                                oldweight = dwave_qubit_weights[edge[1]]
                                 dwave_qubit_weights[edge[1]] = dwave_qubit_weights[edge[1]] + 5
                                 dwave_qubit_weights[edge[0]] = dwave_qubit_weights[edge[1]]
-                                dwave_coupler_weights[(edge[0], edge[1])] = -10
+                                dwave_coupler_weights[(edge[0], edge[1])] = oldweight - dwave_qubit_weights[edge[1]] - dwave_qubit_weights[edge[0]]
                                 solvernodes.pop(solvernodes.index(edge[0]))
                                 solveredges.pop(solveredges.index((edge[0], edge[1])))
                                 dwavemap[qubitname].append(edge[0])
                             if edge[1] in solvernodes:
+                                oldweight = dwave_qubit_weights[edge[1]]
                                 dwave_qubit_weights[edge[0]] = dwave_qubit_weights[edge[0]] + 5
                                 dwave_qubit_weights[edge[1]] = dwave_qubit_weights[edge[0]]
-                                dwave_coupler_weights[(edge[0], edge[1])] = -10
+                                dwave_coupler_weights[(edge[0], edge[1])] = oldweight - dwave_qubit_weights[edge[1]] - dwave_qubit_weights[edge[0]]
                                 solvernodes.pop(solvernodes.index(edge[1]))
                                 solveredges.pop(solveredges.index((edge[0], edge[1])))
                                 dwavemap[qubitname].append(edge[1])
@@ -255,8 +259,6 @@ class annealer_graph():
                         if availedges == 0:
                             print('map_to_Dwave_graph() doesn''t work right. Need to fix.')
 
-                        
-
                     else:
                         # see if coupler has already been assigned (is in dwave_coupler_weights) - if so do nothing
                         couplerassigned = False
@@ -265,7 +267,7 @@ class annealer_graph():
                             if couplerassigned == True:
                                 break
                             for b in dwavemap[otherqubit]:
-                                if (q, b) in solveredges or (b, q) in dwave_coupler_weights:
+                                if (q, b) in dwave_coupler_weights or (b, q) in dwave_coupler_weights:
                                     couplerassigned = True
                                     break
 
@@ -278,13 +280,19 @@ class annealer_graph():
                                     if (q, b) in solveredges or (b, q) in solveredges:
                                         couplerexists = True
                                         if (q, b) in solveredges:
-                                            dwave_coupler_weights[(q, b)] = self.couplerweights[(qubitname, otherqubit)]
+                                            try:
+                                                dwave_coupler_weights[(q, b)] = self.couplerweights[(qubitname, otherqubit)]
+                                            except:
+                                                dwave_coupler_weights[(q, b)] = self.couplerweights[(otherqubit, qubitname)]
                                             solveredges.pop(solveredges.index((q, b)))
                                         if (b, q) in solveredges:
-                                            dwave_coupler_weights[(b, q)] = self.couplerweights[(otherqubit, qubitname)]
+                                            try:
+                                                dwave_coupler_weights[(b, q)] = self.couplerweights[(otherqubit, qubitname)]
+                                            except:
+                                                dwave_coupler_weights[(b, q)] = self.couplerweights[(qubitname, otherqubit)]
                                             solveredges.pop(solveredges.index((b, q)))
                                         break
-
+        
                         # if neither of these qubitname must be split with another qubit to which the coupling can be made
                         if couplerassigned == False and couplerexists == False:
                             for q in dwavemap[qubitname]:
@@ -296,9 +304,10 @@ class annealer_graph():
                                     for candidate in solvernodes:
                                         if ((candidate, q) in solveredges and (candidate, b) in solveredges):
                                             dwavemap[qubitname].append(candidate)
+                                            oldweight = dwave_qubit_weights[q]
                                             dwave_qubit_weights[q] = dwave_qubit_weights[q] + 5
                                             dwave_qubit_weights[candidate] = dwave_qubit_weights[q]
-                                            dwave_coupler_weights[(candidate, q)] = -10
+                                            dwave_coupler_weights[(candidate, q)] = oldweight - dwave_qubit_weights[q] - dwave_qubit_weights[candidate]
                                             try: 
                                                 dwave_coupler_weights[(candidate, b)] = self.couplerweights[(qubitname, otherqubit)]
                                             except:
@@ -310,9 +319,11 @@ class annealer_graph():
 
                                         if ((candidate, q) in solveredges and (b, candidate) in solveredges):
                                             dwavemap[qubitname].append(candidate)
+                                            oldweight = dwave_qubit_weights[q]
                                             dwave_qubit_weights[q] = dwave_qubit_weights[q] + 5
                                             dwave_qubit_weights[candidate] = dwave_qubit_weights[q]
-                                            dwave_coupler_weights[(candidate, q)] = -10
+                                            dwave_coupler_weights[(candidate, q)] = oldweight - dwave_qubit_weights[q] - dwave_qubit_weights[candidate]
+
                                             try:
                                                 dwave_coupler_weights[(b, candidate)] = self.couplerweights[(qubitname, otherqubit)]
                                             except:
@@ -324,9 +335,10 @@ class annealer_graph():
 
                                         if ((q, candidate) in solveredges and (candidate, b) in solveredges):
                                             dwavemap[qubitname].append(candidate)
+                                            oldweight = dwave_qubit_weights[q]
                                             dwave_qubit_weights[q] = dwave_qubit_weights[q] + 5
                                             dwave_qubit_weights[candidate] = dwave_qubit_weights[q]
-                                            dwave_coupler_weights[(q, candidate)] = -10
+                                            dwave_coupler_weights[(q, candidate)] = oldweight - dwave_qubit_weights[q] - dwave_qubit_weights[candidate]
                                             try:
                                                 dwave_coupler_weights[(candidate, b)] = self.couplerweights[(qubitname, otherqubit)]
                                             except:
@@ -338,9 +350,10 @@ class annealer_graph():
 
                                         if ((q, candidate) in solveredges and (b, candidate) in solveredges):
                                             dwavemap[qubitname].append(candidate)
+                                            oldweight = dwave_qubit_weights[q]
                                             dwave_qubit_weights[q] = dwave_qubit_weights[q] + 5
                                             dwave_qubit_weights[candidate] = dwave_qubit_weights[q]
-                                            dwave_coupler_weights[(q, candidate)] = -10
+                                            dwave_coupler_weights[(q, candidate)] = oldweight - dwave_qubit_weights[q] - dwave_qubit_weights[candidate]
                                             try:
                                                 dwave_coupler_weights[(b, candidate)] = self.couplerweights[(qubitname, otherqubit)]
                                             except:
@@ -351,6 +364,9 @@ class annealer_graph():
                                             break
 
 
-        
-        return dwave_qubit_weights, dwave_coupler_weights
+        print("Done.")
+        print(dwavemap)
+        print(dwave_qubit_weights)
+        print(dwave_coupler_weights)
+        return dwave_qubit_weights, dwave_coupler_weights, dwavemap
         
