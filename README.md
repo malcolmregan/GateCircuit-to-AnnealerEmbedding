@@ -541,10 +541,32 @@ Notes:
 	If identical connectivity is not available for a given qubit, its connectivity can be 
 	extended by joining the annealer qubit with another in the same way qubits are joined 
 	when composing embeddings
+	see: map_to_Dwave_graph() in converter/qiskit/annealergraph.py
 	
     Rules for simplifying graphs:
    
 Implementation description:
+    - annealergraph object added to Qiskit's QuantumCircuit class 
+      (see: converter/qiskit/_quantumcircuit.py)
+      
+    - annealer_graph class defined in /converter/qiskit/annealergraph.py
+    	- has methods to add gates to the graph based on composition rule above
+	- has method to map composite graph to dwave graph - doesn't quite work yet
+	
+    - qiskit gate commands call the add_X, add_CNOT, etc methods of 
+      QuantumCircuit.annealergraph
+      
+    - qiskit measure command changes properties of qubits being measured in
+      QuantumCircuit.annealergraph.qubits so that the output of the annealing
+      operation called in execute can be sorted properly.
+      
+    - qiskit execute command first identifies inputs and outputs, maps the
+      graph of composed gate embeddings to the Dwave graph (this doesn't work
+      yet), runs it on Dwave hardware, and reports the results.
+          - execute also set up to run using ExactSolver() simulator. ExactSolver()
+	    only works for smaller test problems. Once the number of qubits in the
+	    embedding being run is greater than ~16 it becomes infeasible for
+	    ExactSolver() to do.
     
 TODO:
 
