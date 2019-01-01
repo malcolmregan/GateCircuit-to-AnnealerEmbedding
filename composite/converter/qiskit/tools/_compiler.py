@@ -13,6 +13,7 @@ import logging
 import dimod
 from dwave.system.samplers import DWaveSampler
 from dwave.cloud.exceptions import SolverOfflineError
+from dwave.system.composites import EmbeddingComposite
 import minorminer
 
 def compile(circuits, backend,
@@ -74,8 +75,11 @@ def execute(circuit, backend = None,
     
     sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
     
-    qubit_weights, coupler_weights, dwavemap = circuit.annealergraph.map_to_Dwave_graph(list(sampler._nodelist), list(sampler.edgelist))
+    qubit_weights = circuit.annealergraph.qubitweights
+    coupler_weights = circuit.annealergraph.couplerweights
 
+    '''
+    qubit_weights, coupler_weights, dwavemap = circuit.annealergraph.map_to_Dwave_graph(list(sampler._nodelist), list(sampler.edgelist))
     ins = list()
     outs = list()
     for name in inputs:
@@ -85,16 +89,17 @@ def execute(circuit, backend = None,
 
     inputs = ins
     outputs = outs
+    '''
 
     bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
     
     kwargs = {}
     if 'num_reads' in sampler.parameters:
-        kwargs['num_reads'] = 500
+        kwargs['num_reads'] = 100
     if 'answer_mode' in sampler.parameters:
         kwargs['answer_mode'] = 'histogram'
     print("Running...")
-    response = sampler.sample(bqm, **kwargs)
+    response = EmbeddingComposite(sampler).sample(bqm, **kwargs)
     
     sampler.client.close()
     print("Done.")
@@ -120,15 +125,13 @@ def execute(circuit, backend = None,
     function.sort()
     for i in range(len(function)):
         print(function[i])
-    
-    ''' 
-    # ExactSolver simulation
 
+    # ExactSolver simulation
+    print("\nExactSolver Check:")
     qubit_weights = circuit.annealergraph.qubitweights
     coupler_weights = circuit.annealergraph.couplerweights
-    bqm =dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
+    bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
     sampler = dimod.ExactSolver()
-    response = sampler.sample(bqm)
     
     response = sampler.sample(bqm)
 
@@ -152,6 +155,3 @@ def execute(circuit, backend = None,
     function.sort()
     for i in range(len(function)):
         print(function[i])
-    '''
-
-
