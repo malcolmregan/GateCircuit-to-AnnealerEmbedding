@@ -74,7 +74,8 @@ def execute(circuit, backend = None,
 
     sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
     
-    qubit_weights, coupler_weights = circuit.annealergraph.map_to_Dwave_graph(sampler._nodelist, sampler.edgelist)
+    qubit_weights, coupler_weights = circuit.annealergraph.map_to_Dwave_graph(list(sampler._nodelist), list(sampler.edgelist))
+
 
     bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
     #_, target_edgelist, target_adjacency = sampler.structure
@@ -91,7 +92,6 @@ def execute(circuit, backend = None,
     
     sampler.client.close()
     print(response.data)
-    input()
     
     ''' 
     # ExactSolver simulation
