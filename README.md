@@ -526,14 +526,14 @@ File locations are described assuming the base directory is
 
 Notes:
 
-    For notes on manually composed embeddings see manuallycomposed/README.md
-
     Rules for composing gate embedding into circuit embedding:
 	To join two qubits together (say, q1 and q2), add a positive offset to each of their weights 
 	(w1_new = w1_old + d1, w2_new = w2_old + d2) and set the coupler weight between them equal to 
 	the sum of the negatives of the offsets (J1,2 = -d1 - d2).
 	    ==> The offsets which can be added may be bounded by the rest of the embedding
 	        but I haven't ran into this yet.
+		
+        For notes on manually composed embeddings see manuallycomposed/README.md
 		
     Mapping embeddings to Dwave graph:
     	Once the embedding is for the gate circuit is found as above, the qubits can be mapped
