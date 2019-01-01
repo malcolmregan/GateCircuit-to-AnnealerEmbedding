@@ -1003,7 +1003,7 @@ Notes:
 	    ==> The offsets which can be added may be bounded by the rest of the embedding
 	        but I haven't ran into this yet.
 		
-    Composing embeddings on a Dwave-compatible graph:
+    Mapping embeddings to Dwave graph:
     	Once the embedding is for the gate circuit is found as above, the qubits can be mapped
 	to qubits having identical connectivity on the dwave graph.
 	If identical connectivity is not available for a given qubit, its connectivity can be 
