@@ -1,4 +1,4 @@
-'''
+```
 Notes:
     Below are a number of different manually composed embeddings. These were done to figure out how
     to compose embeddings.
@@ -470,4 +470,4 @@ Notes:
 	    #   manuallycomposed/identity.py
 	    #
 	    #------------------------------------------------------------------------------------
-'''
+```
