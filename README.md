@@ -596,7 +596,8 @@ Implementation description:
 	Gates embedded in even numbered unit cells have outputs on the left and inputs on the right
 	Gates embedded in odd numbered unit cells have inputs on the left and outputs on the right
 	The rows of a gate embedding can be permuted without loss of connectivity. This makes
-	input/output connections between adjacent gates trivial. However, 
+	input/output connections between adjacent gates trivial. However, connections between
+	distant unit cells is a problem...
 	
 	
 
@@ -607,4 +608,3 @@ TODO:
 	- graph simplification/reduction
 	- make mapping to Dwave hardware graph stuff work
 ```
-111111111111111111111111111111
