@@ -568,15 +568,38 @@ Implementation description:
 	    embedding being run is greater than ~16 it becomes infeasible for
 	    ExactSolver() to do.
 	    
-    - dimod function for mapping problems to the Dwave graph do not work on 
-      these graphs.
+    - dimod function for mapping problems to the Dwave graph (EmbeddingComposite) 
+      do not work on these graphs.
 	    
    Map directly to DWave graph:
       in Lump-Annealer-Encoding-From-Gate-Circuit/composite_map_directly_to_Dwave_graph
       
       Each gate can be embedded into a unit cell of the Dwave graph.
+      unit cells will be ordered as:
       
-    
+      ,---,   ,---,           ,---,
+      | 0 |   | 4 |--- ... ---|29 | 
+      '---'   '---'           '---'
+        |       |               |
+      ,---,   ,---,           ,---,
+      | 1 |---| 2 |	      |30 |
+      '---'   '---'           '---'
+                                |
+              ,---,   ,---,   ,---,
+              |35 |---|34 |   |31 |
+	      '---'   '---'   '---'
+	        |       |	|
+	      etc..   ,---,   ,---,
+		      |33 |---|32 |
+        	      '---'   '---'
+
+	Gates embedded in even numbered unit cells have outputs on the left and inputs on the right
+	Gates embedded in odd numbered unit cells have inputs on the left and outputs on the right
+	The rows of a gate embedding can be permuted without loss of connectivity. This makes
+	input/output connections between adjacent gates trivial. However, 
+	
+	
+
 TODO:
 
    1) Figure out scheme to simplify annealer embedding graphs
@@ -584,3 +607,4 @@ TODO:
 	- graph simplification/reduction
 	- make mapping to Dwave hardware graph stuff work
 ```
+111111111111111111111111111111
