@@ -568,6 +568,9 @@ Implementation description:
 	    embedding being run is greater than ~16 it becomes infeasible for
 	    ExactSolver() to do.
 	    
+    - dimod function for mapping problems to the Dwave graph do not work on 
+      these graphs.
+	    
    Map directly to DWave graph:
       in Lump-Annealer-Encoding-From-Gate-Circuit/composite_map_directly_to_Dwave_graph
       
