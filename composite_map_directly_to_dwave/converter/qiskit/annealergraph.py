@@ -1,15 +1,15 @@
 from converter.qiskit._quantumregister import QuantumRegister
 from converter.qiskit._classicalregister import ClassicalRegister
 from dwave.system.samplers import DWaveSampler
+from math import floor
 
 class annealer_graph():
     def __init__(self, regs):
         self.qubits = self.getqubitnames(regs)
         self.qubitweights = {}
         self.couplerweights = {}
-        self.sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
         self.unitcellsused = 0
-
+        
     def getqubitnames(self, regs):
         qubits = {}
         for reg in regs:
@@ -17,38 +17,75 @@ class annealer_graph():
                 qubits['{}_{}'.format(regs[reg].name,i)] = {'components': list(), 'measured': False}
         return qubits
 
+    
+
     def add_X(self, targ):
-        startqubit = self.numunitcellsused*8
-        
+        vec1 = [0,1,1,0,0,1,1,0,0,1,1,0,0,1,2,3,3,2,2,3,3,2,2,3,3,2,2,3] 
+        vec2 = [0,0,1,1,2,2,3,3,4,4,5,5,6,6,6,6,5,5,4,4,3,3,2,2,1,1,0,0]
+        idx = self.unitcellsused % 28
+        num = floor(self.unitcellsused/28)
 
-        weightnames = []
-        for i in range(2):
-            weightnames.append(i+self.numunitcells)
-        self.numunitcellsused = self.numunitcellsused + 1
+        topleft = 256*(vec1[idx]+3*num)+16*vec2[idx]
 
-        # Xqubitvals[0] = in; Xqubitvals[1] = out        
-        Xqubitvals = [-4,-4]
-        Xcouplervals = [10]
+        targinval = -4
+        targoutval = -4
+        targintargoutcoupler = 10
+
+        ##
+        #general embedding
+        GenNOT = [['targin', 'targout']
+                  [' ',            ' ']
+                  [' ',            ' ']
+                  [' ',            ' ']]
+
+        if self.unitcellsused % 2 == 0:
+            for i in range(len(GenNOT)):
+                GenNOT[i].reverse()
+
+        # check for connections from previous gates
+        if len(self.qubits[targ]['components']) > 0:
+            connection = self.qubits[targ]['components'][-1]
+            # find where in the graph the connection is
+            # link it with qubits until it has a node 
+            # connectable with targin
+            # permute GenNOT so that targin is on the correct
+            # row to make the connection
+
+
+        '''
+        # inname is on the same side as where 
+        # lasttarg has been moved to
+        # and on the same row
+        if lasttarginstance % 8 < 4:
+            # on left
+            inname = startqubit + lasttargrow
+            outname = startqubit + 4 + lasttargrow
+        else:
+            # on right
+            inname = startqubit + 4 + lasttargrow
+            outname = startqubit + lasttargrow
 
         if len(self.qubits[targ]['components']) > 0:
-            Xqubitvals[0] = Xqubitvals[0] + 5
+            inval = inval + 5
             joinedqubitname = self.qubits[targ]['components'][-1]
             self.qubitweights[joinedqubitname] = self.qubitweights[joinedqubitname] + 5
-            self.couplerweights[(joinedqubitname, weightnames[0])] = -10
+            self.couplerweights[(min(joinedqubitname, inname), max(joinedqubitname, inname))] = -10
 
-        count = 0
-        for i, name in enumerate(weightnames):
-            self.qubits[targ]['components'].append(name)
-            self.qubitweights[name] = Xqubitvals[i]
-            for j in range(i+1, len(weightnames)):
-                self.couplerweights[(name, weightnames[j])] = Xcouplervals[count]
-                count = count + 1
+        self.qubits[targ]['components'].append(inname)
+        self.qubitweights[inname] = inval
+        self.qubits[targ]['components'].append(outname)
+        self.qubitweights[outname] = outval
+        self.couplerweights[(min(inname,outname),max(inname,outname))] = inoutcoupler
 
-        #print(self.qubitweights)
-        #print(self.couplerweights)
+        sefl.unitcellsused = self.unitcellsused + 1
+
+        print(self.qubits) 
+        print(self.qubitweights)
+        print(self.couplerweights)
+        '''
         '''
     def add_CNOT(self, ctl, targ):
-        '''
+        
         weightnames = []
         for i in range(4):
             weightnames.append('w{}'.format(i+self.numannealerqubits))
@@ -87,8 +124,9 @@ class annealer_graph():
         self.qubits[ctl]['components'].append(weightnames[3])
         self.qubitweights[weightnames[3]] = CNOTqubitvals[3]
         '''
+    '''
     def add_Toffoli(self, ctl1, ctl2, targ):
-        '''
+        
         weightnames = []
         for i in range(6):
             weightnames.append('w{}'.format(i+self.numannealerqubits))
@@ -161,24 +199,24 @@ class annealer_graph():
         self.qubitweights[weightnames[4]] = Tofqubitvals[4]
         self.couplerweights[(weightnames[4], weightnames[5])] = Tofcouplervals[8]
 
-        '''
-                'anc1' : 4
-                'anc2' : 4 
-                'ctl1' : 0
-                'ctl2' : 0
-                'tgtout' : 1 
-                'tgt' : 1
+        
+        #        'anc1' : 4
+        #        'anc2' : 4 
+        #        'ctl1' : 0
+        #        'ctl2' : 0
+        #        'tgtout' : 1 
+        #        'tgt' : 1
                 
-                ('anc1', 'anc2') : -4 
-                ('anc1', 'tgtout') : 4
-                ('anc1','tgt') : -4
-                ('anc2', 'ctl1') : -2 
-                ('anc2', 'ctl2') : -2
-                ('anc2', 'tgtout') : -2 
-                ('anc2', 'tgt') : 2 
-                ('ctl1', 'ctl2') : 1 
-                ('tgtout', 'tgt') : -2
-        ''' 
+        #        ('anc1', 'anc2') : -4 
+        #        ('anc1', 'tgtout') : 4
+        #        ('anc1','tgt') : -4
+        #        ('anc2', 'ctl1') : -2 
+        #        ('anc2', 'ctl2') : -2
+        #        ('anc2', 'tgtout') : -2 
+        #        ('anc2', 'tgt') : 2 
+        #        ('ctl1', 'ctl2') : 1 
+        #        ('tgtout', 'tgt') : -2
+         
         '''
     def add_swap(self, targ1, targ2):
         pass

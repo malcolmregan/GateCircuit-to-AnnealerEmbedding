@@ -76,6 +76,7 @@ def execute(circuit, backend = None,
     sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
     qubit_weights, coupler_weights, dwavemap = circuit.annealergraph.map_to_Dwave_graph(list(sampler._nodelist), list(sampler.edgelist))
     
+    
     ins = list()
     outs = list()
     for name in inputs:

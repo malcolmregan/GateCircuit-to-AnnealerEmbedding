@@ -69,10 +69,7 @@ def execute(circuit, backend = None,
     for qubit in circuit.annealergraph.qubits.keys():
         if isinstance(circuit.annealergraph.qubits[qubit], dict):
             if circuit.annealergraph.qubits[qubit]['measured'] == False:
-                inputs.append(circuit.annealergraph.qubits[qubit]['components'][0])
-    
-    '''
-    sampler = circuit.annealergraph.sampler
+                inputs.append(circuit.annealergraph.qubits[qubit]['components'][0]) 
     
     qubit_weights = circuit.annealergraph.qubitweights
     coupler_weights = circuit.annealergraph.couplerweights
@@ -117,11 +114,13 @@ def execute(circuit, backend = None,
     print("\nExactSolver Check:")
     qubit_weights = circuit.annealergraph.qubitweights
     coupler_weights = circuit.annealergraph.couplerweights
+    print(qubit_weights)
+    print(coupler_weights)
     bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
     sampler = dimod.ExactSolver()
     
     response = sampler.sample(bqm)
-
+    
     groundstate = 1000000
     for sample, energy in response.data(['sample','energy']):
         if energy<groundstate:

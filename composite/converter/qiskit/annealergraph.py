@@ -200,7 +200,8 @@ class annealer_graph():
                 print("\tAssigned {} to {}".format(qubitname, solvernodes[0]))
 
                 solvernodes.pop(0)
-            
+            else:
+                print("\t{} already assigned".format(qubitname))
             for coupler in self.couplerweights.keys():
                 if qubitname in coupler:
                     otherqubit = [qbit for qbit in coupler if qbit is not qubitname][0]
@@ -214,8 +215,11 @@ class annealer_graph():
                         for edge in solveredges:
                             if ((edge[0] in dwavemap[qubitname] and edge[1] in solvernodes) or \
                                     (edge[1] in dwavemap[qubitname] and edge[0] in solvernodes)):
-                                availedges = availedges + 1         
+                                availedges = availedges + 1
+                                if availedges == 1:
+                                    prevedge = edge
                                 if availedges == 2:
+                                    edge = prevedge
                                     if edge[0] in solvernodes:
                                         dwavemap[otherqubit] = [edge[0]]
                                         dwave_qubit_weights[edge[0]] = self.qubitweights[otherqubit]
