@@ -597,7 +597,8 @@ Implementation description:
 	Gates embedded in odd numbered unit cells have inputs on the left and outputs on the right
 	The rows of a gate embedding can be permuted without loss of connectivity. This makes
 	input/output connections between adjacent gates trivial. However, connections between
-	distant unit cells is a problem...
+	distant unit cells is a problem. To make routing of qubits across gates possible, use 4
+	Dwave graph unit cells as a unit cell ie one gate per four unit cells.
 	
 	
 
