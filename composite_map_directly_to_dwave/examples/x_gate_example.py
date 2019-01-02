@@ -8,6 +8,7 @@ qc = QuantumCircuit(qr1, cr1)
 qc.x(qr1)
 qc.x(qr1)
 qc.x(qr1)
+
 qc.measure(qr1, cr1)
 
 execute(qc)
