@@ -270,7 +270,7 @@ class annealer_graph():
                             print('map_to_Dwave_graph() doesn''t work right. Need to fix.')
 
                     else:
-                        print("\t{} already assigned. Looking into the status of coupler between {} and {}".format(otherqubit, otherqubit, qubitname))
+                        print("\t\t{} already assigned. Looking into the status of coupler between {} and {}".format(otherqubit, otherqubit, qubitname))
                         # see if coupler has already been assigned (is in dwave_coupler_weights) - if so do nothing
                         couplerassigned = False
                         couplerexists = False
@@ -280,7 +280,7 @@ class annealer_graph():
                             for b in dwavemap[otherqubit]:
                                 if (q, b) in dwave_coupler_weights or (b, q) in dwave_coupler_weights:
                                     couplerassigned = True
-                                    print("\t\tCoupler between {} and {} already assigned.".format(otherqubit, qubitname))
+                                    print("\t\t\tCoupler between {} and {} already assigned.".format(otherqubit, qubitname))
                                     break
 
                         # see if coupler exists (is in solveredges) - if so update dwave_coupler_weights
@@ -291,26 +291,26 @@ class annealer_graph():
                                 for b in dwavemap[otherqubit]:
                                     if (q, b) in solveredges or (b, q) in solveredges:
                                         couplerexists = True
-                                        print("\t\tCoupler between {} and {} exists.".format(otherqubit, qubitname))
+                                        print("\t\t\tCoupler between {} and {} exists.".format(otherqubit, qubitname))
                                         if (q, b) in solveredges:
                                             try:
                                                 dwave_coupler_weights[(q, b)] = self.couplerweights[(qubitname, otherqubit)]
                                             except:
                                                 dwave_coupler_weights[(q, b)] = self.couplerweights[(otherqubit, qubitname)]
                                             solveredges.pop(solveredges.index((q, b)))
-                                            print("\t\t\tCoupler between {} and {} assigned. {}.".format(otherqubit, qubitname, (q, b)))
+                                            print("\t\t\t\tCoupler between {} and {} assigned. {}.".format(otherqubit, qubitname, (q, b)))
                                         if (b, q) in solveredges:
                                             try:
                                                 dwave_coupler_weights[(b, q)] = self.couplerweights[(otherqubit, qubitname)]
                                             except:
                                                 dwave_coupler_weights[(b, q)] = self.couplerweights[(qubitname, otherqubit)]
                                             solveredges.pop(solveredges.index((b, q)))
-                                            print("\t\t\tCoupler between {} and {} assigned. {}.".format(otherqubit, qubitname, (b, q)))
+                                            print("\t\t\t\tCoupler between {} and {} assigned. {}.".format(otherqubit, qubitname, (b, q)))
                                         break
         
                         # if neither of these qubitname must be split with another qubit to which the coupling can be made
                         if couplerassigned == False and couplerexists == False:
-                            print("\t\tCoupler between {} and {} does not exist. Attempting to split {} to assign coupler.".format(otherqubit, qubitname, qubitname))
+                            print("\t\t\tCoupler between {} and {} does not exist. Attempting to split {} to assign coupler.".format(otherqubit, qubitname, qubitname))
                             for q in dwavemap[qubitname]:
                                 if couplerassigned == True:
                                     break
@@ -332,7 +332,7 @@ class annealer_graph():
                                             solveredges.pop(solveredges.index((candidate, q)))
                                             solveredges.pop(solveredges.index((candidate, b)))
                                             couplerassigned = True
-                                            print("\t\t\t{} split: {}. couplers between {} and {} and {} and {} added.".format(qubitname, dwavemap[qubitname], qubitname, candidate, otherqubit, candidate))
+                                            print("\t\t\t\t{} split: {}. couplers between {} and {} and {} and {} added.".format(qubitname, dwavemap[qubitname], qubitname, candidate, otherqubit, candidate))
                                             break
 
                                         if ((candidate, q) in solveredges and (b, candidate) in solveredges):
@@ -350,7 +350,7 @@ class annealer_graph():
                                             solveredges.pop(solveredges.index((candidate, q)))
                                             solveredges.pop(solveredges.index((b, candidate)))
                                             couplerassigned = True
-                                            print("\t\t\t{} split: {}. couplers between {} and {} and {} and {} added.".format(qubitname, dwavemap[qubitname], qubitname, candidate, otherqubit, candidate))
+                                            print("\t\t\t\t{} split: {}. couplers between {} and {} and {} and {} added.".format(qubitname, dwavemap[qubitname], qubitname, candidate, otherqubit, candidate))
                                             break
 
                                         if ((q, candidate) in solveredges and (candidate, b) in solveredges):
@@ -367,7 +367,7 @@ class annealer_graph():
                                             solveredges.pop(solveredges.index((q, candidate)))
                                             solveredges.pop(solveredges.index((candidate, b)))
                                             couplerassigned = True
-                                            print("\t\t\t{} split: {}. couplers between {} and {} and {} and {} added.".format(qubitname, dwavemap[qubitname], qubitname, candidate, otherqubit, candidate))
+                                            print("\t\t\t\t{} split: {}. couplers between {} and {} and {} and {} added.".format(qubitname, dwavemap[qubitname], qubitname, candidate, otherqubit, candidate))
                                             break
 
                                         if ((q, candidate) in solveredges and (b, candidate) in solveredges):
@@ -384,7 +384,7 @@ class annealer_graph():
                                             solveredges.pop(solveredges.index((q, candidate)))
                                             solveredges.pop(solveredges.index((b, candidate)))
                                             couplerassigned = True
-                                            print("\t\t\t{} split: {}. couplers between {} and {} and {} and {} added.".format(qubitname, dwavemap[qubitname], qubitname, candidate, otherqubit, candidate))
+                                            print("\t\t\t\t{} split: {}. couplers between {} and {} and {} and {} added.".format(qubitname, dwavemap[qubitname], qubitname, candidate, otherqubit, candidate))
                                             break
 
       
