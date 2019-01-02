@@ -578,7 +578,7 @@ Implementation description:
       unit cells will be ordered as:
       
       ,---,   ,---,           ,---,
-      | 0 |   | 4 |--- ... ---|29 | 
+      | 0 |   | 3 |--- ... ---|29 | 
       '---'   '---'           '---'
         |       |               |
       ,---,   ,---,           ,---,
