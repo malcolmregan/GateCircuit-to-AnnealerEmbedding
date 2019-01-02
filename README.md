@@ -536,11 +536,6 @@ Notes:
         For notes on manually composed embeddings see manuallycomposed/README.md
 		
     Mapping embeddings to Dwave graph:
-    	Once the embedding is for the gate circuit is found as above, the qubits can be mapped
-	to qubits having identical connectivity on the dwave graph.
-	If identical connectivity is not available for a given qubit, its connectivity can be 
-	extended by joining the annealer qubit with another in the same way qubits are joined 
-	when composing embeddings
 	see: map_to_Dwave_graph() in converter/qiskit/annealergraph.py
 	
     Rules for simplifying graphs:
@@ -571,7 +566,7 @@ Implementation description:
     - dimod function for mapping problems to the Dwave graph (EmbeddingComposite) 
       do not work on these graphs.
 	    
-   Map directly to DWave graph:
+   Map directly to DWave graph instead:
       in Lump-Annealer-Encoding-From-Gate-Circuit/composite_map_directly_to_Dwave_graph
       
       Each gate can be embedded into a unit cell of the Dwave graph.
