@@ -664,8 +664,8 @@ Map directly to DWave graph instead:
 		distance.
 
 	Rules for routing qubits between distant gates:
-		Print out a bunch of these graphs and different circuits on them to come up with
-		rules for routing qubits
+		Draw different circuits on chimera graphs to come up with rules for routing qubits
+		
 		
 TODO:
 
