@@ -736,7 +736,7 @@ Map directly to DWave graph instead:
 |             |  ''.                   |                target2       out1                                     
 |             |     ''.                |                                           
 |             |        ''.             |                   O           O            O           O
-|             |           ''.          |                control       out2                    put2   
+|             |           ''.          |                control       out2                    out2   
 |             |              ''.       |            
 |             |                 ''.    |                   O           O            O           O 
 |             |                    ''.,|                ancilla1    ancilla2      out2        out2
@@ -755,10 +755,21 @@ Map directly to DWave graph instead:
 					       			
 								
 					       Swap Gate
-					       
-					       
-					       
-		
+		                                  
+                   target1                    out1              IN SIDE        OUT SIDE                       
+                       O                        O             target1 O              O out1   
+                        '.                    .'                      
+                          ''.              .''                        
+                             ''.        .''                   target2 O              O out2  
+                                ''.  .''                                                
+                                  .''.                                  
+                               .''    ''.                             O              O          
+                            .''          ''.                           
+                        ,.''                ''.,                       
+                       O                        O                     O              O
+                   target2                    out2                                            
+ 		                                     
+
 
 	Rules for routing qubits between distant gates:
 		Draw different circuits on chimera graphs to come up with rules for routing qubits
