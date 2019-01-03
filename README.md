@@ -662,6 +662,103 @@ Map directly to DWave graph instead:
 		Some gates (Fredkin and Toffoli), cant be designed to these specifications in 8 qubits
 		so their design will extend into the surrounding qubits used for routing qubits across 
 		distance.
+		
+		
+						X Gate                
+		                                                   IN SIDE        OUT SIDE
+	                         O in                              in O              O out
+		                 |
+		                 |
+		                 |                                    O              O 
+		                 |
+		                 |
+		                 |                                    O              O
+		                 |
+		                 |
+		                 O out                                O              O
+				 
+				 
+				               CNOT Gate
+					          
+                     ancilla                   out                 IN SIDE        OUT SIDE                       
+                       O------------------------O             ancilla O              O ancilla
+                       |'.                    .'|                     
+                       |  ''.              .''  |                     
+                       |     ''.        .''     |              target O              O out   
+                       |        ''.  .''        |                                       
+                       |          .''.          |                       
+                       |       .''    ''.       |             control O              O control
+                       |    .''          ''.    |                      
+                       |,.''                ''.,|                      
+                       O------------------------O                     O              O
+                   control                   target                                           
+ 		                                           
+							   
+  		            		       Toffoli Gate		
+	                                         
+	                                                IN SIDE     OUT SIDE
+	                                                   O           O            O           O
+	                                                 target     ancilla1       out         out
+     ancilla1 O------------------------O target        
+              |'.                    .'|                   O           O            O           O
+              |  ''.              .''  |                ancilla2      out                      out
+              |     ''.        .''     |                                           
+              |        ''.  .''        |                   O           O            O           O
+              |          .''.          |               control2    ancilla2      control2    control2
+              |       .''    ''.       |            
+              |    .''          ''.    |                   O           O            O           O 
+              |,.''                ''.,|               control1    control1     
+     ancilla2 O------------------------O out                                        
+              |'.                                          O           O            O           O
+              |  ''.                                   \       
+              |     ''.                                                               
+              |        ''.                                 O           O            O           O 
+              |           ''.                                                   
+              |              ''.                                                        
+              |                 ''.                        O           O            O           O
+              |                    ''.,                control2     control2    control2     control2      
+              O------------------------O                                     
+          control1                  control2               O           O            O           O
+		             			 
+			             Can't Toffoli be done in 5 bits?
+						 
+						 
+						 Fredkin Gate
+ ,-------------------------O target2
+|                        ,' ',
+|	               ,'     ',                                                        
+|                    ,'         ', 
+|      	           ,'             ',                    IN SIDE     OUT SIDE
+|                .'                 ',                     O           O            O           O
+|              ,'                     ',                target1     control                      
+|    ancilla2 O------------------------O out2          
+|             |'.                      |                   O           O            O           O
+|             |  ''.                   |                target2       out1                                     
+|             |     ''.                |                                           
+|             |        ''.             |                   O           O            O           O
+|             |           ''.          |                control       out2                    put2   
+|             |              ''.       |            
+|             |                 ''.    |                   O           O            O           O 
+|             |                    ''.,|                ancilla1    ancilla2      out2        out2
+|     target1 O                        O control                                     
+|             |'.                    .'|                   O           O            O           O
+|             |  ''.              .''  |                target1     ancilla1       
+|             |     ''.        .''     |                                              
+|             |        ''.  .''        |                   O           O            O           O 
+|             |          .''.          |                target2                        
+|             |       .''    ''.       |                                                
+|             |    .''          ''.    |                   O           O            O           O
+|             |,.''                ''.,|                control                                                                        
+ '------------O------------------------O                                     
+          ancilla1                    out1                 O           O            O           O
+	                                                ancilla1         
+					       			
+								
+					       Swap Gate
+					       
+					       
+					       
+		
 
 	Rules for routing qubits between distant gates:
 		Draw different circuits on chimera graphs to come up with rules for routing qubits
@@ -674,3 +771,4 @@ TODO:
 	- graph simplification/reduction
 	- make mapping to Dwave hardware graph stuff work
 ```
+-
