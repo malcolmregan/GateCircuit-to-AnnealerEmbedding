@@ -566,7 +566,9 @@ Implementation description:
     - dimod function for mapping problems to the Dwave graph (EmbeddingComposite) 
       do not work on these graphs.
 	    
-   Map directly to DWave graph instead:
+Map directly to DWave graph instead:
+------------------------------------
+
       in Lump-Annealer-Encoding-From-Gate-Circuit/composite_map_directly_to_Dwave_graph
       
       Each gate can be embedded into a unit cell of the Dwave graph.
@@ -593,15 +595,33 @@ Implementation description:
 	            '--------------------'  
  
  
- 
-	Gates embedded in even numbered unit cells have outputs on the left and inputs on the right
-	Gates embedded in odd numbered unit cells have inputs on the left and outputs on the right
-	The rows of a gate embedding can be permuted without loss of connectivity. This makes
-	input/output connections between adjacent gates trivial. However, connections between
-	distant unit cells is a problem. To make routing of qubits across gates possible, use 4
-	Dwave graph unit cells as a unit cell ie one gate per four unit cells.
+ 	Single unit cell gate embeddings can be designed such that any qubit that might need to be
+	connected to a later gate is on the output side and any qubit that might be connect to 
+	a previous gate is on the input side. These single unit cell gate modules can be permuted
+	depending on connectivity requirements and its position in the graph (even or odd unit cell).
 	
+	Specifically, gates embedded in even numbered unit cells have outputs on the left and 
+	inputs on the right. Gates embedded in odd numbered unit cells have inputs on the left 
+	and outputs on the right. The rows of a gate embedding can be permuted without loss of 
+	connectivity. This makes input/output connections between adjacent gates trivial. However, 
+	connections between distant unit cells is a problem.
 	
+	To make routing of qubits across distant gates possible, 4 Dwave graph unit cells can be 
+	considered as one gate unit cell. all these guidelines will still hold.
+	
+	Specifications for gate modules:
+		Ancillas and inputs that are transformed by the gate into outputs can be in positions
+		with only local connectivity.
+	
+		Inputs that are not transformed by the gate need to be on both the input and output 
+		side
+
+		Some gates (Fredkin and Toffoli), cant be designed to these specifications in 8 qubits
+		so their design will extend into the surrounding qubits used for routing qubits across 
+		distance.
+
+	Rules for routing qubits between distant gates:
+
 
 TODO:
 
