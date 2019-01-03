@@ -704,22 +704,50 @@ Map directly to DWave graph instead:
               |  ''.              .''  |                ancilla2      out                      out
               |     ''.        .''     |                                           
               |        ''.  .''        |                   O           O            O           O
-              |          .''.          |               control2    ancilla2      control2    control2
+              |          .''.          |               control2    ancilla2      
               |       .''    ''.       |            
               |    .''          ''.    |                   O           O            O           O 
               |,.''                ''.,|               control1    control1     
      ancilla2 O------------------------O out                                        
               |'.                                          O           O            O           O
-              |  ''.                                   \       
+              |  ''.                                    target       
               |     ''.                                                               
               |        ''.                                 O           O            O           O 
-              |           ''.                                                   
+              |           ''.                           target       target                    
               |              ''.                                                        
               |                 ''.                        O           O            O           O
-              |                    ''.,                control2     control2    control2     control2      
+              |                    ''.,                      
               O------------------------O                                     
           control1                  control2               O           O            O           O
-		             			 
+	  
+	  
+	  
+
+	                                               OUT SIDE      IN SIDE
+	                                                   O           O            O           O
+	                                                ancilla1     target                  target  
+                                                       
+                                                           O           O            O           O
+                                                          out      ancilla2      target       target
+                                                                                   
+                                                           O           O            O           O
+                                                       control2    control2                  
+                                                    
+                                                           O           O            O           O 
+                                                       control1    control1                  
+                                                                                    
+                                                           O           O            O           O
+                                                       \  out         out  
+                                                                                      
+                                                           O           O            O           O 
+                                                          out                      
+                                                                                        
+                                                           O           O            O           O
+                                                            
+                                                                             
+                                                           O           O            O           O
+		             			        
+						 
 			             Can't Toffoli be done in 5 bits?
 						 
 						 
@@ -742,17 +770,49 @@ Map directly to DWave graph instead:
 |             |                    ''.,|                ancilla1    ancilla2      out2        out2
 |     target1 O                        O control                                     
 |             |'.                    .'|                   O           O            O           O
-|             |  ''.              .''  |                target1     ancilla1       
+|             |  ''.              .''  |                target1     ancilla1
 |             |     ''.        .''     |                                              
 |             |        ''.  .''        |                   O           O            O           O 
-|             |          .''.          |                target2                        
+|             |          .''.          |                target2                 
 |             |       .''    ''.       |                                                
 |             |    .''          ''.    |                   O           O            O           O
-|             |,.''                ''.,|                control         
+|             |,.''                ''.,|                          
  '------------O------------------------O                                     
           ancilla1                    out1                 O           O            O           O
-	                                                ancilla1         
+	                                                ancilla1 
 					       			
+								
+                                                          
+                                    
+                                                        OUT SIDE    IN SIDE
+                                                           O           O            O           O
+                                                        control     target1      ancilla1    target1
+                                                       
+                                                           O           O            O           O
+                                                          out1     target2                   target2
+                                                                                   
+                                                           O           O            O           O
+                                                          out2      control                       
+                                                    
+                                                           O           O            O           O 
+                                                        ancilla2    ancilla1                ancilla1
+                                                                                     
+                                                           O           O            O           O
+                                                                          
+                                                                                      
+                                                           O           O            O           O 
+                                                                                 
+                                                                                        
+                                                           O           O            O           O
+                                                          out2       
+                                                                             
+                                                           O           O            O           O
+	                                                  out2        out2     
+					       
+								
+								
+								
+								
 								
 					       Swap Gate
 		                                  
