@@ -659,8 +659,8 @@ Map directly to DWave graph instead:
 		Inputs that are not transformed by the gate need to be on both the input and output 
 		side
 
-		Some gates (Fredkin and Toffoli), cant be designed to these specifications in 8 qubits
-		so their design will extend into the surrounding qubits used for routing qubits across 
+		Some gates (Fredkin and Toffoli) can't be designed to these specifications in 8 qubits
+		so their design will extend into the surrounding cells used for routing qubits across 
 		distance.
 		
 		
@@ -680,7 +680,7 @@ Map directly to DWave graph instead:
 				 
 				               CNOT Gate
 					          
-                     ancilla                   out                 IN SIDE        OUT SIDE                       
+                     ancilla                   out                 IN SIDE        OUT SIDE
                        O------------------------O             ancilla O              O ancilla
                        |'.                    .'|                     
                        |  ''.              .''  |                     
@@ -733,7 +733,7 @@ Map directly to DWave graph instead:
 |              ,'                     ',                target1     control                      
 |    ancilla2 O------------------------O out2          
 |             |'.                      |                   O           O            O           O
-|             |  ''.                   |                target2       out1                                     
+|             |  ''.                   |                target2       out1 
 |             |     ''.                |                                           
 |             |        ''.             |                   O           O            O           O
 |             |           ''.          |                control       out2                    out2   
@@ -748,7 +748,7 @@ Map directly to DWave graph instead:
 |             |          .''.          |                target2                        
 |             |       .''    ''.       |                                                
 |             |    .''          ''.    |                   O           O            O           O
-|             |,.''                ''.,|                control                                                                        
+|             |,.''                ''.,|                control         
  '------------O------------------------O                                     
           ancilla1                    out1                 O           O            O           O
 	                                                ancilla1         
@@ -756,7 +756,7 @@ Map directly to DWave graph instead:
 								
 					       Swap Gate
 		                                  
-                   target1                    out1              IN SIDE        OUT SIDE                       
+                   target1                    out1              IN SIDE           OUT SIDE  
                        O                        O             target1 O              O out1   
                         '.                    .'                      
                           ''.              .''                        
