@@ -73,6 +73,7 @@ def execute(circuit, backend = None,
             if circuit.annealergraph.qubits[qubit]['measured'] == False:
                 inputs.append(circuit.annealergraph.qubits[qubit]['components'][0])
 
+    '''
     sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
     qubit_weights, coupler_weights, dwavemap = circuit.annealergraph.map_to_Dwave_graph(list(sampler._nodelist), list(sampler.edgelist))
     
@@ -87,7 +88,7 @@ def execute(circuit, backend = None,
     inputs = ins
     outputs = outs
     
-    '''
+    
     bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
     
     kwargs = {}
@@ -123,12 +124,12 @@ def execute(circuit, backend = None,
     for i in range(len(function)):
         print(function[i])
     '''
-    if len(circuit.annealergraph.qubits) < 16:
+    if len(circuit.annealergraph.qubitweights) < 18:
         # ExactSolver simulation
         print("\nExactSolver Check:")
-        
-        #qubit_weights = circuit.annealergraph.qubitweights
-        #coupler_weights = circuit.annealergraph.couplerweights
+        print("Simulating problem with {} qubits".format(len(circuit.annealergraph.qubitweights)))
+        qubit_weights = circuit.annealergraph.qubitweights
+        coupler_weights = circuit.annealergraph.couplerweights
 
         bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
         sampler = dimod.ExactSolver()
@@ -155,3 +156,5 @@ def execute(circuit, backend = None,
         function.sort()
         for i in range(len(function)):
             print(function[i])
+    else:
+        print("Problem to large to simulate. Used {} qubits".format(len(circuit.annealergraph.qubitweights)))

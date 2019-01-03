@@ -10,6 +10,7 @@ qc.cx(qr1[0], qr2[0])
 qc.cx(qr1[1], qr2[0])
 qc.cx(qr1[2], qr2[0])
 
+
 qc.measure(qr2, cr2)
 
 execute(qc)
