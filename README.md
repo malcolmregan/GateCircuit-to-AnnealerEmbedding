@@ -596,18 +596,20 @@ Map directly to DWave graph instead:
  
  
  	Single unit cell gate embeddings can be designed such that any qubit that might need to be
-	connected to a later gate is on the output side and any qubit that might be connect to 
+	connected to a later gate is on the output side and any qubit that might connect to 
 	a previous gate is on the input side. These single unit cell gate modules can be permuted
 	depending on connectivity requirements and its position in the graph (even or odd unit cell).
 	
 	Specifically, gates embedded in even numbered unit cells have outputs on the left and 
 	inputs on the right. Gates embedded in odd numbered unit cells have inputs on the left 
-	and outputs on the right. The rows of a gate embedding can be permuted without loss of 
-	connectivity. This makes input/output connections between adjacent gates trivial. However, 
-	connections between distant unit cells is a problem.
+	and outputs on the right. The rows of a gate embedding can be permuted so input qubits can be 
+	in position to be coupled with output qubits of previous gates. Permuting rows does not require
+	any modifications to be made to the network topology of the gate module. This makes input/output 
+	connections between adjacent gates easy. 
 	
+	However, connections between distant unit cells is a problem.
 	To make routing of qubits across distant gates possible, 4 Dwave graph unit cells can be 
-	considered as one gate unit cell. all these guidelines will still hold.
+	considered as one gate unit cell.
 
 
           out  0  in                 Routing                 in  3  out
@@ -662,8 +664,9 @@ Map directly to DWave graph instead:
 		distance.
 
 	Rules for routing qubits between distant gates:
-
-
+		Print out a bunch of these graphs and different circuits on them to come up with
+		rules for routing qubits
+		
 TODO:
 
    1) Figure out scheme to simplify annealer embedding graphs
