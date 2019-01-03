@@ -572,22 +572,28 @@ Implementation description:
       Each gate can be embedded into a unit cell of the Dwave graph.
       unit cells will be ordered as:
       
-      ,---,   ,---,           ,---,
-      | 0 |   | 3 |--- ... ---|29 | 
-      '---'   '---'           '---'
-        |       |               |
-      ,---,   ,---,           ,---,
-      | 1 |---| 2 |	      |30 |
-      '---'   '---'           '---'
-                                |
-              ,---,   ,---,   ,---,
-              |35 |---|34 |   |31 |
-	      '---'   '---'   '---'
-	        |       |	|
-	      etc..   ,---,   ,---,
-		      |33 |---|32 |
-        	      '---'   '---'
-
+          out  0  in                in  3  out              out  4  in
+,-----------o     o      ,-----------o,    o      ,-----------o    ,o
+|                        |             '----------|---------------'     
+|  ,--------o     o      |  ,--------o,    o      |  ,--------o    ,o
+|  |                     |  |          '----------|--|------------'  
+|  |  ,-----o     o      |  |  ,-----o,    o      |  |  ,-----o    ,o
+|  |  |                  |  |  |       '----------|--|--|---------'      
+|  |  |  ,--o     o      |  |  |  ,--o,    o      |  |  |  ,--o    ,o
+|  |  |  |               |  |  |  |    '----------|--|--|--|------'
+|  |  |  |	         |  |  |  |               |  |  |  |
+|  |  |  | in  1  out    |  |  |  |out  2  in     |  |  |  |
+'--|--|--|--o     o,     '--|--|--|--o    ,o      '--|--|--|--> etc.
+   |  |  |          '-------|--|--|------'           |  |  |
+   '--|--|--o     o,        '--|--|--o    ,o         '--|--|--> etc.
+      |  |          '----------|--|------'              |  |
+      '--|--o     o,           '--|--o    ,o            '--|--> etc.
+         |          '-------------|------'                 |
+         '--o     o,              '--o    ,o               '--> etc.
+	            '--------------------'  
+ 
+ 
+ 
 	Gates embedded in even numbered unit cells have outputs on the left and inputs on the right
 	Gates embedded in odd numbered unit cells have inputs on the left and outputs on the right
 	The rows of a gate embedding can be permuted without loss of connectivity. This makes
