@@ -610,9 +610,9 @@ Map directly to DWave graph instead:
 	However, connections between distant unit cells is a problem.
 	To make routing of qubits across distant gates possible, 4 Dwave graph unit cells can be 
 	considered as one gate unit cell.
-
-
-          out  0  in                 Routing                 in  3  out
+                                    
+                                     Routing
+          out  0  in                  Cell                   in  3  out
 ,-----------o     o                  o     o      ,-----------o     o,
 |                                                 |                   '---> etc. 
 |  ,--------o     o                  o     o      |  ,--------o     o,
@@ -621,8 +621,8 @@ Map directly to DWave graph instead:
 |  |  |                                           |  |  |             '---> etc.
 |  |  |  ,--o     o                  o     o      |  |  |  ,--o     o,
 |  |  |  |                                        |  |  |  |          '---> etc.
-|  |  |  |	                                  |  |  |  |
 |  |  |  |  Routing                  Routing      |  |  |  |  Routing
+|  |  |  |   Cell                     Cell        |  |  |  |   Cell  
 :--|--|--|--o     o                  o     o      :--|--|--|--o     o
 |  |  |  |                                        |  |  |  |          
 |  :--|--|--o     o                  o     o      |  :--|--|--o     o 
@@ -631,8 +631,8 @@ Map directly to DWave graph instead:
 |  |  |  |                                        |  |  |  |            
 |  |  |  :--o     o                  o     o      |  |  |  :--o     o  
 |  |  |	 |                                        |  |  |  |
-|  |  |  |                                        |  |  |  |
-|  |  |  | in  1  out                Routing      |  |  |  |out  2  in
+|  |  |  |                           Routing      |  |  |  |
+|  |  |  | in  1  out                 Cell        |  |  |  |out  2  in
 '--|--|--|--o     o,                 o    ,o,     '--|--|--|--o    ,o
    |  |  |          '--------------------'   '-------|--|--|------'     
    '--|--|--o     o,                 o    ,o,        '--|--|--o    ,o
@@ -641,8 +641,8 @@ Map directly to DWave graph instead:
          |          '--------------------'   '-------------|------'      
          '--o     o,                 o    ,o,              '--o    ,o
                     '--------------------'   '--------------------'
-          	                                            
-            Routing                  Routing                  Routing 
+            Routing                  Routing                  Routing
+             Cell                     Cell                     Cell   
             o     o                  o     o                  o     o  
                                                                
             o     o                  o     o                  o     o     
