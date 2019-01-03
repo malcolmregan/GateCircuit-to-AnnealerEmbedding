@@ -782,4 +782,3 @@ TODO:
 	- graph simplification/reduction
 	- make mapping to Dwave hardware graph stuff work
 ```
--
