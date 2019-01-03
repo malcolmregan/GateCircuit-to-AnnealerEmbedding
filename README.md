@@ -610,15 +610,15 @@ Map directly to DWave graph instead:
 	considered as one gate unit cell. all these guidelines will still hold.
 
 
-          out  0  in                 Routing                 in  4  out
-,-----------o     o                  o     o,     ,-----------o    ,o,
-|                                            '----|---------------'   '---> etc. 
-|  ,--------o     o                  o     o,     |  ,--------o    ,o,
-|  |                                         '----|--|------------'   '---> etc.
-|  |  ,-----o     o                  o     o,     |  |  ,-----o    ,o,
-|  |  |                                      '----|--|--|---------'   '---> etc.
-|  |  |  ,--o     o                  o     o,     |  |  |  ,--o    ,o,
-|  |  |  |                                   '----|--|--|--|------'   '---> etc.
+          out  0  in                 Routing                 in  3  out
+,-----------o     o                  o     o      ,-----------o     o,
+|                                                 |                   '---> etc. 
+|  ,--------o     o                  o     o      |  ,--------o     o,
+|  |                                              |  |                '---> etc.
+|  |  ,-----o     o                  o     o      |  |  ,-----o     o,
+|  |  |                                           |  |  |             '---> etc.
+|  |  |  ,--o     o                  o     o      |  |  |  ,--o     o,
+|  |  |  |                                        |  |  |  |          '---> etc.
 |  |  |  |	                                  |  |  |  |
 |  |  |  |  Routing                  Routing      |  |  |  |  Routing
 :--|--|--|--o     o                  o     o      :--|--|--|--o     o
@@ -630,7 +630,7 @@ Map directly to DWave graph instead:
 |  |  |  :--o     o                  o     o      |  |  |  :--o     o  
 |  |  |	 |                                        |  |  |  |
 |  |  |  |                                        |  |  |  |
-|  |  |  | in  2  out                Routing      |  |  |  |out  3  in
+|  |  |  | in  1  out                Routing      |  |  |  |out  2  in
 '--|--|--|--o     o,                 o    ,o,     '--|--|--|--o    ,o
    |  |  |          '--------------------'   '-------|--|--|------'     
    '--|--|--o     o,                 o    ,o,        '--|--|--o    ,o
@@ -650,11 +650,6 @@ Map directly to DWave graph instead:
             o     o                  o     o                  o     o
 	                                    
  
-
-
-
-
-
 	Specifications for gate modules:
 		Ancillas and inputs that are transformed by the gate into outputs can be in positions
 		with only local connectivity.
