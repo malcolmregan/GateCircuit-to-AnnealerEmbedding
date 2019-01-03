@@ -608,7 +608,53 @@ Map directly to DWave graph instead:
 	
 	To make routing of qubits across distant gates possible, 4 Dwave graph unit cells can be 
 	considered as one gate unit cell. all these guidelines will still hold.
-	
+
+
+          out  0  in                 Routing                 in  4  out
+,-----------o     o                  o     o,     ,-----------o    ,o,
+|                                            '----|---------------'   '---> etc. 
+|  ,--------o     o                  o     o,     |  ,--------o    ,o,
+|  |                                         '----|--|------------'   '---> etc.
+|  |  ,-----o     o                  o     o,     |  |  ,-----o    ,o,
+|  |  |                                      '----|--|--|---------'   '---> etc.
+|  |  |  ,--o     o                  o     o,     |  |  |  ,--o    ,o,
+|  |  |  |                                   '----|--|--|--|------'   '---> etc.
+|  |  |  |	                                  |  |  |  |
+|  |  |  |  Routing                  Routing      |  |  |  |  Routing
+:--|--|--|--o     o                  o     o      :--|--|--|--o     o
+|  |  |  |                                        |  |  |  |          
+|  :--|--|--o     o                  o     o      |  :--|--|--o     o 
+|  |  |  |                                        |  |  |  |          
+|  |  :--|--o     o                  o     o      |  |  :--|--o     o 
+|  |  |  |                                        |  |  |  |            
+|  |  |  :--o     o                  o     o      |  |  |  :--o     o  
+|  |  |	 |                                        |  |  |  |
+|  |  |  |                                        |  |  |  |
+|  |  |  | in  2  out                Routing      |  |  |  |out  3  in
+'--|--|--|--o     o,                 o    ,o,     '--|--|--|--o    ,o
+   |  |  |          '--------------------'   '-------|--|--|------'     
+   '--|--|--o     o,                 o    ,o,        '--|--|--o    ,o
+      |  |          '--------------------'   '----------|--|------'  
+      '--|--o     o,                 o    ,o,           '--|--o    ,o
+         |          '--------------------'   '-------------|------'      
+         '--o     o,                 o    ,o,              '--o    ,o
+                    '--------------------'   '--------------------'
+          	                                            
+            Routing                  Routing                  Routing 
+            o     o                  o     o                  o     o  
+                                                               
+            o     o                  o     o                  o     o     
+                                                             
+            o     o                  o     o                  o     o
+                                                            
+            o     o                  o     o                  o     o
+	                                    
+ 
+
+
+
+
+
 	Specifications for gate modules:
 		Ancillas and inputs that are transformed by the gate into outputs can be in positions
 		with only local connectivity.
