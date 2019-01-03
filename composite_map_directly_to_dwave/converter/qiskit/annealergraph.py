@@ -27,28 +27,59 @@ class annealer_graph():
 
         topleft = 256*(vec1[idx]+3*num)+16*vec2[idx]
 
+        if self.unitcellsused % 2 == 0:
+            targinname = topleft + 4
+            targoutname = topleft 
+            inside = 'right'
+            outside = 'left'
+        else:
+            targinname = topleft 
+            targout = topleft + 4 
+            inside = 'left'
+            outside = 'right'
+
         targinval = -4
         targoutval = -4
+
         targintargoutcoupler = 10
-
-        ##
-        #general embedding
-        GenNOT = [['targin', 'targout']
-                  [' ',            ' ']
-                  [' ',            ' ']
-                  [' ',            ' ']]
-
-        if self.unitcellsused % 2 == 0:
-            for i in range(len(GenNOT)):
-                GenNOT[i].reverse()
 
         # check for connections from previous gates
         if len(self.qubits[targ]['components']) > 0:
-            connection = self.qubits[targ]['components'][-1]
+            targinconnection = self.qubits[targ]['components'][-1]
+            
             # find where in the graph the connection is
+            targconnection_dwave_unit_cell_row = floor(targinconnection/128)
+            targconnection_dwave_unit_cell_col = floor(targinconnection/8) % 16
+            
+            targ_dwave_unit_cell_row = floor(targinname/128)
+            targ_dwave_unit_cell_col = floor(targinname/8) % 16
+
+            row_dist = targconnection_dwave_unit_cell_row - targ_dwave_unit_cell_row
+            col_dist = targconnection_dwave_unit_cell_col - targ_dwave_unit_cell_col
+            
+            targconnection_unit_cell =
+            targ_unit_cell = self.numunitcellsused
+
+            # if connected with last gate
+            if targ_unit_cell - targconnection_unit_cell == 1:
+                # find row of connection
+                row = targinconnection % 4
+                
+
+                # find if connection on left or right
+                # sides should match if the gate modules are designed
+                # correctly but just to be safe
+                if targin % 8 < 4:
+                    connectionside = 'left'
+                else:
+                    connectionside = 'right'
+                
+                
             # link it with qubits until it has a node 
             # connectable with targin
-            # permute GenNOT so that targin is on the correct
+            
+
+            # permute gate so that targin is on the correct
             # row to make the connection
 
 
