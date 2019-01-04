@@ -719,6 +719,8 @@ Map directly to DWave graph instead:
  .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
 
 g0, g1, g2, ... = gate 1, gate 2, gate 3, ...
+I = Gate input
+O = Gate output
 IA = Input assembly cell
 TE = Travelling exit column
 		    
