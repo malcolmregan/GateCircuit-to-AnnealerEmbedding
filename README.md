@@ -954,7 +954,7 @@ TE = Travelling exit column
            targ2 'O------------------------O' ctl        
 	   
 	   
-	   		                  Why did Warren use 2 ancilas?
+	   		                  Why did Warren use 2 ancillas?
                                      			
 								
 								
