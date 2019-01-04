@@ -652,29 +652,33 @@ Map directly to DWave graph instead:
             o     o                  o     o                  o     o
 	                                    
  
-                          from neighboring
-			       gate
+                         from neighboring
+			    gate n-1
 			    |   | |
-                            |   | | Routing cell  	   
+                            |   | | gate n input   	   
+                            |   | |  assembly
+                            |   | :--o      o 
                             |   | |
-                            |   | :--o      o
-                            |   | |
-                            |   :-|--o      o
-                            |   | |                   from
-                            | ,-|-|--o------o-------- distant
-                            | | | |                   gate   
+                            |   :-|--o      o                        
+                            |   | |                                
+                            | ,-|-|--o------o,         from earlier
+                            | | | |           '------- distant gate
                             :-|-|-|--o      o 
-           gate exit        | | | |                          gate exit
-              to            | | | |                        to neighboring
-        distant gates       | | | | in     out                 gate
+          gate n exit       | | | |                                    
+           to later         | | | |   gate n               gate n+1 input     
+        distant gates       | | | | in     out             assembly 
            o      o         | | | '--o      o,               o     ,o 
                             | | |             '-------------------'   
-	   o	  o,        | | '----o     ,o                o      o
-		    '-------|-|-----------'
-	   o      o	    | '------o      o,               o     ,o
-                            |                 '-------------------' 
-           o      o,        '--------o     ,o                o      o
-		    '---------------------'
+	   o	  o,        | | '----o     ,o           ,----o      o
+		    '-------|-|-----------'            |   
+	   o      o	    | '------o      o,         |     o     ,o
+                            |                 '--------|----------' 
+           o      o,        '--------o     ,o          |  ,--o      o
+		    '---------------------'            | |
+		                                       | |
+		                                    from earlier
+		                                    distant gates
+		    
 		    
            Because of this, the first gate should not be in unit cell 0. There should be a margin 
 	   around the chimera graph of routing cells.
@@ -713,7 +717,7 @@ Map directly to DWave graph instead:
                        |     ''.        .''     |              target O              O out   
                        |        ''.  .''        |                                       
                        |          .''.          |                       
-                       |       .]''    ''.      |             control O              O control
+                       |       .''    ''.       |             control O              O control
                        |    .''          ''.    |                      
                        |,.''                ''.,|                      
                        O------------------------O                     O              O
