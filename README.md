@@ -719,8 +719,8 @@ Map directly to DWave graph instead:
  o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
 
 g0, g1, g2, ... = gate 1, gate 2, gate 3, ...
-I = Gate input
-O = Gate output
+I = Gate input column
+O = Gate output column
 IA = Input assembly cell
 TE = Travelling exit column
 		    
@@ -975,7 +975,10 @@ TE = Travelling exit column
 	Rules for routing qubits between distant gates:
 		Draw different circuits on chimera graphs to come up with rules for routing qubits
 		
-		
+		1) Input assembly cells of gates that are not already established cannot be used
+		   for routing (unless it is the input assembly cell of the destination gate, of course)
+		   Once a gate is established, empty qubits in it's input assembly cell become available
+		   for routing
 		
 		
 		
