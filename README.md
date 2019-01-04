@@ -678,10 +678,49 @@ Map directly to DWave graph instead:
 		                                       | |
 		                                    from earlier
 		                                    distant gates
-		    
-		    
+
            Because of this, the first gate should not be in unit cell 0. There should be a margin 
 	   around the chimera graph of routing cells.
+						    
+						    
+      g0                                              g4
+      TE                                              TE
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+
+ 	                      g3                                             g7
+  g0IA       O g0 I           TE     I g3 O       g4IA       O g4 I          TE      I g7 O
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+
+
+              g1IA                    g3IA                    g5IA                    g7IA
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+
+      g1                                             g5
+      TE     I g1 O       g2IA       O g2 I          TE      I g5 O       g6IA       O g6 I
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+
+                                    g2                                              g6
+                                    TE                                              TE
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+
+g0, g1, g2, ... = gate 1, gate 2, gate 3, ...
+IA = Input assembly cell
+TE = Travelling exit column
 		    
 	Specifications for gate modules:
 		Ancillas and inputs that are transformed by the gate into outputs can be in positions
