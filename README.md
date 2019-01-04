@@ -685,38 +685,38 @@ Map directly to DWave graph instead:
 						    
       g0                                              g4
       TE                                              TE
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
-
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ 
  	                      g3                                             g7
   g0IA       O g0 I           TE     I g3 O       g4IA       O g4 I          TE      I g7 O
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
 
 
               g1IA                    g3IA                    g5IA                    g7IA
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
-
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ 
       g1                                             g5
       TE     I g1 O       g2IA       O g2 I          TE      I g5 O       g6IA       O g6 I
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
-
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ 
                                     g2                                              g6
                                     TE                                              TE
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
- .    .      .    .      .    .      .    .      .    .      .    .      .    .      .    .
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
 
 g0, g1, g2, ... = gate 1, gate 2, gate 3, ...
 I = Gate input
