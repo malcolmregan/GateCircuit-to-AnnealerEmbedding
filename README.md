@@ -952,6 +952,9 @@ TE = Travelling exit column
      ''',,,       |    .''          ''.    |       ,,,'''         
            ''',,, |,.''                ''.,| ,,,'''           
            targ2 'O------------------------O' ctl        
+	   
+	   
+	   		                  Why did Warren use 2 ancilas?
                                      			
 								
 								
@@ -979,6 +982,9 @@ TE = Travelling exit column
 		   for routing (unless it is the input assembly cell of the destination gate, of course)
 		   Once a gate is established, empty qubits in it's input assembly cell become available
 		   for routing
+		   
+		2) Empty qubits in gate cells and travelling qubit exit columns are never available
+		   for routing, even after a gate is established
 		
 		
 		
