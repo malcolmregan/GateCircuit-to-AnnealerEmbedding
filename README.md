@@ -652,17 +652,43 @@ Map directly to DWave graph instead:
             o     o                  o     o                  o     o
 	                                    
  
+                          from neighboring
+			       gate
+			    |   | |
+                            |   | | Routing cell  	   
+                            |   | |
+                            |   | :--o      o
+                            |   | |
+                            |   :-|--o      o
+                            |   | |                   from
+                            | ,-|-|--o------o-------- distant
+                            | | | |                   gate   
+                            :-|-|-|--o      o 
+           gate exit        | | | |                          gate exit
+              to            | | | |                        to neighboring
+        distant gates       | | | | in     out                 gate
+           o      o         | | | '--o      o,               o     ,o 
+                            | | |             '-------------------'   
+	   o	  o,        | | '----o     ,o                o      o
+		    '-------|-|-----------'
+	   o      o	    | '------o      o,               o     ,o
+                            |                 '-------------------' 
+           o      o,        '--------o     ,o                o      o
+		    '---------------------'
+		    
+           Because of this, the first gate should not be in unit cell 0. There should be a margin 
+	   around the chimera graph of routing cells.
+		    
 	Specifications for gate modules:
 		Ancillas and inputs that are transformed by the gate into outputs can be in positions
 		with only local connectivity.
 	
+	        Need to fit in unit cell if this has any chance of working, unfortunately.
+	
+	        Inputs on input side, outputs on output side, clearly.
+	
 		Inputs that are not transformed by the gate need to be on both the input and output 
 		side
-
-		Some gates (Fredkin and Toffoli) can't be designed to these specifications in 8 qubits
-		so their design will extend into the surrounding cells used for routing qubits across 
-		distance.
-		
 		
 						X Gate                
 		                                                   IN SIDE        OUT SIDE
@@ -687,7 +713,7 @@ Map directly to DWave graph instead:
                        |     ''.        .''     |              target O              O out   
                        |        ''.  .''        |                                       
                        |          .''.          |                       
-                       |       .''    ''.       |             control O              O control
+                       |       .]''    ''.      |             control O              O control
                        |    .''          ''.    |                      
                        |,.''                ''.,|                      
                        O------------------------O                     O              O
@@ -748,7 +774,44 @@ Map directly to DWave graph instead:
                                                            O           O            O           O
 		             			        
 						 
-			             Can't Toffoli be done in 5 bits?
+			             Better Toffoli:
+				     
+				     J12 	 -7 	 
+			      (targ)  w2 	 4 	 
+                               (out)  w1 	 3 	 
+                                     J34 	 1 	 
+                                     J13 	 -2 	 
+                                (anc) w0 	 9 	 
+                                     J04 	 -5 	 
+				     J02 	 -9 	 
+			       (ctl2) w4 	 0 	 
+				     J14 	 -2 	 
+				     J24 	 2 	 
+                                     J23 	 2 	 
+			       (ctl1) w3 	 0 	 
+                                     J03 	 -4 	 
+                                     J01 	 9 	 
+				       G 	 0 	 
+
+                                  
+		            Ancilla		                          IN SIDE     OUT SIDE
+,-----------------------------,o,----------------------------,               O           O
+|                       ,,,'''   ''',,,                      |              targ        out
+|                    ,'                ',                    |
+|                  ,'                    ',                  |               O           O
+|             out O------------------------O target          |              ctl1        ctl1
+|                 |'.                    .'|                 |   
+|                 |  ''.              .''  |                 |               O           O
+|                 |     ''.        .''     |                 |              ctl2        ctl2
+|                 |        ''.  .''        |                 |     
+|                 |          .''.          |                 |               O           O
+'---,             |       .''    ''.       |             ,---'              out         anc
+     ''',,,       |    .''          ''.    |       ,,,'''         
+           ''',,, |,.''                ''.,| ,,,'''           
+            ctl1 'O------------------------O' ctl2       
+                                                          
+       		  
+
 						 
 						 
 						 Fredkin Gate
@@ -810,8 +873,41 @@ Map directly to DWave graph instead:
 	                                                  out2        out2     
 					       
 								
-								
-								
+				Much better Fredkin:
+				In 5 bits: 	
+			 (out2)	w0 	 1 	
+				J14 	 5 	
+			(targ2)	w2 	 8 	
+			 (out1)	w1 	 1 	 
+				J03 	 -10 	
+			(targ1)	w3 	 9 	 
+				J23 	 10 	 
+			  (ctl)	w4 	 0 	 
+				J04 	 5 	 
+				J12 	 -9 	 
+				J01 	 9 	 
+				J24 	 -5 	 
+				J34 	 -5 	 
+				J02 	 -9 	 
+				J13 	 -10
+				
+                                  
+		             out2		                         IN SIDE     OUT SIDE
+,-----------------------------,o,----------------------------,               O           O
+|                       ,,,'''   ''',,,                      |             targ1        out1
+|                    ,'                ',                    |
+|                  ,'                    ',                  |               O           O
+|            out1 O------------------------O targ1           |             targ2        out2
+|                 |'.                    .'|                 |   
+|                 |  ''.              .''  |                 |               O           O
+|                 |     ''.        .''     |                 |              ctl         ctl  
+|                 |        ''.  .''        |                 |     
+|                 |          .''.          |                 |               O           O
+'---,             |       .''    ''.       |             ,---'             out1        targ1                 
+     ''',,,       |    .''          ''.    |       ,,,'''         
+           ''',,, |,.''                ''.,| ,,,'''           
+           targ2 'O------------------------O' ctl        
+                                     			
 								
 								
 					       Swap Gate
@@ -833,6 +929,9 @@ Map directly to DWave graph instead:
 
 	Rules for routing qubits between distant gates:
 		Draw different circuits on chimera graphs to come up with rules for routing qubits
+		
+		
+		
 		
 		
 TODO:
