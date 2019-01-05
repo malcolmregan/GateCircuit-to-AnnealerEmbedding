@@ -683,8 +683,8 @@ Map directly to DWave graph instead:
 	   around the chimera graph of routing cells.
 						    
 						    
-      g0                                              g4
-      TE                                              TE
+             g0                                              g4
+             TE                                              TE
  o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
  o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
  o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
