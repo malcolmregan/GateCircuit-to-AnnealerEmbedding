@@ -24,7 +24,7 @@ class annealer_graph():
 
     def add_X(self, targ):
         topleft = self.topleftofgatecells[self.gatenum]
-
+        
         if self.gatenum % 2 == 0:
             outname = 0 + topleft
             inname = 4 + topleft
@@ -72,186 +72,24 @@ class annealer_graph():
                 
                 # chain inname with newqubit
                 inval = inval + 5
+            
                 self.couplerweights[(min(newqubit, inname), max(newqubit,inname))] = -10
 
             else:
-
-                # move out of cell
-                if injoincell % 4 == 0:
-                    newqubit = injoin - 128
-                elif injoincell % 2 == 0:
-                    newqubit = injoin + 128
-                else:
-                    newqubit = injoin - 8
-
-                newqubittopleft = newqubit - newqubit % 8
-                horizontaldist = floor(topleft/8)%16 - floor(newqubittopleft/8)%16
-                if horizontaldist == 0:
-                    horizontaldist = -2 # this just makes it work right for this case
-                verticaldist = floor(topleft/128) - floor(newqubittopleft/128)
-
-
-
-                # join with newqubit
-                self.join(injoin, newqubit, targ)
-
-                # if exiting on horizontally connected couplers
-                # do certain things
-                if injoincell % 2 == 1:
-                    # if cell number is 3, 7, 11 etc. move up
-                    if injoincell % 4 == 3:
-                        # see if ideal move is good if not find move
-                        offset = self.check_and_get_row_offset(newqubit-4, dependency = newqubit-4-128)
-                        #position to move vertically
-                        newqubit = newqubit - 4 + offset
-                        #connect
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                        # move up once
-                        newqubit = newqubit - 128
-                        # connect
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-
-                    # if cell number is 1, 5, 9 etc. move down
-                    else:
-                        # see if ideal move is good if not find move
-                        offset = self.check_and_get_row_offset(newqubit-4, dependency = newqubit-4+128)
-                        #position to move vertically
-                        newqubit = newqubit - 4 + offset
-                        #connect
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                        
-                        # move down once
-                        newqubit = newqubit + 128
-                        # connect
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-
-                # see if ideal move is good if not find move
-                offset = self.check_and_get_row_offset(newqubit+4, dependency = newqubit+4 + 8*copysign(1, horizontaldist))
-                # position to move horizontally
-                newqubit = newqubit + 4 + offset
-                # connect
-                self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-
-                # move horizontally toward new gate
-                for i in range(abs(horizontaldist)-1):
+                inname, outname, inval, outval =self.make_chain(inname, outname, inval, outval, injoin, targ)
+                
+             
         
-                    offset = self.check_and_get_row_offset(newqubit + 8*copysign(1, horizontaldist))
-                    if offset is not 0:
-                        # find a row that will work and change to it
-                        offset = self.check_and_get_row_offset(newqubit, dependency = newqubit-4, otherdependency = newqubit + 8*copysign(1, horizontaldist))
-                        newqubit = newqubit - 4 + offset
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                        newqubit = newqubit + 4
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                    newqubit = newqubit + 8*copysign(1, horizontaldist)
-                    # connect 
-                    self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-
-                # position to move vertically
-                offset = self.check_and_get_row_offset(newqubit-4, dependency = newqubit - 4 + 128*copysign(1, verticaldist))
-                newqubit = newqubit - 4 + offset
-                # connect
-                self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-
-                #recalculate vertical distance to simplify things
-                newqubittopleft = newqubit - newqubit % 8
-                verticaldist = floor(topleft/128) - floor(newqubittopleft/128)
-            
-
-                # move vertically to input assembly cell
-                # if destination even, move verticaldist + 1
-                if self.gatenum % 2 == 0:
-                    for i in range(abs(verticaldist)):
-                        offset = self.check_and_get_row_offset(newqubit + 128*copysign(1, verticaldist))
-                        if offset is not 0:
-                            #find a row that works and change to it
-                            offset = self.check_and_get_row_offset(newqubit, dependency = newqubit+4, otherdependency = newqubit + 128*copysign(1, verticaldist))
-                            newqubit = newqubit + 4 + offset
-                            self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                            newqubit = newqubit - 4
-                            self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                        newqubit = newqubit + 128*copysign(1, verticaldist)
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                    
-                    # check if row available in gate cell and move there
-                    offset = self.check_and_get_row_offset(newqubit + 4, dependency = newqubit + 4 + 8)
-                    newqubit = newqubit + 4 + offset
-                    self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                
-                    # place inname and outname according to newqubit row
-                    newqubitrow = newqubit % 4
-                    inname = inname + newqubitrow
-                    outname = outname + newqubitrow
-
-                    # connect newqubit and inname
-                    self.qubitweights[newqubit] = self.qubitweights[newqubit] + 5
-                    inval = inval + 5
-                    self.couplerweights[(min(inname, newqubit), max(inname, newqubit))] =-10
-
-                
-                # if destination odd 
-                else:
-                    # one more if input cell above gate
-                    # one less if input cell below gate
-                    # these numbers dont say that but they do it
-                    # im tired
-                    if abs(verticaldist) == 1:
-                        adjust = 1
-                    else: 
-                        adjust = -1
-                    for i in range(abs(verticaldist)+int(adjust)):
-                        offset = self.check_and_get_row_offset(newqubit + 128*copysign(1, verticaldist))
-                        if offset is not 0:
-                            #find a row that works and change to it
-                            offset = self.check_and_get_row_offset(newqubit, dependency = newqubit+4, otherdependency = newqubit + 128*copysign(1,verticaldist))
-                            newqubit = newqubit + 4 + offset
-                            self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                            newqubit = newqubit - 4
-                            self.join(newqubit, self.qubits[targ]['components'][-1], targ)        
-                        newqubit = newqubit + 128*copysign(1, verticaldist)
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-
-                    # position to move horizontally
-                    offset = self.check_and_get_row_offset(newqubit+4)
-                    newqubit = newqubit + 4 + offset
-                    # connect
-                    self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-
-                    # move horizontally into input assembly cell
-                    newqubit = newqubit + 8 
-                    # connect
-                    self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                    
-                    if self.gatenum % 4 == 3:
-                        offset = self.check_and_get_row_offset(newqubit - 4, dependency = newqubit - 4 - 128)
-                        newqubit = newqubit - 4 + offset
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-                    else:
-                        offset = self.check_and_get_row_offset(newqubit - 4, dependency = newqubit - 4 + 128)
-                        newqubit = newqubit - 4 + offset
-                        self.join(newqubit, self.qubits[targ]['components'][-1], targ)
-
-
-                    # place inname and outname according to newqubit row
-                    newqubitrow = newqubit % 4
-                    inname = inname + newqubitrow
-                    outname = outname + newqubitrow
-
-                    # connect newqubit and inname
-                    self.qubitweights[newqubit] = self.qubitweights[newqubit] + 5
-                    inval = inval + 5
-                    self.couplerweights[(min(inname, newqubit), max(inname, newqubit))] = -10               
-
-        inoutcouplername = (inname, outname)
+        inoutcouplername = (min(inname,outname), max(inname, outname))
 
         self.qubits[targ]['components'].append(inname)
         self.qubits[targ]['components'].append(outname)
-        
+
         self.qubitweights[inname] = inval
         self.qubitweights[outname] = outval
 
         self.couplerweights[inoutcouplername] = inoutcouplerval
-        
+
         self.gatenum = self.gatenum + 1
 
     def add_CNOT(self, ctl, targ):
@@ -404,8 +242,176 @@ class annealer_graph():
     
         return int(rowoffset)
 
-    def make_chain(self, newinstance, lastinstance, circ_qubit):
-        pass
+    def make_chain(self, inname, outname, inval, outval, lastinstance, circ_qubit):
+        topleft = self.topleftofgatecells[self.gatenum]
+        lastinstancetopleft = lastinstance - lastinstance % 8
+        lastinstancecell = self.topleftofgatecells.index(lastinstancetopleft)
+
+        # move out of cell
+        if lastinstancecell % 4 == 0:
+            newqubit = lastinstance - 128
+        elif lastinstancecell % 2 == 0:
+            newqubit = lastinstance + 128
+        else:
+            newqubit = lastinstance - 8
+
+        newqubittopleft = newqubit - newqubit % 8
+        horizontaldist = floor(topleft/8)%16 - floor(newqubittopleft/8)%16
+        if horizontaldist == 0:
+            horizontaldist = -2 # this just makes it work right for this case
+        verticaldist = floor(topleft/128) - floor(newqubittopleft/128)
+
+        # join with newqubit
+        self.join(lastinstance, newqubit, circ_qubit)
+
+        # if exiting on horizontally connected couplers
+        # do certain things
+        if lastinstancecell % 2 == 1:
+            # if cell number is 3, 7, 11 etc. move up
+            if lastinstancecell % 4 == 3:
+                # see if ideal move is good if not find move
+                offset = self.check_and_get_row_offset(newqubit-4, dependency = newqubit-4-128)
+                
+                #position to move vertically
+                newqubit = newqubit - 4 + offset
+                #connect
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+                # move up once
+                newqubit = newqubit - 128
+                # connect
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+
+            # if cell number is 1, 5, 9 etc. move down
+            else:
+                # see if ideal move is good if not find move
+                offset = self.check_and_get_row_offset(newqubit-4, dependency = newqubit-4+128)
+                #position to move vertically
+                newqubit = newqubit - 4 + offset
+                #connect
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+                
+                # move down once
+                newqubit = newqubit + 128
+                # connect
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+
+        # see if ideal move is good if not find move
+        offset = self.check_and_get_row_offset(newqubit+4, dependency = newqubit+4 + 8*copysign(1, horizontaldist))
+        # position to move horizontally
+        newqubit = newqubit + 4 + offset
+        # connect
+        self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+
+        # move horizontally toward new gate
+        for i in range(abs(horizontaldist)-1):
+
+            offset = self.check_and_get_row_offset(newqubit + 8*copysign(1, horizontaldist))
+            if offset is not 0:
+                # find a row that will work and change to it
+                offset = self.check_and_get_row_offset(newqubit, dependency = newqubit-4, otherdependency = newqubit + 8*copysign(1, horizontaldist))
+                newqubit = newqubit - 4 + offset
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+                newqubit = newqubit + 4
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+            newqubit = newqubit + 8*copysign(1, horizontaldist)
+            # connect 
+            self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+
+        # position to move vertically
+        offset = self.check_and_get_row_offset(newqubit-4, dependency = newqubit - 4 + 128*copysign(1, verticaldist))
+        newqubit = newqubit - 4 + offset
+        # connect
+        self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+
+        #recalculate vertical distance to simplify things
+        newqubittopleft = newqubit - newqubit % 8
+        verticaldist = floor(topleft/128) - floor(newqubittopleft/128)
+    
+
+        # move vertically to input assembly cell
+        # if destination even, move verticaldist + 1
+        if self.gatenum % 2 == 0:
+            for i in range(abs(verticaldist)):
+                offset = self.check_and_get_row_offset(newqubit + 128*copysign(1, verticaldist))
+                if offset is not 0:
+                    #find a row that works and change to it
+                    offset = self.check_and_get_row_offset(newqubit, dependency = newqubit+4, otherdependency = newqubit + 128*copysign(1, verticaldist))
+                    newqubit = newqubit + 4 + offset
+                    self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+                    newqubit = newqubit - 4
+                    self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+                newqubit = newqubit + 128*copysign(1, verticaldist)
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+            
+            # check if row available in gate cell and move there
+            offset = self.check_and_get_row_offset(newqubit + 4, dependency = newqubit + 4 + 8)
+            newqubit = newqubit + 4 + offset
+            self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+        
+            # place inname and outname according to newqubit row
+            newqubitrow = newqubit % 4
+            inname = inname + newqubitrow
+            outname = outname + newqubitrow
+
+            # connect newqubit and inname
+            self.qubitweights[newqubit] = self.qubitweights[newqubit] + 5
+            inval = inval + 5
+            self.couplerweights[(min(inname, newqubit), max(inname, newqubit))] =-10
+
+        # if destination odd 
+        else:
+            # one more if input cell above gate
+            # one less if input cell below gate
+            # these numbers dont say that but they do it
+            # im tired
+            if abs(verticaldist) == 1:
+                adjust = 1
+            else: 
+                adjust = -1
+            for i in range(abs(verticaldist)+int(adjust)):
+                offset = self.check_and_get_row_offset(newqubit + 128*copysign(1, verticaldist))
+                if offset is not 0:
+                    #find a row that works and change to it
+                    offset = self.check_and_get_row_offset(newqubit, dependency = newqubit+4, otherdependency = newqubit + 128*copysign(1,verticaldist))
+                    newqubit = newqubit + 4 + offset
+                    self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+                    newqubit = newqubit - 4
+                    self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)        
+                newqubit = newqubit + 128*copysign(1, verticaldist)
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+
+            # position to move horizontally
+            offset = self.check_and_get_row_offset(newqubit+4)
+            newqubit = newqubit + 4 + offset
+            # connect
+            self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+
+            # move horizontally into input assembly cell
+            newqubit = newqubit + 8 
+            # connect
+            self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+            
+            if self.gatenum % 4 == 3:
+                offset = self.check_and_get_row_offset(newqubit - 4, dependency = newqubit - 4 - 128)
+                newqubit = newqubit - 4 + offset
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+            else:
+                offset = self.check_and_get_row_offset(newqubit - 4, dependency = newqubit - 4 + 128)
+                newqubit = newqubit - 4 + offset
+                self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
+
+
+            # place inname and outname according to newqubit row
+            newqubitrow = newqubit % 4
+            inname = inname + newqubitrow
+            outname = outname + newqubitrow
+
+            # connect newqubit and inname
+            self.qubitweights[newqubit] = self.qubitweights[newqubit] + 5
+            inval = inval + 5
+            self.couplerweights[(min(inname, newqubit), max(inname, newqubit))] = -10               
+
+        return inname, outname, inval, outval
 
     def print_chimera_graph_to_file(self):
         filename = 'debug.txt'
