@@ -1,7 +1,7 @@
 import numpy as np
 from random  import randint, uniform, shuffle
 
-boundmax = 1000
+boundmax = 1
 num = '0123456789'
 alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 oper = '+-*/'

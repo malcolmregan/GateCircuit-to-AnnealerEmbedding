@@ -73,10 +73,10 @@ def execute(circuit, backend = None,
             if circuit.annealergraph.qubits[qubit]['measured'] == False:
                 inputs.append(circuit.annealergraph.qubits[qubit]['components'][0])
 
-    '''
+
     sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
+    '''
     qubit_weights, coupler_weights, dwavemap = circuit.annealergraph.map_to_Dwave_graph(list(sampler._nodelist), list(sampler.edgelist))
-    
     
     ins = list()
     outs = list()
@@ -87,8 +87,11 @@ def execute(circuit, backend = None,
 
     inputs = ins
     outputs = outs
+    '''
     
-    
+    qubit_weights = circuit.annealergraph.qubitweights
+    coupler_weights = circuit.annealergraph.couplerweights
+
     bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
     
     kwargs = {}
@@ -97,8 +100,9 @@ def execute(circuit, backend = None,
     if 'answer_mode' in sampler.parameters:
         kwargs['answer_mode'] = 'histogram'
     print("Running...")
-    response = sampler.sample(bqm, **kwargs)
-    
+
+    response = EmbeddingComposite(sampler).sample(bqm, **kwargs)
+
     sampler.client.close()
     print("Done.")
     print(response.data)
@@ -123,7 +127,9 @@ def execute(circuit, backend = None,
     function.sort()
     for i in range(len(function)):
         print(function[i])
-    '''
+    
+    print(embedding)
+
     if len(circuit.annealergraph.qubitweights) < 18:
         # ExactSolver simulation
         print("\nExactSolver Check:")
