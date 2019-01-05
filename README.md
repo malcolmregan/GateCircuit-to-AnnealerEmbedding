@@ -652,17 +652,88 @@ Map directly to DWave graph instead:
             o     o                  o     o                  o     o
 	                                    
  
+                         from neighboring
+			    gate n-1
+			    |   | |
+                            |   | | gate n input   	   
+                            |   | |  assembly
+                            |   | :--o      o 
+                            |   | |
+                            |   :-|--o      o                        
+                            |   | |                                
+                            | ,-|-|--o------o,         from earlier
+                            | | | |           '------- distant gate
+                            :-|-|-|--o      o 
+          gate n exit       | | | |                                    
+           to later         | | | |   gate n               gate n+1 input     
+        distant gates       | | | | in     out             assembly 
+           o      o         | | | '--o      o,               o     ,o 
+                            | | |             '-------------------'   
+	   o	  o,        | | '----o     ,o           ,----o      o
+		    '-------|-|-----------'            |   
+	   o      o	    | '------o      o,         |     o     ,o
+                            |                 '--------|----------' 
+           o      o,        '--------o     ,o          |  ,--o      o
+		    '---------------------'            | |
+		                                       | |
+		                                    from earlier
+		                                    distant gates
+
+           Because of this, the first gate should not be in unit cell 0. There should be a margin 
+	   around the chimera graph of routing cells.
+						    
+						    
+             g0                                              g4
+             TE                                              TE
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ 
+ 	                      g3                                             g7
+  g0IA       O g0 I           TE     I g3 O       g4IA       O g4 I          TE      I g7 O
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+
+
+              g1IA                    g3IA                    g5IA                    g7IA
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ 
+      g1                                             g5
+      TE     I g1 O       g2IA       O g2 I          TE      I g5 O       g6IA       O g6 I
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ 
+                                    g2                                              g6
+                                    TE                                              TE
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+ o    o      o    o      o    o      o    o      o    o      o    o      o    o      o    o
+
+g0, g1, g2, ... = gate 1, gate 2, gate 3, ...
+I = Gate input column
+O = Gate output column
+IA = Input assembly cell
+TE = Travelling exit column
+		    
 	Specifications for gate modules:
 		Ancillas and inputs that are transformed by the gate into outputs can be in positions
 		with only local connectivity.
 	
+	        Need to fit in unit cell if this has any chance of working, unfortunately.
+	
+	        Inputs on input side, outputs on output side, clearly.
+	
 		Inputs that are not transformed by the gate need to be on both the input and output 
 		side
-
-		Some gates (Fredkin and Toffoli) can't be designed to these specifications in 8 qubits
-		so their design will extend into the surrounding cells used for routing qubits across 
-		distance.
-		
 		
 						X Gate                
 		                                                   IN SIDE        OUT SIDE
@@ -748,7 +819,44 @@ Map directly to DWave graph instead:
                                                            O           O            O           O
 		             			        
 						 
-			             Can't Toffoli be done in 5 bits?
+			             Better Toffoli:
+				     
+				     J12 	 -7 	 
+			      (targ)  w2 	 4 	 
+                               (out)  w1 	 3 	 
+                                     J34 	 1 	 
+                                     J13 	 -2 	 
+                                (anc) w0 	 9 	 
+                                     J04 	 -5 	 
+				     J02 	 -9 	 
+			       (ctl2) w4 	 0 	 
+				     J14 	 -2 	 
+				     J24 	 2 	 
+                                     J23 	 2 	 
+			       (ctl1) w3 	 0 	 
+                                     J03 	 -4 	 
+                                     J01 	 9 	 
+				       G 	 0 	 
+
+                                  
+		            Ancilla		                          IN SIDE     OUT SIDE
+,-----------------------------,o,----------------------------,               O           O
+|                       ,,,'''   ''',,,                      |              targ        out
+|                    ,'                ',                    |
+|                  ,'                    ',                  |               O           O
+|             out O------------------------O target          |              ctl1        ctl1
+|                 |'.                    .'|                 |   
+|                 |  ''.              .''  |                 |               O           O
+|                 |     ''.        .''     |                 |              ctl2        ctl2
+|                 |        ''.  .''        |                 |     
+|                 |          .''.          |                 |               O           O
+'---,             |       .''    ''.       |             ,---'              out         anc
+     ''',,,       |    .''          ''.    |       ,,,'''         
+           ''',,, |,.''                ''.,| ,,,'''           
+            ctl1 'O------------------------O' ctl2       
+                                                          
+       		  
+
 						 
 						 
 						 Fredkin Gate
@@ -810,8 +918,44 @@ Map directly to DWave graph instead:
 	                                                  out2        out2     
 					       
 								
-								
-								
+				Much better Fredkin:
+				In 5 bits: 	
+			 (out2)	w0 	 1 	
+				J14 	 5 	
+			(targ2)	w2 	 8 	
+			 (out1)	w1 	 1 	 
+				J03 	 -10 	
+			(targ1)	w3 	 9 	 
+				J23 	 10 	 
+			  (ctl)	w4 	 0 	 
+				J04 	 5 	 
+				J12 	 -9 	 
+				J01 	 9 	 
+				J24 	 -5 	 
+				J34 	 -5 	 
+				J02 	 -9 	 
+				J13 	 -10
+				
+                                  
+		             out2		                         IN SIDE     OUT SIDE
+,-----------------------------,o,----------------------------,               O           O
+|                       ,,,'''   ''',,,                      |             targ1        out1
+|                    ,'                ',                    |
+|                  ,'                    ',                  |               O           O
+|            out1 O------------------------O targ1           |             targ2        out2
+|                 |'.                    .'|                 |   
+|                 |  ''.              .''  |                 |               O           O
+|                 |     ''.        .''     |                 |              ctl         ctl  
+|                 |        ''.  .''        |                 |     
+|                 |          .''.          |                 |               O           O
+'---,             |       .''    ''.       |             ,---'             out1        targ1                 
+     ''',,,       |    .''          ''.    |       ,,,'''         
+           ''',,, |,.''                ''.,| ,,,'''           
+           targ2 'O------------------------O' ctl        
+	   
+	   
+	   		                  Why did Warren use 2 ancillas?
+                                     			
 								
 								
 					       Swap Gate
@@ -833,6 +977,15 @@ Map directly to DWave graph instead:
 
 	Rules for routing qubits between distant gates:
 		Draw different circuits on chimera graphs to come up with rules for routing qubits
+		
+		1) Input assembly cells of gates that are not already established cannot be used
+		   for routing (unless it is the input assembly cell of the destination gate, of course)
+		   Once a gate is established, empty qubits in it's input assembly cell become available
+		   for routing
+		   
+		2) Empty qubits in gate cells and travelling qubit exit columns are never available
+		   for routing, even after a gate is established
+		
 		
 		
 TODO:
