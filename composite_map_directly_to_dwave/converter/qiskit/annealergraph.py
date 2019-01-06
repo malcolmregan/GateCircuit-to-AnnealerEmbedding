@@ -76,7 +76,7 @@ class annealer_graph():
                 self.couplerweights[(min(newqubit, inname), max(newqubit,inname))] = -10
 
             else:
-                inname, outname, inval, outval =self.make_chain(inname, outname, inval, outval, injoin, targ)
+                inname, outname, inval, outval = self.make_chain(inname, outname, inval, outval, injoin, targ)
                 
              
         
@@ -95,7 +95,7 @@ class annealer_graph():
     def add_CNOT(self, ctl, targ):
         topleft = self.topleftofgatecells[self.gatenum]
 
-        if self.gatenum % 2 > 0:
+        if self.gatenum % 2 == 0:
             # out side left
             ancout_name = topleft
             out_name = 1 + topleft
@@ -144,28 +144,125 @@ class annealer_graph():
         ctlin_out_couplerval = -2
         ctlout_targ_couplerval = 2
         targ_out_couplerval = -2
-
+  
         if len(self.qubits[targ]['components']) > 0:
             targjoin = self.qubits[targ]['components'][-1]
-            self.qubitweights[targjoin] = self.qubitweights[targjoin] + 5
-            targ_val = targ_val + 5
+            targjointopleft = targjoin - targjoin % 8
+            targjoincell = self.topleftofgatecells.index(targjointopleft)
+            # if coming from last cell
+            if self.gatenum - targjoincell == 1:
+                #find row
+                rowoffset = targjoin % 4 - targ_name % 4
 
-            # for now just make connections using non-existent 
-            # couplers and see if EmbeddingComposite()
-            # can pick up the slack
+                # change position of row being connected
+                # if there were more rows occupied in this 
+                # gate the qubits previously in this row
+                # would have to be switched with inname and outname
 
-            self.couplerweights[(min(targjoin, targ_name), max(targjoin,targ_name))] = -10
+                targ_name = targ_name + rowoffset
+                out_name = out_name + rowoffset
+
+                for row in [[ctlin_name, ctlout_name], [ancin_name, ancout_name]]:
+                    if row[0] == targ_name:
+                        row[0] = row[0] - rowoffset
+                        row[1] = row[1] - rowoffset
+
+
+                # connect injoin to gate through input assembly cell
+                # these if statements will have to be modified
+                # when more if the chimera graph if included
+                if targjoincell % 4 == 0:
+                    newqubit = targjoin + 128
+                elif targjoincell % 2 == 0:
+                    newqubit = targjoin - 128
+                else:
+                    newqubit = targjoin + 8
+
+                # add new qubit chain with injoin
+                self.qubitweights[targjoin] = self.qubitweights[targjoin] + 5
+                self.qubits[targ]['components'].append(newqubit)
+                self.qubitweights[newqubit] = 10 # 10 bc connected to two qubits?
+                self.couplerweights[(min(targjoin, newqubit), max(targjoin, newqubit))] = -10
+
+                # chain inname with newqubit
+                targ_val = targ_val + 5
+
+                self.couplerweights[(min(newqubit, targ_name), max(newqubit,targ_name))] = -10
 
         if len(self.qubits[ctl]['components']) > 0:
             ctlinjoin = self.qubits[ctl]['components'][-1]
-            self.qubitweights[ctlinjoin] = self.qubitweights[ctlinjoin] + 5
-            ctlin_val = ctlin_val + 5
+            ctlinjointopleft = ctlinjoin - ctlinjoin % 8
+            ctlinjoincell = self.topleftofgatecells.index(ctlinjointopleft)
+            # if coming from last cell
+            if self.gatenum - ctlinjoincell == 1:
+                #find row
+                rowoffset = ctlinjoin % 4 - ctlin_name % 4
 
-            # for now just make connections using non-existent 
-            # couplers and see if EmbeddingComposite()
-            # can pick up the slack
+                # change position of row being connected
+                # if there were more rows occupied in this 
+                # gate the qubits previously in this row
+                # would have to be switched with inname and outname
 
-            self.couplerweights[(min(ctlinjoin, ctlin_name), max(ctlinjoin,ctlin_name))] = -10
+                ctlin_name = ctlin_name + rowoffset
+                ctlout_name = ctlout_name + rowoffset
+
+                for row in [[targ_name, out_name], [ancin_name, ancout_name]]:
+                    if row[0] == ctlin_name:
+                        row[0] = row[0] - rowoffset
+                        row[1] = row[1] - rowoffset
+
+
+                # connect injoin to gate through input assembly cell
+                # these if statements will have to be modified
+                # when more if the chimera graph if included
+                if ctlinjoincell % 4 == 0:
+                    newqubit = ctlinjoin + 128
+                elif ctlibjoincell % 2 == 0:
+                    newqubit = ctlinjoin - 128
+                else:
+                    newqubit = ctlinjoin + 8
+
+                # add new qubit chain with injoin
+                self.qubitweights[ctlinjoin] = self.qubitweights[ctlinjoin] + 5
+                self.qubits[ctlin]['components'].append(newqubit)
+                self.qubitweights[newqubit] = 10 # 10 bc connected to two qubits?
+                self.couplerweights[(min(ctlinjoin, newqubit), max(ctlinjoin, newqubit))] = -10
+
+                # chain inname with newqubit
+                ctlin_val = ctlin_val + 5
+
+                self.couplerweights[(min(newqubit, ctlin_name), max(newqubit, ctlin_name))] = -10
+
+        if len(self.qubits[targ]['components']) > 0:
+            if self.gatenum - targjoincell > 1:
+                targjoin = self.qubits[targ]['components'][-1]
+                targ_name, out_name, targ_val, out_val = self.make_chain(targ_name, out_name, targ_val, out_val, targjoin, targ)
+            
+
+        if len(self.qubits[ctl]['components']) > 0:
+            if self.gatenum - ctlinjoincell > 1:
+                ctlinjoin = self.qubits[ctl]['components'][-1]
+                ctlin_name, ctlout_name, ctlin_val, ctlout_val = self.make_chain(ctlin_name, ctlout_name, ctlin_val, ctlout_val, ctlinjoin, ctl)
+
+
+        # place rows that are never dependent on gates previous gates
+        availablerows = [0,1,2,3]
+        availablerows.pop(availablerows.index(ctlin_name%4))
+        availablerows.pop(availablerows.index(targ_name%4))
+        if ancin_name%4 not in availablerows:
+            rowoffset = availablerows[0] - ancin_name%4
+            ancin_name = ancin_name + rowoffset
+            ancout_name = ancout_name + rowoffset
+
+        #couplernames
+        ancin_ancout_couplername = (min(ancin_name, ancout_name), max(ancin_name, ancout_name))
+        ancin_ctlout_couplername = (min(ancin_name, ctlout_name), max(ancin_name, ctlout_name))
+        ancout_targ_couplername = (min(ancout_name, targ_name), max(ancout_name, targ_name))
+        ancin_out_couplername = (min(ancin_name, out_name), max(ancin_name, out_name))
+        ctlin_ctlout_couplername = (min(ctlin_name, ctlout_name), max(ctlin_name, ctlout_name))
+        ctlin_out_couplername = (min(ctlin_name, out_name), max(ctlin_name, out_name))
+        ctlout_targ_couplername = (min(ctlout_name, targ_name), max(ctlout_name, targ_name))
+        targ_out_couplername = (min(targ_name, out_name), max(targ_name, out_name))
 
         self.qubits[ctl]['components'].append(ctlin_name)
         self.qubits[ctl]['components'].append(ctlout_name)
@@ -192,6 +289,11 @@ class annealer_graph():
         self.couplerweights[targ_out_couplername] = targ_out_couplerval
 
         self.gatenum = self.gatenum + 1
+        
+        print('ctl', ctlin_name)
+        print('targ', targ_name)
+        print('anc', ancin_name)
+
 
     def add_Toffoli(self, ctl1, ctl2, targ):
         pass 
@@ -215,7 +317,7 @@ class annealer_graph():
             self.qubitweights[q2] = self.qubitweights[q2] + 5
             
         self.couplerweights[(min(q1, q2), max(q1, q2))] = -10
-
+        
     def check_and_get_row_offset(self, checkqubit, dependency = None, otherdependency = None):
         row = checkqubit % 4
         if dependency is None and otherdependency is None:
@@ -296,7 +398,7 @@ class annealer_graph():
                 self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
 
         # see if ideal move is good if not find move
-        offset = self.check_and_get_row_offset(newqubit+4, dependency = newqubit+4 + 8*copysign(1, horizontaldist))
+        offset = self.check_and_get_row_offset(newqubit+4, dependency = newqubit+4 + int(8*copysign(1, horizontaldist)))
         # position to move horizontally
         newqubit = newqubit + 4 + offset
         # connect
@@ -305,20 +407,20 @@ class annealer_graph():
         # move horizontally toward new gate
         for i in range(abs(horizontaldist)-1):
 
-            offset = self.check_and_get_row_offset(newqubit + 8*copysign(1, horizontaldist))
+            offset = self.check_and_get_row_offset(newqubit + int(8*copysign(1, horizontaldist)))
             if offset is not 0:
                 # find a row that will work and change to it
-                offset = self.check_and_get_row_offset(newqubit, dependency = newqubit-4, otherdependency = newqubit + 8*copysign(1, horizontaldist))
+                offset = self.check_and_get_row_offset(newqubit, dependency = newqubit-4, otherdependency = newqubit + int(8*copysign(1, horizontaldist)))
                 newqubit = newqubit - 4 + offset
                 self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
                 newqubit = newqubit + 4
                 self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
-            newqubit = newqubit + 8*copysign(1, horizontaldist)
+            newqubit = newqubit + int(8*copysign(1, horizontaldist))
             # connect 
             self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
 
         # position to move vertically
-        offset = self.check_and_get_row_offset(newqubit-4, dependency = newqubit - 4 + 128*copysign(1, verticaldist))
+        offset = self.check_and_get_row_offset(newqubit-4, dependency = newqubit - 4 + int(128*copysign(1, verticaldist)))
         newqubit = newqubit - 4 + offset
         # connect
         self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
@@ -332,15 +434,16 @@ class annealer_graph():
         # if destination even, move verticaldist + 1
         if self.gatenum % 2 == 0:
             for i in range(abs(verticaldist)):
-                offset = self.check_and_get_row_offset(newqubit + 128*copysign(1, verticaldist))
+                offset = self.check_and_get_row_offset(newqubit + int(128*copysign(1, verticaldist)))
                 if offset is not 0:
                     #find a row that works and change to it
-                    offset = self.check_and_get_row_offset(newqubit, dependency = newqubit+4, otherdependency = newqubit + 128*copysign(1, verticaldist))
+                    offset = self.check_and_get_row_offset(newqubit, dependency = newqubit+4, otherdependency = newqubit + int(128*copysign(1, verticaldist)))
                     newqubit = newqubit + 4 + offset
                     self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
                     newqubit = newqubit - 4
                     self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
-                newqubit = newqubit + 128*copysign(1, verticaldist)
+                newqubit = newqubit + int(128*copysign(1, verticaldist))
+            
                 self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
             
             # check if row available in gate cell and move there
@@ -372,12 +475,12 @@ class annealer_graph():
                 offset = self.check_and_get_row_offset(newqubit + 128*copysign(1, verticaldist))
                 if offset is not 0:
                     #find a row that works and change to it
-                    offset = self.check_and_get_row_offset(newqubit, dependency = newqubit+4, otherdependency = newqubit + 128*copysign(1,verticaldist))
+                    offset = self.check_and_get_row_offset(newqubit, dependency = newqubit+4, otherdependency = newqubit + int(128*copysign(1,verticaldist)))
                     newqubit = newqubit + 4 + offset
                     self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
                     newqubit = newqubit - 4
                     self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)        
-                newqubit = newqubit + 128*copysign(1, verticaldist)
+                newqubit = newqubit + int(128*copysign(1, verticaldist))
                 self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
 
             # position to move horizontally
