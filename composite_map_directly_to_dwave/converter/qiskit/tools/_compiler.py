@@ -74,34 +74,17 @@ def execute(circuit, backend = None,
                 inputs.append(circuit.annealergraph.qubits[qubit]['components'][0])
 
     circuit.annealergraph.print_chimera_graph_to_file()
-
+        
     sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
-    
-    '''
-    #qubit_weights, coupler_weights, dwavemap = circuit.annealergraph.map_to_Dwave_graph(list(sampler._nodelist), list(sampler.edgelist))
-    
-    ins = list()
-    outs = list()
-    for name in inputs:
-        ins.append(dwavemap[name][0])
-    for name in outputs:
-        outs.append(dwavemap[name][0])
-
-    inputs = ins
-    outputs = outs
-    '''
     
     qubit_weights = circuit.annealergraph.qubitweights
     coupler_weights = circuit.annealergraph.couplerweights
-
-    print(qubit_weights)
-    print(coupler_weights)
 
     bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
     
     kwargs = {}
     if 'num_reads' in sampler.parameters:
-        kwargs['num_reads'] = 100
+        kwargs['num_reads'] = 500
     if 'answer_mode' in sampler.parameters:
         kwargs['answer_mode'] = 'histogram'
     print("Running...")
@@ -116,6 +99,7 @@ def execute(circuit, backend = None,
     for sample, energy in response.data(['sample','energy']):
         if energy<groundstate:
             groundstate = round(energy,1)
+    print("Ground State: ", groundstate)
 
     function = list()
     for sample, energy in response.data(['sample', 'energy']):
@@ -133,6 +117,7 @@ def execute(circuit, backend = None,
     for i in range(len(function)):
         print(function[i])
     
+    
     if len(circuit.annealergraph.qubitweights) <= 18:
         # ExactSolver simulation
         print("\nExactSolver Check:")
@@ -149,7 +134,7 @@ def execute(circuit, backend = None,
         for sample, energy in response.data(['sample','energy']):
             if energy<groundstate:
                 groundstate = round(energy,1)
-
+        print("Ground State: ", groundstate)
         function = list()
         for sample, energy in response.data(['sample', 'energy']):
             if round(energy,1) == groundstate:

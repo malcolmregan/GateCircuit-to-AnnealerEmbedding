@@ -1,4 +1,4 @@
-from converter.qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister
+from converter.qiskit import QuantumCircuit, ClassicalRegister, QuantumRegister, execute
 from sys import argv
 
 qin1 = QuantumRegister(1)
@@ -33,3 +33,5 @@ circuit.x(tmp)
 circuit.measure(qin1, cin1)
 circuit.measure(qin2, cin2)
 circuit.measure(qz, cz)
+
+execute(circuit)

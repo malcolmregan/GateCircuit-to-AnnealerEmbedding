@@ -11,7 +11,6 @@ for idx in range(3):
     circuit.cx(qi[idx], qo[0])
 for idx in range(3):
     circuit.ccx(qi[idx], qi[(idx+1)%3], qo[1])
-
 circuit.measure(qo, co)
 
 execute(circuit)

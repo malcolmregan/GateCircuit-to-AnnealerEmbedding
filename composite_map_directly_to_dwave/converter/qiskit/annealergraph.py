@@ -67,7 +67,7 @@ class annealer_graph():
                 # add new qubit chain with injoin
                 self.qubitweights[injoin] = self.qubitweights[injoin] + 5
                 self.qubits[targ]['components'].append(newqubit) 
-                self.qubitweights[newqubit] = 10 # 10 bc connected to two qubits?
+                self.qubitweights[newqubit] = 10
                 self.couplerweights[(min(injoin, newqubit), max(injoin, newqubit))] = -10
                 
                 # chain inname with newqubit
@@ -78,8 +78,6 @@ class annealer_graph():
             else:
                 inname, outname, inval, outval = self.make_chain(inname, outname, inval, outval, injoin, targ)
                 
-             
-        
         inoutcouplername = (min(inname,outname), max(inname, outname))
 
         self.qubits[targ]['components'].append(inname)
@@ -115,17 +113,7 @@ class annealer_graph():
             ancin_name = topleft
             targ_name = 1 + topleft
             ctlin_name = 2 + topleft
-
-        #couplernames
-        ancin_ancout_couplername = (min(ancin_name, ancout_name), max(ancin_name, ancout_name))
-        ancin_ctlout_couplername = (min(ancin_name, ctlout_name), max(ancin_name, ctlout_name))
-        ancout_targ_couplername = (min(ancout_name, targ_name), max(ancout_name, targ_name))
-        ancin_out_couplername = (min(ancin_name, out_name), max(ancin_name, out_name))
-        ctlin_ctlout_couplername = (min(ctlin_name, ctlout_name), max(ctlin_name, ctlout_name))
-        ctlin_out_couplername = (min(ctlin_name, out_name), max(ctlin_name, out_name))
-        ctlout_targ_couplername = (min(ctlout_name, targ_name), max(ctlout_name, targ_name))
-        targ_out_couplername = (min(targ_name, out_name), max(targ_name, out_name))
-
+        
         #qubitweights
         ctlin_val = 6
         ancin_val = 9
@@ -144,7 +132,9 @@ class annealer_graph():
         ctlin_out_couplerval = -2
         ctlout_targ_couplerval = 2
         targ_out_couplerval = -2
-  
+ 
+        assignedins = {}
+        
         if len(self.qubits[targ]['components']) > 0:
             targjoin = self.qubits[targ]['components'][-1]
             targjointopleft = targjoin - targjoin % 8
@@ -167,7 +157,6 @@ class annealer_graph():
                         row[0] = row[0] - rowoffset
                         row[1] = row[1] - rowoffset
 
-
                 # connect injoin to gate through input assembly cell
                 # these if statements will have to be modified
                 # when more if the chimera graph if included
@@ -181,13 +170,18 @@ class annealer_graph():
                 # add new qubit chain with injoin
                 self.qubitweights[targjoin] = self.qubitweights[targjoin] + 5
                 self.qubits[targ]['components'].append(newqubit)
-                self.qubitweights[newqubit] = 10 # 10 bc connected to two qubits?
+                self.qubitweights[newqubit] = 1 
                 self.couplerweights[(min(targjoin, newqubit), max(targjoin, newqubit))] = -10
 
                 # chain inname with newqubit
                 targ_val = targ_val + 5
 
                 self.couplerweights[(min(newqubit, targ_name), max(newqubit,targ_name))] = -10
+
+                self.qubits[targ]['components'].append(targ_name)
+                self.qubitweights[targ_name] = targ_val
+
+                assignedins['targ'] = targ_name
 
         if len(self.qubits[ctl]['components']) > 0:
             ctlinjoin = self.qubits[ctl]['components'][-1]
@@ -217,15 +211,15 @@ class annealer_graph():
                 # when more if the chimera graph if included
                 if ctlinjoincell % 4 == 0:
                     newqubit = ctlinjoin + 128
-                elif ctlibjoincell % 2 == 0:
+                elif ctlinjoincell % 2 == 0:
                     newqubit = ctlinjoin - 128
                 else:
                     newqubit = ctlinjoin + 8
 
                 # add new qubit chain with injoin
                 self.qubitweights[ctlinjoin] = self.qubitweights[ctlinjoin] + 5
-                self.qubits[ctlin]['components'].append(newqubit)
-                self.qubitweights[newqubit] = 10 # 10 bc connected to two qubits?
+                self.qubits[ctl]['components'].append(newqubit)
+                self.qubitweights[newqubit] = 10 
                 self.couplerweights[(min(ctlinjoin, newqubit), max(ctlinjoin, newqubit))] = -10
 
                 # chain inname with newqubit
@@ -233,26 +227,62 @@ class annealer_graph():
 
                 self.couplerweights[(min(newqubit, ctlin_name), max(newqubit, ctlin_name))] = -10
 
+                self.qubits[ctl]['components'].append(ctlin_name)
+                self.qubitweights[ctlin_name] = ctlin_val
+
+                assignedins['ctlin'] = ctlin_name
+
         if len(self.qubits[targ]['components']) > 0:
             if self.gatenum - targjoincell > 1:
                 targjoin = self.qubits[targ]['components'][-1]
                 targ_name, out_name, targ_val, out_val = self.make_chain(targ_name, out_name, targ_val, out_val, targjoin, targ)
-            
+                
+                self.qubits[targ]['components'].append(targ_name)
+                self.qubitweights[targ_name] = targ_val
+
+                assignedins['targ'] = targ_name
 
         if len(self.qubits[ctl]['components']) > 0:
             if self.gatenum - ctlinjoincell > 1:
                 ctlinjoin = self.qubits[ctl]['components'][-1]
                 ctlin_name, ctlout_name, ctlin_val, ctlout_val = self.make_chain(ctlin_name, ctlout_name, ctlin_val, ctlout_val, ctlinjoin, ctl)
+                
+                self.qubits[ctl]['components'].append(ctlin_name)
+                self.qubitweights[ctlin_name] = ctlin_val
 
+                assignedins['ctlin'] = ctlin_name
 
-        # place rows that are never dependent on gates previous gates
         availablerows = [0,1,2,3]
-        availablerows.pop(availablerows.index(ctlin_name%4))
-        availablerows.pop(availablerows.index(targ_name%4))
-        if ancin_name%4 not in availablerows:
-            rowoffset = availablerows[0] - ancin_name%4
-            ancin_name = ancin_name + rowoffset
-            ancout_name = ancout_name + rowoffset
+        for key in assignedins.keys():
+            availablerows.pop(availablerows.index(assignedins[key]%4))
+        
+        if 'targ' not in assignedins:
+            if targ_name % 4 not in availablerows:
+                rowoffset = availablerows[0] - targ_name % 4
+                targ_name = targ_name + rowoffset
+                out_name = out_name + rowoffset
+                availablerows.pop(availablerows.index(targ_name%4))
+            else:
+                availablerows.pop(availablerows.index(targ_name%4))
+
+        if 'ctlin' not in assignedins:
+            if ctlin_name % 4 not in availablerows:
+                rowoffset = availablerows[0] - ctlin_name % 4
+                ctlin_name = ctlin_name + rowoffset
+                ctlout_name = ctlout_name + rowoffset
+                availablerows.pop(availablerows.index(ctlin_name%4))
+            else:
+                availablerows.pop(availablerows.index(ctlin_name%4))
+
+        if 'ancin' not in assignedins:
+            if ancin_name %4 not in availablerows:
+                rowoffset = availablerows[0] - ancin_name % 4
+                ancin_name = ancin_name + rowoffset
+                ancout_name = ancout_name + rowoffset
+                availablerows.pop(availablerows.index(ancin_name%4))
+            else:
+                availablerows.pop(availablerows.index(ancin_name%4))
+
 
         #couplernames
         ancin_ancout_couplername = (min(ancin_name, ancout_name), max(ancin_name, ancout_name))
@@ -264,14 +294,16 @@ class annealer_graph():
         ctlout_targ_couplername = (min(ctlout_name, targ_name), max(ctlout_name, targ_name))
         targ_out_couplername = (min(targ_name, out_name), max(targ_name, out_name))
 
-        self.qubits[ctl]['components'].append(ctlin_name)
+        if 'ctlin' not in assignedins:
+            self.qubits[ctl]['components'].append(ctlin_name)
+            self.qubitweights[ctlin_name] = ctlin_val
         self.qubits[ctl]['components'].append(ctlout_name)
-        self.qubitweights[ctlin_name] = ctlin_val
         self.qubitweights[ctlout_name] = ctlout_val
 
-        self.qubits[targ]['components'].append(targ_name)
+        if 'targ' not in assignedins:
+            self.qubits[targ]['components'].append(targ_name)
+            self.qubitweights[targ_name] = targ_val
         self.qubits[targ]['components'].append(out_name)
-        self.qubitweights[targ_name] = targ_val
         self.qubitweights[out_name] = out_val
 
         self.qubits['annealer_ancillas'].append(ancin_name)
@@ -289,15 +321,346 @@ class annealer_graph():
         self.couplerweights[targ_out_couplername] = targ_out_couplerval
 
         self.gatenum = self.gatenum + 1
-        
-        print('ctl', ctlin_name)
-        print('targ', targ_name)
-        print('anc', ancin_name)
-
+    
+        print("gate", self.gatenum-1)
+        print("\ttarg",targ_name)
+        print("\tctlin", ctlin_name)
+        print("\tancin", ancin_name)
+        print("\tout", out_name)
+        print("\tctlout",ctlout_name)
+        print("\tancout",ancout_name)
 
     def add_Toffoli(self, ctl1, ctl2, targ):
-        pass 
+        topleft = self.topleftofgatecells[self.gatenum]
 
+        if self.gatenum % 2 == 0:
+            # out side left
+            outout_name = topleft
+            ctl1out_name = 1 + topleft
+            ctl2out_name = 2 + topleft
+            anc_name = 3 + topleft
+
+            # in side right
+            targ_name = 4 + topleft
+            ctl1in_name = 5 + topleft
+            ctl2in_name = 6 + topleft
+            outin_name = 7 + topleft
+
+        else:
+            # out side right
+            outout_name = 4 + topleft
+            ctl1out_name = 5 + topleft
+            ctl2out_name = 6 + topleft
+            anc_name = 7 + topleft
+
+            # in side left
+            targ_name = topleft
+            ctl1in_name = 1 + topleft
+            ctl2in_name = 2 + topleft
+            outin_name = 3 + topleft
+
+
+        #qubitweights
+        targ_val = 4
+        ctl1in_val = 5
+        ctl2in_val = 5
+        outin_val = 8
+
+        outout_val = 8 
+        ctl1out_val = 5
+        ctl2out_val = 5 
+        anc_val = 9
+
+        #couplerweights
+        clt1in_ctl1out_couplerval = -10
+        ctl2in_ctl2out_couplerval = -10
+        outin_outout_couplerval = -13
+
+        anc_targ_couplerval = -9
+        anc_ctl1in_couplerval = -4
+        anc_ctl2in_couplerval = -5
+        anc_outin_couplerval = 9
+
+        outout_targ_couplerval = -7
+        outin_ctl1out_couplerval = -2
+        outin_ctl2out_couplerval = -2
+
+        targ_ctl1out_couplerval = 2
+        targ_ctl2out_couplerval = 2
+
+        ctl1in_ctl2out_couplerval = 1
+
+        assignedins = {}
+
+        if len(self.qubits[targ]['components']) > 0:
+            targjoin = self.qubits[targ]['components'][-1]
+            targjointopleft = targjoin - targjoin % 8
+            targjoincell = self.topleftofgatecells.index(targjointopleft)
+            # if coming from last cell
+            if self.gatenum - targjoincell == 1:
+                #find row
+                rowoffset = targjoin % 4 - targ_name % 4
+
+                # change position of row being connected
+                # if there were more rows occupied in this 
+                # gate the qubits previously in this row
+                # would have to be switched with inname and outname
+
+                targ_name = targ_name + rowoffset
+                outout_name = outout_name + rowoffset
+
+                for row in [[ctl1in_name, ctl1out_name], [ctl2in_name, ctl2out_name], [outin_name, anc_name]]:
+                    if row[0] == targ_name:
+                        row[0] = row[0] - rowoffset
+                        row[1] = row[1] - rowoffset
+
+                # connect injoin to gate through input assembly cell
+                # these if statements will have to be modified
+                # when more if the chimera graph if included
+                if targjoincell % 4 == 0:
+                    newqubit = targjoin + 128
+                elif targjoincell % 2 == 0:
+                    newqubit = targjoin - 128
+                else:
+                    newqubit = targjoin + 8
+
+                # add new qubit chain with injoin
+                self.qubitweights[targjoin] = self.qubitweights[targjoin] + 5
+                self.qubits[targ]['components'].append(newqubit)
+                self.qubitweights[newqubit] = 10 
+                self.couplerweights[(min(targjoin, newqubit), max(targjoin, newqubit))] = -10
+
+                # chain inname with newqubit
+                targ_val = targ_val + 5
+
+                self.couplerweights[(min(newqubit, targ_name), max(newqubit,targ_name))] = -10
+
+                self.qubits[targ]['components'].append(targ_name)
+                self.qubitweights[targ_name] = targ_val
+            
+                assignedins['targ'] = targ_name
+
+        if len(self.qubits[ctl1]['components']) > 0:
+            ctl1injoin = self.qubits[ctl1]['components'][-1]
+            ctl1injointopleft = ctl1injoin - ctl1injoin % 8
+            ctl1injoincell = self.topleftofgatecells.index(ctl1injointopleft)
+            # if coming from last cell
+            if self.gatenum - ctl1injoincell == 1:
+                #find row
+                rowoffset = ctl1injoin % 4 - ctl1in_name % 4
+
+                # change position of row being connected
+                # if there were more rows occupied in this
+                # gate the qubits previously in this row
+                # would have to be switched with inname and outname
+
+                ctl1in_name = ctl1in_name + rowoffset
+                ctl1out_name = ctl1out_name + rowoffset
+
+                for row in [[targ_name, outout_name], [ctl2in_name, ctl2out_name], [outin_name, anc_name]]:
+                    if row[0] == ctl1in_name:
+                        row[0] = row[0] - rowoffset
+                        row[1] = row[1] - rowoffset
+
+                # connect injoin to gate through input assembly cell
+                # these if statements will have to be modified
+                # when more if the chimera graph if included
+                if ctl1injoincell % 4 == 0:
+                    newqubit = ctl1injoin + 128
+                elif ctl1injoincell % 2 == 0:
+                    newqubit = ctl1injoin - 128
+                else:
+                    newqubit = ctl1injoin + 8
+
+                # add new qubit chain with injoin
+                self.qubitweights[ctl1injoin] = self.qubitweights[ctl1injoin] + 5
+                self.qubits[ctl1]['components'].append(newqubit)
+                self.qubitweights[newqubit] = 10 
+                self.couplerweights[(min(ctl1injoin, newqubit), max(ctl1injoin, newqubit))] = -10
+
+                # chain inname with newqubit
+                ctl1in_val = ctl1in_val + 5
+
+                self.couplerweights[(min(newqubit, ctl1in_name), max(newqubit, ctl1in_name))] = -10
+
+                self.qubits[ctl1]['components'].append(ctl1in_name)
+                self.qubitweights[ctl1in_name] = ctl1in_val
+                
+                assignedins['ctl1in'] = ctl1in_name
+
+        if len(self.qubits[ctl2]['components']) > 0:
+            ctl2injoin = self.qubits[ctl2]['components'][-1]
+            ctl2injointopleft = ctl2injoin - ctl2injoin % 8
+            ctl2injoincell = self.topleftofgatecells.index(ctl2injointopleft)
+            # if coming from last cell
+            if self.gatenum - ctl2injoincell == 1:
+                #find row
+                rowoffset = ctl2injoin % 4 - ctl2in_name % 4
+
+                # change position of row being connected
+                # if there were more rows occupied in this
+                # gate the qubits previously in this row
+                # would have to be switched with inname and outname
+
+                ctl2in_name = ctl2in_name + rowoffset
+                ctl2out_name = ctl2out_name + rowoffset
+
+                for row in [[targ_name, outout_name], [ctl1in_name, ctl1out_name], [outin_name, anc_name]]:
+                    if row[0] == ctl1in_name:
+                        row[0] = row[0] - rowoffset
+                        row[1] = row[1] - rowoffset
+
+                # connect injoin to gate through input assembly cell
+                # these if statements will have to be modified
+                # when more if the chimera graph if included
+                if ctl2injoincell % 4 == 0:
+                    newqubit = ctl2injoin + 128
+                elif ctl2injoincell % 2 == 0:
+                    newqubit = ctl2injoin - 128
+                else:
+                    newqubit = ctl2injoin + 8
+
+                # add new qubit chain with injoin
+                self.qubitweights[ctl2injoin] = self.qubitweights[ctl2injoin] + 5
+                self.qubits[ctl2]['components'].append(newqubit)
+                self.qubitweights[newqubit] = 10
+                self.couplerweights[(min(ctl2injoin, newqubit), max(ctl2injoin, newqubit))] = -10
+
+                # chain inname with newqubit
+                ctl2in_val = ctl2in_val + 5
+
+                self.couplerweights[(min(newqubit, ctl2in_name), max(newqubit, ctl2in_name))] = -10
+
+                self.qubits[ctl2]['components'].append(ctl2in_name)
+                self.qubitweights[ctl2in_name] = ctl2in_val
+
+                assignedins['ctl2in'] = ctl2in_name
+
+        if len(self.qubits[targ]['components']) > 0:
+            if self.gatenum - targjoincell > 1:
+                targjoin = self.qubits[targ]['components'][-1]
+                targ_name, outout_name, targ_val, outout_val = self.make_chain(targ_name, outout_name, targ_val, outout_val, targjoin, targ)
+                self.qubits[targ]['components'].append(targ_name)
+                self.qubitweights[targ_name] = targ_val
+                assignedins['targ'] = targ_name
+
+        if len(self.qubits[ctl1]['components']) > 0:
+            if self.gatenum - ctl1injoincell > 1:
+                ctl1injoin = self.qubits[ctl1]['components'][-1]
+                ctl1in_name, ctl1out_name, ctl1in_val, ctl1out_val = self.make_chain(ctl1in_name, ctl1out_name, ctl1in_val, ctl1out_val, ctl1injoin, ctl1)
+                self.qubits[ctl1]['components'].append(ctl1in_name)
+                self.qubitweights[ctl1in_name] = ctl1in_val
+                assignedins['ctl1in'] = ctl1in_name
+
+        if len(self.qubits[ctl2]['components']) > 0:
+            if self.gatenum - ctl2injoincell > 1:
+                ctl2injoin = self.qubits[ctl2]['components'][-1]
+                ctl2in_name, ctl2out_name, ctl2in_val, ctl2out_val = self.make_chain(ctl2in_name, ctl2out_name, ctl2in_val, ctl2out_val, ctl2injoin, ctl2)
+                self.qubits[ctl2]['components'].append(ctl2in_name)
+                self.qubitweights[ctl2in_name] = ctl2in_val
+                assignedins['ctl2in'] = ctl2in_name    
+
+        availablerows = [0,1,2,3]
+        for key in assignedins.keys():
+            availablerows.pop(availablerows.index(assignedins[key]%4))
+        
+        if 'outin' not in assignedins:
+            if outin_name % 4 not in availablerows:
+                rowoffset = availablerows[0] - outin_name % 4
+                outin_name = outin_name + rowoffset
+                anc_name = anc_name + rowoffset
+                availablerows.pop(availablerows.index(outin_name%4))
+            else:
+                availablerows.pop(availablerows.index(outin_name%4))
+         
+        if 'ctl1in' not in assignedins:
+            if ctl1in_name % 4 not in availablerows:
+                rowoffset = availablerows[0] - ctl1in_name % 4
+                ctl1in_name = ctl1in_name + rowoffset
+                ctl1out_name = ctl1out_name + rowoffset
+                availablerows.pop(availablerows.index(ctl1in_name%4))
+            else:
+                availablerows.pop(availablerows.index(ctl1in_name%4))
+        
+        print(ctl2out_name)
+        if 'ctl2in' not in assignedins:
+            if ctl2in_name %4 not in availablerows:
+                rowoffset = availablerows[0] - ctl2in_name % 4
+                ctl2in_name = ctl2in_name + rowoffset
+                ctl2out_name = ctl2out_name + rowoffset
+                availablerows.pop(availablerows.index(ctl2in_name%4))
+            else:
+                availablerows.pop(availablerows.index(ctl2in_name%4))
+        if 'targ' not in assignedins:
+            if targ_name %4 not in availablerows:
+                rowoffset = availablerows[0] - targ_name % 4
+                targ_name = targ_name + rowoffset
+                outout_name = outout_name + rowoffset
+                availablerows.pop(availablerows.index(targ_name%4))
+            else:
+                availablerows.pop(availablerows.index(targ_name%4))
+
+        # coupler names
+        clt1in_ctl1out_couplername = (min(ctl1in_name, ctl1out_name), max(ctl1in_name, ctl1out_name))
+        ctl2in_ctl2out_couplername = (min(ctl2in_name, ctl2out_name), max(ctl2in_name, ctl2out_name))
+        outin_outout_couplername = (min(outin_name, outout_name), max(outin_name, outout_name))
+        anc_targ_couplername = (min(anc_name, targ_name), max(anc_name, targ_name))
+        anc_ctl1in_couplername = (min(anc_name, ctl1in_name), max(anc_name, ctl1in_name))
+        anc_ctl2in_couplername = (min(anc_name, ctl2in_name), max(anc_name, ctl2in_name))
+        anc_outin_couplername = (min(anc_name, outin_name), max(anc_name, outin_name))
+        outout_targ_couplername = (min(outout_name, targ_name), max(outout_name, targ_name))
+        outin_ctl1out_couplername = (min(outin_name, ctl1out_name), max(outin_name, ctl1out_name))
+        outin_ctl2out_couplername = (min(outin_name, ctl2out_name), max(outin_name, ctl2out_name))
+        targ_ctl1out_couplername = (min(targ_name, ctl1out_name), max(targ_name, ctl1out_name))
+        targ_ctl2out_couplername = (min(targ_name, ctl2out_name), max(targ_name, ctl2out_name))
+        ctl1in_ctl2out_couplername = (min(ctl1in_name, ctl2out_name), max(ctl1in_name, ctl2out_name))
+
+        if 'ctl1in' not in assignedins:
+            self.qubits[ctl1]['components'].append(ctl1in_name)
+            self.qubitweights[ctl1in_name] = ctl1in_val
+        self.qubits[ctl1]['components'].append(ctl1out_name)
+        self.qubitweights[ctl1in_name] = ctl1in_val
+        self.qubitweights[ctl1out_name] = ctl1out_val
+        
+        if 'ctl2in' not in assignedins:
+            self.qubits[ctl2]['components'].append(ctl2in_name)
+            self.qubitweights[ctl2in_name] = ctl2in_val
+        self.qubits[ctl2]['components'].append(ctl2out_name)
+        self.qubitweights[ctl2out_name] = ctl2out_val
+        
+        if 'targ' not in assignedins:
+            self.qubits[targ]['components'].append(targ_name)
+            self.qubitweights[targ_name] = targ_val
+        self.qubits[targ]['components'].append(outin_name)
+        self.qubits[targ]['components'].append(outout_name)
+        self.qubitweights[outin_name] = outin_val
+        self.qubitweights[outout_name] = outout_val
+
+        self.qubits['annealer_ancillas'].append(anc_name)
+        self.qubitweights[anc_name] = anc_val
+
+        self.couplerweights[clt1in_ctl1out_couplername] = clt1in_ctl1out_couplerval
+        self.couplerweights[ctl2in_ctl2out_couplername] = ctl2in_ctl2out_couplerval
+        self.couplerweights[outin_outout_couplername] = outin_outout_couplerval
+        self.couplerweights[anc_targ_couplername] = anc_targ_couplerval
+        self.couplerweights[anc_ctl1in_couplername] = anc_ctl1in_couplerval
+        self.couplerweights[anc_ctl2in_couplername] = anc_ctl2in_couplerval
+        self.couplerweights[anc_outin_couplername] = anc_outin_couplerval
+        self.couplerweights[outout_targ_couplername] = outout_targ_couplerval
+        self.couplerweights[outin_ctl1out_couplername] = outin_ctl1out_couplerval
+        self.couplerweights[outin_ctl2out_couplername] = outin_ctl2out_couplerval
+        self.couplerweights[targ_ctl1out_couplername] = targ_ctl1out_couplerval
+        self.couplerweights[targ_ctl2out_couplername] = targ_ctl2out_couplerval
+        self.couplerweights[ctl1in_ctl2out_couplername] = ctl1in_ctl2out_couplerval
+
+        self.gatenum = self.gatenum + 1
+        print("gate", self.gatenum)
+        print("\ttarg",targ_name)
+        print("\tctl1",ctl1in_name)
+        print("\tctl2",ctl2in_name)
+        print("\tout",outin_name)
+
+        self.print_chimera_graph_to_file()
     def add_swap(self, targ1, targ2):
         pass
 
@@ -348,7 +711,7 @@ class annealer_graph():
         topleft = self.topleftofgatecells[self.gatenum]
         lastinstancetopleft = lastinstance - lastinstance % 8
         lastinstancecell = self.topleftofgatecells.index(lastinstancetopleft)
-
+         
         # move out of cell
         if lastinstancecell % 4 == 0:
             newqubit = lastinstance - 128
@@ -429,9 +792,8 @@ class annealer_graph():
         newqubittopleft = newqubit - newqubit % 8
         verticaldist = floor(topleft/128) - floor(newqubittopleft/128)
     
-
         # move vertically to input assembly cell
-        # if destination even, move verticaldist + 1
+        # if destination even, move verticaldist 
         if self.gatenum % 2 == 0:
             for i in range(abs(verticaldist)):
                 offset = self.check_and_get_row_offset(newqubit + int(128*copysign(1, verticaldist)))
@@ -452,15 +814,16 @@ class annealer_graph():
             self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
         
             # place inname and outname according to newqubit row
-            newqubitrow = newqubit % 4
-            inname = inname + newqubitrow
-            outname = outname + newqubitrow
+            rowoffset = newqubit % 4 - inname % 4
+            
+            inname = inname + rowoffset
+            outname = outname + rowoffset
 
             # connect newqubit and inname
             self.qubitweights[newqubit] = self.qubitweights[newqubit] + 5
             inval = inval + 5
             self.couplerweights[(min(inname, newqubit), max(inname, newqubit))] =-10
-
+            
         # if destination odd 
         else:
             # one more if input cell above gate
@@ -502,18 +865,17 @@ class annealer_graph():
                 offset = self.check_and_get_row_offset(newqubit - 4, dependency = newqubit - 4 + 128)
                 newqubit = newqubit - 4 + offset
                 self.join(newqubit, self.qubits[circ_qubit]['components'][-1], circ_qubit)
-
-
+ 
             # place inname and outname according to newqubit row
-            newqubitrow = newqubit % 4
-            inname = inname + newqubitrow
-            outname = outname + newqubitrow
+            rowoffset = newqubit % 4 - inname % 4
+            inname = inname + rowoffset
+            outname = outname + rowoffset
 
             # connect newqubit and inname
             self.qubitweights[newqubit] = self.qubitweights[newqubit] + 5
             inval = inval + 5
             self.couplerweights[(min(inname, newqubit), max(inname, newqubit))] = -10               
-
+            
         return inname, outname, inval, outval
 
     def print_chimera_graph_to_file(self):
