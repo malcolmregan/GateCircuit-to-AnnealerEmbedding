@@ -1048,6 +1048,41 @@ TE = Travelling exit column
 	      As far as I can understand right now, these two embeddings should be equivalent.
 	      This is why I feel larger circuit embeddings that include toffoli gates aren't
 	      working.
+	      
+	      The mapping algorithm produces exactly what it is expect to:
+	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -   
+	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
+	-   -      X   X      X   X      -   -      -   -      -   -      -   -      -   -
+	-   -      -   -      X   X      -   X      X   X      -   -      -   -      -   -
+
+                   CNOT0                 Toff0                 Toff1
+	-   -      X   X      -   -      X   X      -   -      X   X      -   -      -   -
+	-   -      X   X      -   -      X   X      -   X      X   X      -   -      -   -
+	-   -      X   X      X   X      X   X      X   X      X   X      -   -      -   -
+	-   -      -   -      X   -      X   X      X   X      X   X      -   -      -   -
+
+
+	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
+	-   -      X   -      -   -      -   -      -   -      X   -      -   -      -   -
+	-   -      -   -      X   X      X   X      X   -      X   -      -   -      -   -
+	-   -      -   -      X   X      X   X      X   X      X   X      -   -      -   -
+
+                   CNOT1                 CNOT2                 Toff2
+	-   -      X   X      -   -      X   X      -   -      X   X      -   -      -   -
+	-   -      X   X      -   X      X   X      -   -      X   X      -   -      -   -
+	X   X      X   X      X   -      X   X      X   -      X   X      -   -      -   -
+	-   -      -   -      X   X      -   -      -   -      X   X      -   -      -   -
+
+
+	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
+	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
+	X   X      -   X      X   X      X   X      X   X      -   -      -   -      -   -
+	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
+
+
+
+		
+	
 		
 TODO:
 
