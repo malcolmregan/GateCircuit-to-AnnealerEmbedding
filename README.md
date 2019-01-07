@@ -1026,40 +1026,6 @@ TE = Travelling exit column
 	      This is why I feel larger circuit embeddings that include toffoli gates aren't
 	      working.
 	      
-	      The mapping algorithm produces exactly what it is expect to:
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -   
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-	-   -      X   X      X   X      -   -      -   -      -   -      -   -      -   -
-	-   -      -   -      X   X      -   X      X   X      -   -      -   -      -   -
-
-                   CNOT0                 Toff0                 Toff1
-	-   -      X   X      -   -      X   X      -   -      X   X      -   -      -   -
-	-   -      X   X      -   -      X   X      -   X      X   X      -   -      -   -
-	-   -      X   X      X   X      X   X      X   X      X   X      -   -      -   -
-	-   -      -   -      X   -      X   X      X   X      X   X      -   -      -   -
-
-
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-	-   -      X   -      -   -      -   -      -   -      X   -      -   -      -   -
-	-   -      -   -      X   X      X   X      X   -      X   -      -   -      -   -
-	-   -      -   -      X   X      X   X      X   X      X   X      -   -      -   -
-
-                   CNOT1                 CNOT2                 Toff2
-	-   -      X   X      -   -      X   X      -   -      X   X      -   -      -   -
-	-   -      X   X      -   X      X   X      -   -      X   X      -   -      -   -
-	X   X      X   X      X   -      X   X      X   -      X   X      -   -      -   -
-	-   -      -   -      X   X      -   -      -   -      X   X      -   -      -   -
-
-
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-	X   X      -   X      X   X      X   X      X   X      -   -      -   -      -   -
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-
-
-
-		
-	
 		
 TODO:
 
@@ -1067,4 +1033,7 @@ TODO:
    2) Implement to work in Qiskit class structure
 	- graph simplification/reduction
 	- make mapping to Dwave hardware graph stuff work
+   3) Think about adding feature that forces the input side of output bits (ie measured bits)
+      to zero (or one) so that the annealing results are clearer. plus, not as many shots 
+      will be needed for larger circuits if this is done.
 ```
