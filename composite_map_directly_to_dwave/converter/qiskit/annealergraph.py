@@ -170,7 +170,7 @@ class annealer_graph():
                 # add new qubit chain with injoin
                 self.qubitweights[targjoin] = self.qubitweights[targjoin] + 5
                 self.qubits[targ]['components'].append(newqubit)
-                self.qubitweights[newqubit] = 1 
+                self.qubitweights[newqubit] = 10 
                 self.couplerweights[(min(targjoin, newqubit), max(targjoin, newqubit))] = -10
 
                 # chain inname with newqubit

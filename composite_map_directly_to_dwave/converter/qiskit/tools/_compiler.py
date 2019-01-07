@@ -74,7 +74,7 @@ def execute(circuit, backend = None,
                 inputs.append(circuit.annealergraph.qubits[qubit]['components'][0])
 
     circuit.annealergraph.print_chimera_graph_to_file()
-        
+    
     sampler = DWaveSampler(endpoint='https://cloud.dwavesys.com/sapi', token = 'DEV-beb5d0babc40334f66b655704f1b5315917b4c41', solver = 'DW_2000Q_2_1')
     
     qubit_weights = circuit.annealergraph.qubitweights
@@ -84,7 +84,7 @@ def execute(circuit, backend = None,
     
     kwargs = {}
     if 'num_reads' in sampler.parameters:
-        kwargs['num_reads'] = 500
+        kwargs['num_reads'] = 100
     if 'answer_mode' in sampler.parameters:
         kwargs['answer_mode'] = 'histogram'
     print("Running...")
@@ -117,13 +117,46 @@ def execute(circuit, backend = None,
     for i in range(len(function)):
         print(function[i])
     
-    
+    '''
+    qubit_weights = {'targ': 4,
+                     'ctl1in': 5,
+                     'ctl2in': 5,
+                     'outin': 8,
+                     'outout': 12,
+                     'ctl1out': 5,
+                     'ctl2out': 5,
+                     'anc': 9}
+    coupler_weights = {('outin','outout'): -17,
+                       ('ctl1in','ctl1out'): -10,
+                       ('ctl2in','ctl2out'): -10,
+                       ('anc','targ'): -9,
+                       ('anc','ctl1in'): -4,
+                       ('anc','ctl2in'): -5,
+                       ('anc','outin'): 9,
+                       ('outout','targ'): -7,
+                       ('outin','ctl1out'): -2,
+                       ('outin','ctl2out'): -2,
+                       ('targ','ctl1out'): 2,
+                       ('targ','ctl2out'): 2,
+                       ('ctl1in','ctl2out'): 1}
+                       
+    inputs = ['targ','ctl1in','ctl2in']
+    outputs = ['outout']
+    '''
     if len(circuit.annealergraph.qubitweights) <= 18:
         # ExactSolver simulation
         print("\nExactSolver Check:")
         print("Simulating problem with {} qubits".format(len(circuit.annealergraph.qubitweights)))
         qubit_weights = circuit.annealergraph.qubitweights
         coupler_weights = circuit.annealergraph.couplerweights
+        
+        print("\nQubit Weights:")
+        for key in qubit_weights.keys():
+            print(key, "\t", qubit_weights[key])
+        print("\nCoupler Weights")
+        for key in coupler_weights.keys():
+            print(key, "\t", coupler_weights[key])
+        print("\n")
 
         bqm = dimod.BinaryQuadraticModel(qubit_weights, coupler_weights, 0, dimod.BINARY)
         sampler = dimod.ExactSolver()
