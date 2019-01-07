@@ -989,32 +989,9 @@ TE = Travelling exit column
 	Implementation Notes:
 	   Problem:
 	      Single gate embeddings and chaining algorithm seem to be working as expected but when 
-	      circuits get big they don't work as expected and the ground state drops.
+	      circuits contain alot of Toffoli gates something goes wrong that i havn't pinned down yet.
 	      
-	      For example, both a sum function circuit with 3 CNOTS and a carry function
-	      ciruit with 3 Toffolis work well. However, combining these two into an adder circuit
-	      results in an embedding with a ground state of -18 (instead of 0 which it is supposed to
-	      be). 
-	      qubit values at the ground state are:
-	      
-	               ,-------------- sum (initial state)
-	              /  ,------------ carry_out (initial state)
-	             /  /  ,---------- a
-	            /  /  /  ,-------- b
-	           /  /  /  /  ,------ carry_in
-	          /  /  /  /  /  ,---- sum (output)
-	         /  /  /  /  /  /  ,-- carry_out (output)
-	        /  /  /  /  /  /  /      
-	      [0, 0, 1, 0, 0, 1, 0]
-              [0, 0, 1, 0, 1, 0, 1]
-              [0, 1, 1, 0, 0, 1, 1]
-              [0, 1, 1, 0, 1, 0, 0]
-              [1, 0, 0, 0, 1, 0, 0]
-              [1, 1, 0, 0, 1, 0, 1]
-
-	      all of which are true but most of the answer is not there.
-	      
-	      My thinking right now is that the Toffoli gate embedding is somehow 'unstable'
+	      My thinking right now is that the Toffoli gate embedding is somehow 'unstable'.
 	      When designing the qubit weights and couplings for the Toffoli gate I split 
 	      control 1, control 2 and the out bits to be on both sides. When the out bit 
 	      on the in side was coupled to one pair of of the controls, the ground state of 
