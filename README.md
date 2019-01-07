@@ -1018,7 +1018,7 @@ TE = Travelling exit column
 	      When designing the qubit weights and couplings for the Toffoli gate I split 
 	      control 1, control 2 and the out bits to be on both sides. When the out bit 
 	      on the in side was coupled to one pair of of the controls, the ground state of 
-	      the embedding was -8 and the gate function was wrong, when the other half of 
+	      the embedding was -3 and the gate function was wrong, when the other half of 
 	      the out bit was coupled to the other pair of control bits the function and ground 
 	      state (0) were correct.
 	      
