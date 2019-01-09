@@ -1,4 +1,4 @@
-# Lump Quantum Annealer Encoding from Quantum Gate Circuit
+# Quantum Annealer Embedding from Quantum Gate Circuit
 ```
 -----------------------------------------------------------------------------------------------------
 GENERAL NOTES
