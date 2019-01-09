@@ -989,32 +989,9 @@ TE = Travelling exit column
 	Implementation Notes:
 	   Problem:
 	      Single gate embeddings and chaining algorithm seem to be working as expected but when 
-	      circuits get big they don't work as expected and the ground state drops.
+	      circuits contain alot of Toffoli gates something goes wrong that i havn't pinned down yet.
 	      
-	      For example, both a sum function circuit with 3 CNOTS and a carry function
-	      ciruit with 3 Toffolis work well. However, combining these two into an adder circuit
-	      results in an embedding with a ground state of -18 (instead of 0 which it is supposed to
-	      be). 
-	      qubit values at the ground state are:
-	      
-	               ,-------------- sum (initial state)
-	              /  ,------------ carry_out (initial state)
-	             /  /  ,---------- a
-	            /  /  /  ,-------- b
-	           /  /  /  /  ,------ carry_in
-	          /  /  /  /  /  ,---- sum (output)
-	         /  /  /  /  /  /  ,-- carry_out (output)
-	        /  /  /  /  /  /  /      
-	      [0, 0, 1, 0, 0, 1, 0]
-              [0, 0, 1, 0, 1, 0, 1]
-              [0, 1, 1, 0, 0, 1, 1]
-              [0, 1, 1, 0, 1, 0, 0]
-              [1, 0, 0, 0, 1, 0, 0]
-              [1, 1, 0, 0, 1, 0, 1]
-
-	      all of which are true but most of the answer is not there.
-	      
-	      My thinking right now is that the Toffoli gate embedding is somehow 'unstable'
+	      My thinking right now is that the Toffoli gate embedding is somehow 'unstable'.
 	      When designing the qubit weights and couplings for the Toffoli gate I split 
 	      control 1, control 2 and the out bits to be on both sides. When the out bit 
 	      on the in side was coupled to one pair of of the controls, the ground state of 
@@ -1049,40 +1026,6 @@ TE = Travelling exit column
 	      This is why I feel larger circuit embeddings that include toffoli gates aren't
 	      working.
 	      
-	      The mapping algorithm produces exactly what it is expect to:
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -   
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-	-   -      X   X      X   X      -   -      -   -      -   -      -   -      -   -
-	-   -      -   -      X   X      -   X      X   X      -   -      -   -      -   -
-
-                   CNOT0                 Toff0                 Toff1
-	-   -      X   X      -   -      X   X      -   -      X   X      -   -      -   -
-	-   -      X   X      -   -      X   X      -   X      X   X      -   -      -   -
-	-   -      X   X      X   X      X   X      X   X      X   X      -   -      -   -
-	-   -      -   -      X   -      X   X      X   X      X   X      -   -      -   -
-
-
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-	-   -      X   -      -   -      -   -      -   -      X   -      -   -      -   -
-	-   -      -   -      X   X      X   X      X   -      X   -      -   -      -   -
-	-   -      -   -      X   X      X   X      X   X      X   X      -   -      -   -
-
-                   CNOT1                 CNOT2                 Toff2
-	-   -      X   X      -   -      X   X      -   -      X   X      -   -      -   -
-	-   -      X   X      -   X      X   X      -   -      X   X      -   -      -   -
-	X   X      X   X      X   -      X   X      X   -      X   X      -   -      -   -
-	-   -      -   -      X   X      -   -      -   -      X   X      -   -      -   -
-
-
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-	X   X      -   X      X   X      X   X      X   X      -   -      -   -      -   -
-	-   -      -   -      -   -      -   -      -   -      -   -      -   -      -   -
-
-
-
-		
-	
 		
 TODO:
 
@@ -1090,4 +1033,7 @@ TODO:
    2) Implement to work in Qiskit class structure
 	- graph simplification/reduction
 	- make mapping to Dwave hardware graph stuff work
+   3) Think about adding feature that forces the input side of output bits (ie measured bits)
+      to zero (or one) so that the annealing results are clearer. plus, not as many shots 
+      will be needed for larger circuits if this is done.
 ```
