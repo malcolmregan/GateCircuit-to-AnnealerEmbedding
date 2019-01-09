@@ -84,11 +84,13 @@ def execute(circuit, backend = None,
     
     kwargs = {}
     if 'num_reads' in sampler.parameters:
-        kwargs['num_reads'] = 100
+        kwargs['num_reads'] = 5000
     if 'answer_mode' in sampler.parameters:
         kwargs['answer_mode'] = 'histogram'
+    #if 'annealing_time' in sampler.parameters:
+    #    kwargs['annealing_time'] = 100
     print("Running...")
-
+    
     response = sampler.sample(bqm, **kwargs)
 
     sampler.client.close()
@@ -112,7 +114,7 @@ def execute(circuit, backend = None,
                 row.append(sample[outp])
             function.append(row)
     print('\n')
-
+    
     function.sort()
     for i in range(len(function)):
         print(function[i])
@@ -143,7 +145,7 @@ def execute(circuit, backend = None,
     inputs = ['targ','ctl1in','ctl2in']
     outputs = ['outout']
     '''
-    if len(circuit.annealergraph.qubitweights) <= 18:
+    if len(circuit.annealergraph.qubitweights) <= 19:
         # ExactSolver simulation
         print("\nExactSolver Check:")
         print("Simulating problem with {} qubits".format(len(circuit.annealergraph.qubitweights)))
