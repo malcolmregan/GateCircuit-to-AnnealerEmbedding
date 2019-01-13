@@ -37,6 +37,10 @@ CONTENTS
 		- Rules for graph simplification
 	  - Description of implementation
 	  - TODO list for implementation of this approach
+	  
+   IV) Map composite embedding directly to Dwave
+          - Notes on implementation
+	  - TODO list
 
 -----------------------------------------------------------------------------------------------------
 (I) GATE CIRCUIT-TO-ANNEALER EMBEDDING BY WAY OF INTERMEDIATE LOGICAL TRUTH TABLE REPRESENTATION
@@ -566,8 +570,9 @@ Implementation description:
     - dimod function for mapping problems to the Dwave graph (EmbeddingComposite) 
       do not work on these graphs.
 	    
-Map directly to DWave graph instead:
-------------------------------------
+-----------------------------------------------------------------------------------------------------
+(IV) MAP COMPOSITE EMBEDDING DIRECTLY TO DWAVE GRAPH
+-----------------------------------------------------------------------------------------------------
 
       in Lump-Annealer-Encoding-From-Gate-Circuit/composite_map_directly_to_Dwave_graph
       
