@@ -992,53 +992,16 @@ TE = Travelling exit column
 		   for routing, even after a gate is established
 	
 	Implementation Notes:
-	   Problem:
-	      Single gate embeddings and chaining algorithm seem to be working as expected but when 
-	      circuits contain alot of Toffoli gates something goes wrong that i havn't pinned down yet.
-	      
-	      My thinking right now is that the Toffoli gate embedding is somehow 'unstable'.
-	      When designing the qubit weights and couplings for the Toffoli gate I split 
-	      control 1, control 2 and the out bits to be on both sides. When the out bit 
-	      on the in side was coupled to one pair of of the controls, the ground state of 
-	      the embedding was -3 and the gate function was wrong, when the other half of 
-	      the out bit was coupled to the other pair of control bits the function and ground 
-	      state (0) were correct.
-	      
-	                      With all other connections the same:
-			 (ancilla connected to targ ctl1, ctl2, and out'
-			  targ connected to out, ctl1', and ctl2'
-			  ctl1 connected to ctl1' and ctl2'
-			  ctl2 connected to ctl2'
-			  out connected to out')
-	      
-	            Works:                                       Doesn't Work:
-	    In Side         Out Side                       In Side        Out Side
-	 targ O                O out                    targ O             ,,O out
-	                                                              ,,,'','
-	                                                        ,,,'''  ,,'
-	 ctl1 O               ,O ctl1'                  ctl1 O''     ,,'     O ctl1'
-	                   ,''                                    ,,'
-	                ,''                                    ,,'
-	 ctl2 O      ,''     ,,O ctl2'                  ctl2 O'              O ctl2'
-	          ,''  ,,,'''
-	        ,',,'''         
-	 out' O'''             O ancilla                out' O               O ancilla
-	      
-	      
-	      
-	      
-	      As far as I can understand right now, these two embeddings should be equivalent.
-	      This is why I feel larger circuit embeddings that include toffoli gates aren't
-	      working.
-	      
+	   Added annealer_graph attribute to Qiskit's QuantumCircuit class.
+		
+	   Implementation is the same as in Section III except that add_X, add_CNOT, etc.
+	   methods of annealer_graph maps directly to the Dwave Chimera graph.
+	   
 		
 TODO:
 
    1) Figure out scheme to simplify annealer embedding graphs
-   2) Implement to work in Qiskit class structure
-	- graph simplification/reduction
-	- make mapping to Dwave hardware graph stuff work
-   3) Think about adding feature that forces the input side of output bits (ie measured bits)
+   2) Think about adding feature that forces the input side of output bits (ie measured bits)
       to zero (or one) so that the annealing results are clearer. plus, not as many shots 
       will be needed for larger circuits if this is done.
 ```
